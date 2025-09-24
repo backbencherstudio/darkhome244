@@ -12,7 +12,7 @@ export default function BannerSection() {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}>
-                <div className=' flex  h-full items-center justify-center maxContainer'>
+                <div className=' flex  h-full items-center justify-center w-[648px] mx-auto'>
                    <WeatherDashboard/>
                 </div>
             </div>
@@ -41,8 +41,8 @@ export default function BannerSection() {
     <div className="">
       <div className="">
         {/* Search Bar */}
-        <div className="mb-8">
-          <div className="relative bg-white/90 backdrop-blur-sm rounded-lg shadow-lg">
+        <div className="mb-8 ">
+          <div className="relative z-50 bg-white/90 backdrop-blur-sm rounded-lg shadow-lg">
             <div className="flex items-center">
               <Search className="absolute left-4 text-gray-400" size={20} />
               <input
@@ -54,7 +54,7 @@ export default function BannerSection() {
               />
               <button
                 onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="flex items-center gap-2 px-4 py-4 text-blue-500 font-medium border-l border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-4 text-blue-500 font-medium border-l border-gray-200 rounded-r-lg hover:bg-gray-50 transition-colors cursor-pointer"
               >
                 <MapPin size={16} />
                 Location
@@ -82,7 +82,7 @@ export default function BannerSection() {
         </div>
 
         {/* Weather Card */}
-        <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 text-white shadow-2xl relative z-10 ">
+        <div className="bg-[#0000004D] backdrop-blur-[50px] rounded-2xl p-6 md:p-8 text-white shadow-2xl  ">
           {/* Header */}
           <div className="flex justify-between items-start mb-8">
             <div>
