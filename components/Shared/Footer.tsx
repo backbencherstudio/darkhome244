@@ -42,8 +42,8 @@ export default function Footer() {
     };
 
     return (
-        <div className='lg:py-10 py-8 bg-black'>
-            <div className='maxContainer '>
+        <div className='lg:py-10 py-8 bg-black '>
+            <div className='maxContainer relative'>
                 {/* Newsletter Section */}
                 <div className=''>
                     <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between py-8  gap-4 lg:gap-0 shadow-[0 20px 60px -6px rgba(77, 101, 137, 0.20)] rounded-[4px] border-b-[.5px] border-b-[#FFFFFF33]'>
@@ -148,6 +148,12 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
+            <div className='absolute top-0 left-0 '>
+                <img src="/footer-bg-shadow-left.png" alt="Decoration" className='w-full h-full' />
+            </div>
+            <div className='absolute top-0 right-0  '>
+                <img src="/footer-bg-shadow-right.png" alt="Decoration" className='w-full h-full' />
+            </div>
             </div>
         </div>
     );
