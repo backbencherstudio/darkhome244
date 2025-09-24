@@ -10,3 +10,12 @@
 body {
     font-family: "Mulish", sans-serif;
 }
+
+
+.maxContainer {
+  @apply max-w-[1320px] px-5 2xl:px-0 mx-auto;
+}
+
+.textPrimary {
+  color: #4A4C56;
+}

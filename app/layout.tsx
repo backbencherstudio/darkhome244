@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AppConfig } from "@/config/app.config";
+import Footer from "@/components/Shared/Footer";
+import Header from "@/components/Shared/Navbar";
 
 export const metadata: Metadata = {
   title: AppConfig().app.name,
@@ -14,7 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="">{children}</body>
+      <body className="">
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
