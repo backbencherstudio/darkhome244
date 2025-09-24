@@ -1,8 +1,9 @@
+import BannerSection from "@/components/ClientComponents/Home/BannerSection";
+
 export default function Home() {
   return (
     <div className="">
-      <h1>
-      </h1>
+     <BannerSection/>
     </div>
   );
 }
