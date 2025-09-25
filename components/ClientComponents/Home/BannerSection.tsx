@@ -7,6 +7,8 @@ import { CloudRain, MapPin, Search, Sun, Wind } from 'lucide-react';
 import React, { useState } from 'react'
 
 
+
+
 export default function BannerSection() {
   return (
     <div>
@@ -102,14 +104,14 @@ function WeatherDashboard() {
           {/* Main Weather Display */}
           <div className="flex md:mt-8 mt-6">
             {/* Temperature and Condition */}
-            <div className="w-[43%] flex items-center mb-6 md:mb-0 relative border">
-              <div className='absolute top-0 left-0 flex items-center  justify-between'>
-                <div className="">
+            <div className="w-[43%] flex items-center mb-6 md:mb-0 relative ">
+              <div className='absolute flex border items-center'>
+                <div className="block -ml-14">
                   {/* Weather Icon - Sunny Cloudy */}
                   <img src="/cloudicon.png" alt="" className=' object-cover w-full h-full' />
                 </div>
-                <div>
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-light mb-2">{weatherData.temperature}</div>
+                <div className='flex flex-col   '>
+                  <div className="text-4xl md:text-5xl lg:text-6xl font-light mb-2 font-geist">{weatherData.temperature}</div>
                   <div className="text-gray-300 text-sm md:text-base">{weatherData.condition}</div>
                 </div>
               </div>
@@ -150,3 +152,4 @@ function WeatherDashboard() {
     </div>
   );
 }
+

@@ -1,4 +1,6 @@
 
+
+
 @import "tailwindcss";
 
 
@@ -7,9 +9,14 @@
     src: url("/font/Mulish-VariableFont_wght.ttf") format("truetype");
 }
 
+.font-geist {
+    font-family: "Geist", sans-serif;
+} 
+
 body {
     font-family: "Mulish", sans-serif;
 }
+
 
 
 .maxContainer {
