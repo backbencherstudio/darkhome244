@@ -43,6 +43,24 @@ function WeatherDashboard() {
     uvIndex: '2 out of 10'
   };
 
+  const weatherStats = [
+    {
+      icon: <WindSpeedIcon />,
+      title: "Wind Speed",
+      value: weatherData.windSpeed,
+    },
+    {
+      icon: <PrecipitationIcon />,
+      title: "Precipitation",
+      value: weatherData.precipitation,
+    },
+    {
+      icon: <UvIndexIcon />,
+      title: "UV Index",
+      value: weatherData.uvIndex,
+    }
+  ];
+
   return (
     <div className="w-full">
       <div className="">
@@ -102,49 +120,35 @@ function WeatherDashboard() {
           </div>
 
           {/* Main Weather Display */}
-          <div className="flex md:mt-8 mt-6">
+          <div className="flex md:flex-row flex-col md:mt-8 mt-6">
             {/* Temperature and Condition */}
-            <div className="w-[43%] flex items-center mb-6 md:mb-0 relative ">
-              <div className='absolute flex border items-center'>
-                <div className="block -ml-14">
+            <div className="md:w-[43%] w-full flex justify-center md:justify-start items-center mb-6 md:mb-0  ">
+              <div className=' flex gap-4 items-center '>
+                <div className="block w-[72px] h-[71px]">
                   {/* Weather Icon - Sunny Cloudy */}
-                  <img src="/cloudicon.png" alt="" className=' object-cover w-full h-full' />
+                  <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />
                 </div>
                 <div className='flex flex-col   '>
-                  <div className="text-4xl md:text-5xl lg:text-6xl font-light mb-2 font-geist">{weatherData.temperature}</div>
+                  <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{weatherData.temperature}</div>
                   <div className="text-gray-300 text-sm md:text-base">{weatherData.condition}</div>
                 </div>
               </div>
             </div>
 
             {/* Weather Stats */}
-            <div className="w-[53%] grid grid-cols-3 gap-6 md:gap-8 ">
+            <div className="md:w-[53%] w-full flex gap-3 justify-between">
               {/* Wind Speed */}
-              <div className="text-center">
-                <div className="flex justify-center mb-2">
-                  <WindSpeedIcon />
+              {weatherStats.map((stat, index) => (
+                <div className="border-l border-[#FFFFFF26] md:pl-4 pl-4" key={index}>
+                  
+                  <div className="flex mb-4">
+                    <span>{stat?.icon}</span>
+                  </div>
+                  <div className="text-xs md:text-sm text-white mb-2 font-semibold">{stat?.title}</div>
+                  <div className="text-sm leading-[100%] text-[#E9E9EA] ">{stat?.value}</div>
                 </div>
-                <div className="text-xs md:text-sm text-gray-300 mb-1">Wind Speed</div>
-                <div className="text-sm md:text-base font-medium">{weatherData.windSpeed}</div>
-              </div>
+              ))}
 
-              {/* Precipitation */}
-              <div className="text-center">
-                <div className="flex justify-center mb-2">
-                  <PrecipitationIcon />
-                </div>
-                <div className="text-xs md:text-sm text-gray-300 mb-1">Precipitation</div>
-                <div className="text-sm md:text-base font-medium">{weatherData.precipitation}</div>
-              </div>
-
-              {/* UV Index */}
-              <div className="text-center">
-                <div className="flex justify-center mb-2">
-                  <UvIndexIcon />
-                </div>
-                <div className="text-xs md:text-sm text-gray-300 mb-1">UV Index</div>
-                <div className="text-sm md:text-base font-medium">{weatherData.uvIndex}</div>
-              </div>
             </div>
           </div>
         </div>
