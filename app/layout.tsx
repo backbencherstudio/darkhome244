@@ -22,7 +22,7 @@ export default function RootLayout({
           @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
         </style>
       </head>
-      <body className="">
+      <body className="bg-[#F4F4F4]">
         <Header />
         {children}
         <Footer />

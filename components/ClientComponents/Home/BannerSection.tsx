@@ -124,7 +124,7 @@ function WeatherDashboard() {
             {/* Temperature and Condition */}
             <div className="md:w-[43%] w-full flex justify-center md:justify-start items-center mb-6 md:mb-0  ">
               <div className=' flex gap-4 items-center '>
-                <div className="block w-[72px] h-[71px]">
+                <div className="block ">
                   {/* Weather Icon - Sunny Cloudy */}
                   <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />
                 </div>
