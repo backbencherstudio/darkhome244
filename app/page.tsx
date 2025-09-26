@@ -1,4 +1,5 @@
 import BannerSection from "@/components/ClientComponents/Home/BannerSection";
+import LatestCurrentNews from "@/components/ClientComponents/Home/LatestCurrentNews";
 import LatesWeatherSection from "@/components/ClientComponents/Home/LatestWeatherSection";
 import WeatherApp from "@/components/ClientComponents/Home/Weatherapp";
 
@@ -12,8 +13,13 @@ export default function Home() {
       <div>
         {/* <WeatherApp/> */}
       </div>
-      <div className="maxContainer py-10">
-        <LatesWeatherSection/>
+      <div className="maxContainer md:py-10 py-8">
+        <div className="">
+          <LatesWeatherSection />
+        </div>
+        <div className="md:pt-10 pt-8">
+          <LatestCurrentNews />
+        </div>
       </div>
     </div>
   );
