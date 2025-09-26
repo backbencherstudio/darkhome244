@@ -74,7 +74,7 @@ export default function Footer() {
                 <div className='grid grid-cols-1 md:grid-cols-3 border-b-[.5px] border-b-[#FFFFFF33] pb-6 md:pb-0'>
                     {/* Brand Section */}
                     <div className='lg:col-span-1 flex flex-col py-[32px] md:max-w-[298px]'>
-                        <div className='flex items-center border'>
+                        <div className='flex items-center '>
                             <img src="/weather-logo.png" alt="Logo" className='w-[62] h-[62px]' />
                         </div>
                         <p className='text-[#f2f2f2] md:text-base text-sm leading-[162%] '>
