@@ -5,6 +5,7 @@ import { useRSSFeed } from '@/hooks/useXmlApi';
 import { useXMLParser } from '@/hooks/usexmlParser';
 import Link from 'next/link';
 import { useFilterPagination } from '@/hooks/useFilterHook';
+import PaginationComponent from '@/components/reusable/PaginationComponent';
 
 const RSS_FEEDS = {
     latest: 'https://moxie.foxweather.com/google-publisher/latest.xml',
@@ -103,6 +104,21 @@ const LatesWeatherSection = () => {
                     </Link>
                 ))}
             </div>
+              {/* pagination component  */}
+        <div>
+          {!loading && (
+            <div
+              className={`flex justify-center pt-12 pb-4 ${parsedNews?.length >= 5 ? "block" : "hidden"
+                } `}
+            >
+              <PaginationComponent
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+        </div>
         </div>
     );
 };
