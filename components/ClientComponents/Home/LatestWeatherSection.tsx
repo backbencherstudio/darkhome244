@@ -15,6 +15,8 @@ const RSS_FEEDS = {
 
 const LatesWeatherSection = () => {
 
+
+    const idRef = React.useRef<HTMLDivElement>(null);
     const { data, loading, error } = useRSSFeed(RSS_FEEDS.weatherNews)
     const parsedNews = useXMLParser(data)
     const { currentItems, currentPage, totalPages, setCurrentPage } =
@@ -27,7 +29,7 @@ const LatesWeatherSection = () => {
     if (error) return <div>Error: {error}</div>;
 
     return (
-        <div className="">
+        <div className="" ref={idRef} >
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <h1 className="lg:text-[32px] md:text-[28px]  text:2xl leading-[130%] font-bold text-[#4A4C56] py-[3px]">Latest Weather News</h1>
@@ -37,7 +39,7 @@ const LatesWeatherSection = () => {
             </div>
 
             {/* News Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 ">
                 {currentItems?.map((news, index) => (
                     <Link
                         href={news?.link}
@@ -78,9 +80,9 @@ const LatesWeatherSection = () => {
                                                 {news?.author}
                                             </p>
                                             <p className={`md:text-sm text-xs text-[#777980] leading-[100%] tracking-[-.014px] transition-colors duration-300`}>
-                                                {news?.pubDate}
+                                                {/* {news?.pubDate} */}
 
-                                                {/* <span>
+                                                <span>
                                                     {(() => {
                                                         const s = news?.pubDate ?? "";
                                                         const m = s.match(/^(?:[A-Za-z]{3},\s*)?(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\s+(\d{2}):(\d{2})/);
@@ -90,7 +92,7 @@ const LatesWeatherSection = () => {
                                                         const ampm = parseInt(HH, 10) >= 12 ? "pm" : "am";
                                                         return `${datePart} at ${h}:${MM} ${ampm}`;
                                                     })()}
-                                                </span> */}
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -104,21 +106,22 @@ const LatesWeatherSection = () => {
                     </Link>
                 ))}
             </div>
-              {/* pagination component  */}
-        <div>
-          {!loading && (
-            <div
-              className={`flex justify-center pt-12 pb-4 ${parsedNews?.length >= 5 ? "block" : "hidden"
-                } `}
-            >
-              <PaginationComponent
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
+            {/* pagination component  */}
+            <div>
+                {!loading && (
+                    <div
+                        className={`flex justify-center pt-12 pb-4 ${parsedNews?.length >= 5 ? "block" : "hidden"
+                            } `}
+                    >
+                        <PaginationComponent
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                            scrollTargetRef={idRef}
+                        />
+                    </div>
+                )}
             </div>
-          )}
-        </div>
         </div>
     );
 };
