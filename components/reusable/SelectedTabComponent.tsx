@@ -28,8 +28,8 @@ const SelectedTabComponent: React.FC<SelectedTabComponentProps> = ({
   };
 
   return (
-      <div className="bg-white rounded-[12px] 2xl:p-4 p-3 flex justify-between items-center shadow-sm ">
-        <div className="flex flex-wrap items-center justify-center 2xl:gap-4 gap-3 rounded-lg">
+      <div className="bg-white  p-2 flex justify-between items-center  ">
+        <div className="flex flex-wrap items-center justify-center gap-3 ">
           {types.map((type, index) => (
             <a
               href={`#${type}`}
@@ -39,11 +39,11 @@ const SelectedTabComponent: React.FC<SelectedTabComponentProps> = ({
                 handleTabClick(type);
               }}
               className={`
-           py-[10px] px-[18px] transition-all duration-200 cursor-pointer rounded-md 2xl:text-base text-sm
+           py-1.5 px-3 transition-all duration-200 cursor-pointer rounded-[2px]  leading-[130%]
               ${
                 selectedType === type
-                  ? "primary-bg text-white shadow-sm "
-                  : "bg-[#F8FAFB] border-b border-b-[#ECEFF3] text-[#777980] hover:bg-[#0CAF60]/70 hover:text-white"
+                  ? "lg:text-lg md:text-base bg-[#0080C4] text-white font-semibold  text-sm bg-[linear-gradient(0deg, #0080C4 0%, #0080C4 100%), rgba(230, 242, 249, 0.25)]"
+                  : " text-[#4A4C56] lg:text-base md:text-sm text-xs"
               }
             `}
             >
