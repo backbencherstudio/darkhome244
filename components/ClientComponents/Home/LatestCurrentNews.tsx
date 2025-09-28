@@ -7,6 +7,9 @@ import Link from 'next/link';
 import { useFilterPagination } from '@/hooks/useFilterHook';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
 import GridCard from '@/components/reusable/GridCard';
+import SkeletonLoader from '@/app/loading';
+
+
 
 const RSS_FEEDS = {
     latestNews: 'https://moxie.foxweather.com/google-publisher/latest.xml',
@@ -24,7 +27,7 @@ const LatestCurrentNews = () => {
         useFilterPagination(parsedNews, 6);
 
     console.log(parsedNews, "parseddddddd ")
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <SkeletonLoader />;
     if (error) return <div>Error: {error}</div>;
 
     return (

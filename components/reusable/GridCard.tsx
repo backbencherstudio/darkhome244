@@ -50,9 +50,9 @@ const GridCard = ({ newsItems }: NewsGridProps) => {
                 {newsItems?.map((news, index) => (
                     <div key={news?.id}>
                         {/* News Item */}
-                        <Link
-                            href={news?.link}
-                            className="group rounded-[4px] overflow-hidden bg-white hover:bg-[#0080C4] transition-colors duration-300 cursor-pointer p-5 flex flex-col h-full md:gap-8 gap-6"
+                        <div
+
+                            className="group rounded-[4px] overflow-hidden bg-white hover:bg-[#0080C4] transition-colors duration-300  p-5 flex flex-col h-full md:gap-8 gap-6"
                         >
                             {/* Image */}
                             <div className="relative max-h-[280px] overflow-hidden">
@@ -66,9 +66,9 @@ const GridCard = ({ newsItems }: NewsGridProps) => {
                             {/* Content */}
                             <div className="flex flex-col flex-grow">
                                 <div>
-                                    <h2 className="md:text-2xl text-xl font-bold transition-colors duration-300 group-hover:text-white group-hover:underline leading-[130%] underline-offset-[25%]">
+                                    <a target='_blank' href={news?.link} className="md:text-2xl text-xl font-bold transition-colors duration-300 group-hover:text-white hover:underline leading-[130%] underline-offset-[25%]">
                                         {news?.title}
-                                    </h2>
+                                    </a>
                                     <p className="md:text-base text-sm mb-6 mt-5 leading-[160%] tracking-[-0.0160px] transition-colors group-hover:text-[#E9E9EA] duration-300">
                                         {news?.description}
                                     </p>
@@ -93,7 +93,7 @@ const GridCard = ({ newsItems }: NewsGridProps) => {
                                     </div>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
 
                         {/* Google Ad after specific position */}
                         {/* {adConfig && index + 1 === adConfig.position && adConfig.adComponent} */}

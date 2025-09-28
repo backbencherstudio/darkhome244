@@ -12,7 +12,7 @@ export default function Home() {
         {/* advertisment component will use here */}
       </div>
       <div>
-        <WeatherForecasat/>
+        <WeatherForecasat />
       </div>
       <div>
         {/* <WeatherApp/> */}

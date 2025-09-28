@@ -2,6 +2,10 @@
 
 import SelectedTabComponent from '@/components/reusable/SelectedTabComponent';
 import React, { useState } from 'react'
+import HourlyForecast from '../ForecastTab/HourlyForecast';
+import DailyForecast from '../ForecastTab/DailyForecast';
+import WeeklyForecast from '../ForecastTab/WeeklyForecast';
+import MonthlyForecast from '../ForecastTab/MonthlyForecast';
 
 export default function WeatherForecasat() {
 
@@ -11,13 +15,13 @@ export default function WeatherForecasat() {
     const renderSelectedComponent = () => {
         switch (selectedType) {
             case "Hourly":
-                return;
+                return <HourlyForecast/>;
             case "Daily":
-                return;
+                return <DailyForecast/>;
             case "Weekly":
-                return;
+                return <WeeklyForecast/>;
             case "Monthly":
-                return;
+                return <MonthlyForecast/>;
             default:
                 return;
         }
@@ -36,8 +40,8 @@ export default function WeatherForecasat() {
                         setSelectedType={setSelectedType}
                     />
                 </div>
-
             </div>
+            {renderSelectedComponent()}
         </div>
     )
 }
