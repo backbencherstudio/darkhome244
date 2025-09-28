@@ -6,11 +6,15 @@ import HourlyForecast from '../ForecastTab/HourlyForecast';
 import DailyForecast from '../ForecastTab/DailyForecast';
 import WeeklyForecast from '../ForecastTab/WeeklyForecast';
 import MonthlyForecast from '../ForecastTab/MonthlyForecast';
+import { usePathname } from 'next/navigation';
 
-export default function WeatherForecasat() {
+export default function WeatherForecast() {
 
     const types = ["Hourly", "Daily", "Weekly", "Monthly"]
     const [selectedType, setSelectedType] = useState(types[0]);
+    
+    const pathName = usePathname()
+    console.log(pathName)
 
     const renderSelectedComponent = () => {
         switch (selectedType) {
@@ -31,7 +35,7 @@ export default function WeatherForecasat() {
         <div className='maxContainer md:py-[60px] py-12'>
             <div className='flex justify-between items-center'>
                 <div>
-                    <h3 className='text-[#4A4C56] lg:text-[32px] md:text-[28px] text-2xl leading-[130%] font-bold'>Weather Forecast</h3>
+                    <h3 className={` lg:text-[32px] md:text-[28px] text-2xl leading-[130%] font-bold ${pathName.includes("forecast") ? "text-white":"text-[#4A4C56]"}`}>Weather Forecast</h3>
                 </div>
                 <div className=' '>
                     <SelectedTabComponent

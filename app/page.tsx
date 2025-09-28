@@ -2,7 +2,8 @@ import BannerSection from "@/components/ClientComponents/Home/BannerSection";
 import LatestCurrentNews from "@/components/ClientComponents/Home/LatestCurrentNews";
 import LatesWeatherSection from "@/components/ClientComponents/Home/LatestWeatherSection";
 import WeatherApp from "@/components/ClientComponents/Home/Weatherapp";
-import WeatherForecasat from "@/components/ClientComponents/Home/WeatherForecasat";
+import WeatherForecast from "@/components/ClientComponents/Home/WeatherForecasat";
+
 
 export default function Home() {
   return (
@@ -12,7 +13,7 @@ export default function Home() {
         {/* advertisment component will use here */}
       </div>
       <div>
-        <WeatherForecasat />
+        <WeatherForecast />
       </div>
       <div>
         {/* <WeatherApp/> */}
