@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.3",
     "apexcharts": "^5.3.5",
@@ -16,6 +17,7 @@
     "chart.js": "^4.4.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.544.0",
     "next": "15.3.1",
@@ -23,6 +25,7 @@
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
     "react-chartjs-2": "^5.3.0",
+    "react-day-picker": "^9.11.0",
     "react-dom": "^19.0.0",
     "react-select": "^5.10.1",
     "react-toastify": "^11.0.5",
