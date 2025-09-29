@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { AppConfig } from "@/config/app.config";
 import Footer from "@/components/Shared/Footer";
 import Header from "@/components/Shared/Navbar";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: AppConfig().app.name,
@@ -23,9 +25,11 @@ export default function RootLayout({
         </style>
       </head>
       <body className="bg-[#F4F4F4]">
-        <Header />
-        {children}
-        <Footer />
+        <Suspense fallback={<Loading />}>
+          <Header />
+          {children}
+          <Footer />
+        </Suspense>
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { useFilterPagination } from '@/hooks/useFilterHook';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
 import GridCard from '@/components/reusable/GridCard';
-import SkeletonLoader from '@/app/loading';
+import Loading from '@/app/loading';
 
 
 
@@ -27,7 +27,7 @@ const LatestCurrentNews = () => {
         useFilterPagination(parsedNews, 6);
 
     console.log(parsedNews, "parseddddddd ")
-    if (loading) return <SkeletonLoader />;
+    if (loading) return <Loading />;
     if (error) return <div>Error: {error}</div>;
 
     return (

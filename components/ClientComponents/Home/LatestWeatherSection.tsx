@@ -7,6 +7,8 @@ import Link from 'next/link';
 import { useFilterPagination } from '@/hooks/useFilterHook';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
 import GridCard from '@/components/reusable/GridCard';
+import Loading from '@/app/loading';
+
 
 const RSS_FEEDS = {
     latest: 'https://moxie.foxweather.com/google-publisher/latest.xml',
@@ -26,7 +28,7 @@ const LatesWeatherSection = () => {
 
 
     console.log(parsedNews, "parseddddddd ")
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Loading />;
     if (error) return <div>Error: {error}</div>;
 
     return (
