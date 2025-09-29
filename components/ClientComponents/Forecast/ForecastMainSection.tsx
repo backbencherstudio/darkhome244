@@ -2,6 +2,7 @@
 import React from 'react'
 import WeatherForecasat from '../Home/WeatherForecasat'
 import ForecastCurrentCard from './ForecastCurrentCard'
+import UpcomingWeather from './UpcomingWeather'
 
 
 
@@ -20,11 +21,17 @@ export default function ForecastMainSection() {
                     backgroundRepeat: "no-repeat"
                 }}>
                 <div className='text-white'>
-                    <WeatherForecasat /> 
+                    <WeatherForecasat />
                 </div>
             </div>
-            <ForecastCurrentCard/>
-          
+            {/* cards  */}
+            <div>
+                <ForecastCurrentCard />
+            </div>
+            {/* upcoming weather  */}
+            <div>
+                <UpcomingWeather/>
+            </div>
         </div>
     )
 }
