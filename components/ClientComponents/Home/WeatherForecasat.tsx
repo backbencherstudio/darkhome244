@@ -33,7 +33,7 @@ export default function WeatherForecast() {
 
     return (
         <div className='maxContainer md:py-[60px] py-12'>
-            <div className='flex justify-between items-center'>
+            <div className='flex md:flex-row flex-col gap-4 md:gap-0 md:justify-between md:items-center'>
                 <div>
                     <h3 className={` lg:text-[32px] md:text-[28px] text-2xl leading-[130%] font-bold ${pathName.includes("forecast") ? "text-white":"text-[#4A4C56]"}`}>Weather Forecast</h3>
                 </div>

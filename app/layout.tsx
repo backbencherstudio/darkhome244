@@ -5,6 +5,7 @@ import Footer from "@/components/Shared/Footer";
 import Header from "@/components/Shared/Navbar";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { LocationProvider } from "@/components/Provider/LocationProvider";
 
 export const metadata: Metadata = {
   title: AppConfig().app.name,
@@ -26,9 +27,11 @@ export default function RootLayout({
       </head>
       <body className="bg-[#F4F4F4]">
         <Suspense fallback={<Loading />}>
-          <Header />
-          {children}
-          <Footer />
+          <LocationProvider>
+            <Header />
+            {children}
+            <Footer />
+          </LocationProvider>
         </Suspense>
       </body>
     </html>

@@ -5,21 +5,21 @@ import React from "react";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const RadialChart = ({ series, startAngle, endAngle, chartId }) => {
+const RadialChart = ({ series, startAngle, endAngle, chartId, value }) => {
     const options = {
         chart: {
             id: chartId,
-            height: 280,
+            height: 64,
             type: "radialBar" as "radialBar",
         },
         series: [series],
-        colors: ["#20E647"],
+        colors: ["#0080C4"],
         plotOptions: {
             radialBar: {
                 startAngle,
                 endAngle,
                 track: {
-                    background: "#333",
+                    background: "#E6F2F9",
                     startAngle,
                     endAngle,
                 },
@@ -28,8 +28,16 @@ const RadialChart = ({ series, startAngle, endAngle, chartId }) => {
                         show: false,
                     },
                     value: {
-                        fontSize: "30px",
+                        fontSize: "20px",
                         show: true,
+                        formatter: (val: number) => {
+                            // If you want to show a special text, use display; otherwise fallback to the numeric val
+                            if (value !== undefined && value !== null) {
+                                return String(value);
+                            }
+                            // format as integer or keep decimals as you need
+                            return String(Math.round(val));
+                        },
                     },
                 },
             },
@@ -39,7 +47,7 @@ const RadialChart = ({ series, startAngle, endAngle, chartId }) => {
             gradient: {
                 shade: "dark",
                 type: "horizontal",
-                gradientToColors: ["#87D4F9"],
+                gradientToColors: ["#0080C4"],
                 stops: [0, 100],
             },
         },
@@ -49,7 +57,7 @@ const RadialChart = ({ series, startAngle, endAngle, chartId }) => {
         labels: ["Progress"],
     };
 
-    return <ApexCharts options={options} series={[series]} type="radialBar" height={280} />;
+    return <ApexCharts options={options} series={[series]} type="radialBar" height={164} />;
 };
 
 export default RadialChart;
