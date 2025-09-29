@@ -7,14 +7,16 @@ import WindSpeedIcon from '@/components/Icons/WindSpeedIcon'
 import TempretureIcon from '@/components/Icons/TempretureIcon'
 import RadialChart from './RadialChart'
 import { useLocation } from '@/components/Provider/LocationProvider'
+import { useWeatherData } from '@/hooks/useWeatherData'
 
 
 
 
 export default function ForecastMainSection() {
 
-    const { location, loading, error, refreshLocation } = useLocation()
-    console.log(location,loading,error,refreshLocation)
+    const { location, refreshLocation } = useLocation()
+    const { data, error, loading } = useWeatherData(location?.latitude, location?.longitude)
+    console.log(data, "user current location data")
 
     const getPercentageValue = (value: number, type: string): number => {
         switch (type) {
@@ -35,6 +37,13 @@ export default function ForecastMainSection() {
         }
     };
 
+    const cardData = [
+        { title: "UV Index", type: "uv", value: `${data?.daily?.uv_index_max[0]}`, rawValue: data?.daily?.uv_index_max[0], icon: <UvIndexIcon className='text-[#0080C4]' /> },
+        { title: "Rain", type: "rain", value: `${data?.hourly?.precipitation_probability[0]}%`, rawValue: data?.hourly?.precipitation_probability[0] ?? 0, icon: <RainUmbrellaIcon className='' /> },
+        { title: "Wind Speed", type: "wind", value: `${data?.current?.wind_speed_10m} km/h`, rawValue: data?.current?.wind_speed_10m, icon: <WindSpeedIcon className='text-[#0080C4]' /> },
+        { title: "Temperature", type: "temperature", value: `${data?.current?.temperature_2m}°C`, rawValue: data?.current?.temperature_2m, icon: <TempretureIcon className='fill-[#0080C4]' /> },
+    ]
+    console.log(data?.hourly?.precipitation_probability[0],"temsfdffffff     ")
 
     return (
         <div>
@@ -53,8 +62,8 @@ export default function ForecastMainSection() {
                 <div className='grid lg:grid-cols-4 md:grid-cols-2  xl:gap-8 lg:gap-6 gap-4'>
                     {cardData?.map((item) => (
                         <div key={item?.title} className='bg-white pb-4 flex items-center flex-col justify-center'>
-                            <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value = {item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
-                                {/* <span>{item?.value}</span> */}
+                            <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
+                            {/* <span>{item?.value}</span> */}
                             <div className='flex items-center gap-2 mt-2'>
                                 <span>{item?.icon}</span>
                                 <span className='text-[#1D1F2C] md:text-base text-sm font-bold leading-[120%]'>{item?.title}</span>
@@ -68,9 +77,3 @@ export default function ForecastMainSection() {
 }
 
 
-const cardData = [
-    { title: "UV Index", type: "uv", value: "6", rawValue: 6, icon: <UvIndexIcon className='text-[#0080C4]' /> },
-    { title: "Rain", type: "rain", value: "5%", rawValue: 5, icon: <RainUmbrellaIcon className='' /> },
-    { title: "Wind Speed", type: "wind", value: "22 km/h", rawValue: 22, icon: <WindSpeedIcon className='text-[#0080C4]' /> },
-    { title: "Temperature", type: "temperature", value: "23°C", rawValue: 23, icon: <TempretureIcon className='fill-[#0080C4]' /> },
-]

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export const useWeatherData = (latitude = 52.52, longitude = 13.41) => {
+export const useWeatherData = (latitude  , longitude ) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +12,7 @@ export const useWeatherData = (latitude = 52.52, longitude = 13.41) => {
         setError(null);
         
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,wind_speed_10m,temperature_80m,precipitation_probability,precipitation,uv_index,uv_index_clear_sky,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,rain,showers,snowfall`
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=uv_index_max,uv_index_clear_sky_max,surface_pressure_min,sunset,sunrise&hourly=uv_index,uv_index_clear_sky,is_day,temperature_2m,precipitation,precipitation_probability,rain,weather_code,surface_pressure,wind_speed_10m&current=temperature_2m,is_day,precipitation,rain,snowfall,weather_code,wind_speed_10m&timezone=auto&forecast_days=14 `
         );
 
         if (!response.ok) throw new Error('API request failed');
