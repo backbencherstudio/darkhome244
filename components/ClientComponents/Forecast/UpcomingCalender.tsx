@@ -24,8 +24,8 @@ export default function UpcomingCalender() {
                         id="date"
                         className="md:py-6 py-4 shadow-sm rounded-[4px] px-3 w-[252px] cursor-pointer focus-visible:border-none focus-visible:ring-none focus-visible:ring-[0px] border-0  bg-white text-[#4A4C56] md:text-base text-sm leading-[130%] font-normal flex justify-between"
                     >
-                        {date ? date.toLocaleDateString() : "Select date"}
-                        <ChevronDownIcon />
+                        {date ? date.toLocaleDateString() : "View Forecast"}
+                        {/* <ChevronDownIcon /> */}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-auto overflow-hidden p-0" align="end">
