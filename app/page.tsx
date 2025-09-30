@@ -1,7 +1,6 @@
 import BannerSection from "@/components/ClientComponents/Home/BannerSection";
 import LatestCurrentNews from "@/components/ClientComponents/Home/LatestCurrentNews";
 import LatesWeatherSection from "@/components/ClientComponents/Home/LatestWeatherSection";
-import WeatherApp from "@/components/ClientComponents/Home/Weatherapp";
 import WeatherForecast from "@/components/ClientComponents/Home/WeatherForecasat";
 
 

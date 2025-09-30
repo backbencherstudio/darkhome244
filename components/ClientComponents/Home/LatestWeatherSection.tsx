@@ -8,6 +8,7 @@ import { useFilterPagination } from '@/hooks/useFilterHook';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
 import GridCard from '@/components/reusable/GridCard';
 import Loading from '@/app/loading';
+import { usePathname } from 'next/navigation';
 
 
 const RSS_FEEDS = {
@@ -18,12 +19,16 @@ const RSS_FEEDS = {
 
 const LatesWeatherSection = () => {
 
+    const pathName = usePathname()
+    const itemPerPage = pathName.includes("forecast") ? 3 : 6; 
 
     const idRef = React.useRef<HTMLDivElement>(null);
     const { data, loading, error } = useRSSFeed(RSS_FEEDS.weatherNews)
     const parsedNews = useXMLParser(data)
     const { currentItems, currentPage, totalPages, setCurrentPage } =
-        useFilterPagination(parsedNews, 6);
+        useFilterPagination(parsedNews, itemPerPage);
+
+
 
 
 
@@ -42,7 +47,7 @@ const LatesWeatherSection = () => {
             </div>
 
             {/* News Grid */}
-           <GridCard newsItems={currentItems}    />
+            <GridCard newsItems={currentItems} />
             {/* pagination component  */}
             <div>
                 {!loading && (

@@ -3,6 +3,7 @@ import React from 'react'
 import WeatherForecasat from '../Home/WeatherForecasat'
 import ForecastCurrentCard from './ForecastCurrentCard'
 import UpcomingWeather from './UpcomingWeather'
+import LatesWeatherSection from '../Home/LatestWeatherSection'
 
 
 
@@ -34,6 +35,9 @@ export default function ForecastMainSection() {
             {/* upcoming weather  */}
             <div>
                 <UpcomingWeather/>
+            </div>
+            <div className='maxContainer md:py-10 py-8'>
+                <LatesWeatherSection  />
             </div>
         </div>
     )
