@@ -34,6 +34,7 @@ export default function UpcomingCalender() {
                         mode="range"
                         defaultMonth={date}
                         numberOfMonths={1}
+                        min={1} max={14}
                         className="rounded-lg border shadow-sm"
                     />
                 </PopoverContent>
