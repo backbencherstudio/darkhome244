@@ -23,7 +23,7 @@ const selectItem = [
 
 export default function WeatherForecast() {
 
-
+    const [value, setValue] = React.useState("");
 
     return (
         <div className='maxContainer'>
@@ -31,7 +31,7 @@ export default function WeatherForecast() {
                 <h2 className='text-[#1D1F2C] lg:leading-[32px] md:text-[28px] text-2xl font-bold leading-[130%]'>Upcoming Weather Forecast</h2>
                 <div className='flex gap-4 '>
                     <div>
-                        <Select>
+                        <Select  value={value} onValueChange={setValue}>
                             <SelectTrigger className="md:py-6 py-4 shadow-sm rounded-[4px] px-3 w-[128px] cursor-pointer focus-visible:border-none focus-visible:ring-none focus-visible:ring-[0px] border-0  bg-white text-[#4A4C56] md:text-base text-sm leading-[130%] font-normal ">
                                 <SelectValue placeholder="Select Day" />
                             </SelectTrigger>
