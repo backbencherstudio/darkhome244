@@ -53,7 +53,7 @@ export default function WeatherForecast() {
                     <ForecastTable />
                 </div>
                 <div className='md:w-[32.12%] w-full mt-4'>
-                    Google adds here
+                    Google adds will show here
                 </div>
             </div>
         </div>

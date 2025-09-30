@@ -28,6 +28,9 @@ export default function ForecastMainSection() {
             <div>
                 <ForecastCurrentCard />
             </div>
+            <div className='text-center py-6'>
+                google adds show here
+            </div>
             {/* upcoming weather  */}
             <div>
                 <UpcomingWeather/>
