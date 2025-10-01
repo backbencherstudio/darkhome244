@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 
 // 👇 Dynamically import the component with SSR off
-const MapComponent = dynamic(() => import('./RadarAndMaps'), {
+const MapComponent = dynamic(() => import('../../components/ClientComponents/RadarAndMaps/RadarAndMaps'), {
   ssr: false,
 })
 

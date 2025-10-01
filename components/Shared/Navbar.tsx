@@ -40,9 +40,9 @@ const Header = () => {
             href: "/radar-and-maps",
         },
         { label: "Severe Weather", href: "/severe-weather" },
-        { label: "Marine", href: "/find-us" },
-        { label: "Health & Activities", href: "/find-us" },
-        { label: "News & Media", href: "/find-us" },
+        { label: "Marine", href: "/marine" },
+        { label: "Health & Activities", href: "/health-and-activities" },
+        { label: "News & Media", href: "/news-and-media" },
     ];
 
     // Left side options
