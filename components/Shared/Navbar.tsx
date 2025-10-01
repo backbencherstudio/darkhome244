@@ -39,7 +39,7 @@ const Header = () => {
             label: "Radar & Maps",
             href: "/radar-and-maps",
         },
-        { label: "Severe Weather", href: "#" },
+        { label: "Severe Weather", href: "/severe-weather" },
         { label: "Marine", href: "/find-us" },
         { label: "Health & Activities", href: "/find-us" },
         { label: "News & Media", href: "/find-us" },
