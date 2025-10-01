@@ -1,85 +1,191 @@
 "use client";
 
-import React from "react";
-import { MapContainer, Marker, Popup, TileLayer, LayersControl } from "react-leaflet";
+import React, { useEffect, useState } from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  LayersControl,
+  useMap,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
 import L from "leaflet";
 
-// Import images
+import { countries } from 'countries-list';
+
+// Fix leaflet default icons
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
+import { useLocation } from "@/components/Provider/LocationProvider";
 
-// Fix leaflet's default icon issue
-delete L.Icon.Default.prototype._getIconUrl;
-
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
 });
 
-// IMPORTANT: Replace with your actual OpenWeatherMap API key
-const OPENWEATHERMAP_API_KEY = "YOUR_API_KEY_HERE";
+const OPENWEATHERMAP_API_KEY = "1bea5a6ac8cfd4fd1a94e7a50a6a7480";
+
+// Small helper component to fly map when center changes
+function FlyTo({ center, zoom = 8 }: { center: [number, number]; zoom?: number }) {
+  const map = useMap();
+  React.useEffect(() => {
+    if (center) {
+      map.flyTo(center, zoom, { animate: true, duration: 1.5 });
+    }
+  }, [center, zoom, map]);
+  return null;
+}
 
 const MapComponent = () => {
-  const brusselsCoords = [23.764071365360167, 90.42561118736442];
+
+  const {location,refreshLocation} = useLocation()
+  console.log(refreshLocation,"locationnnnnnnnnnnnnnnnnnn")
+
+  const defaultCenter: [number, number] = [location?.latitude, location?.longitude];
+
+  const [query, setQuery] = useState("");
+  const [markerPos, setMarkerPos] = useState<[number, number]>(defaultCenter);
+  const [placeLabel, setPlaceLabel] = useState("• Dhaka, Bangladesh");
+  const [temperature, setTemperature] = useState<number | null>(null);
+
+  
+
+
+  async function handleSearch(e?: React.FormEvent) {
+    e?.preventDefault();
+    const q = query.trim();
+    if (!q) return;
+    try {
+      const countryEntry = Object.entries(countries).find(
+        ([code, country]) => country.name.toLowerCase() === q.toLowerCase()
+      );
+
+      // If it's a country, search for its capital instead
+      const searchQuery = countryEntry
+        ? `${countryEntry[1].capital},${countryEntry[0]}`
+        : q;
+
+      const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
+        searchQuery
+      )}&limit=1&appid=${OPENWEATHERMAP_API_KEY}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      console.log(data, "dataaaaaaaaaaaaaaaaa")
+
+      if (!data?.length) {
+        alert("No results found. Try 'City, CountryCode' (e.g. Paris, FR)");
+        return;
+      }
+
+      const top = data[0];
+      const center: [number, number] = [top.lat, top.lon];
+
+      // Fetch weather data for temperature
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${top.lat}&lon=${top.lon}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
+      const weatherRes = await fetch(weatherUrl);
+      const weatherData = await weatherRes.json();
+
+      setMarkerPos(center);
+      setPlaceLabel([top.name, top.state, top.country].filter(Boolean).join(", "));
+      setTemperature(weatherData.main?.temp ? Math.round(weatherData.main.temp) : null);
+    } catch (err) {
+      console.error(err);
+      alert("Search error. Please try again.");
+    }
+  }
+
+
 
   return (
-    <div className="h-[400px] w-full rounded-2xl overflow-hidden border border-[#ffffff1a]">
-      <MapContainer
-        center={brusselsCoords}
-        zoom={15}
-        scrollWheelZoom={false}
-        style={{ height: "100%", width: "100%" }}
-        className="rounded-2xl"
+    <div className="relative h-[520px] w-full rounded-2xl overflow-hidden border border-[#ffffff1a]">
+      {/* Search Bar */}
+      <form
+        onSubmit={handleSearch}
+        className="absolute z-[1000] top-3 left-10 right-3 md:right-auto md:w-[360px] flex gap-2 bg-white/90 backdrop-blur px-3 py-2 rounded-xl shadow"
       >
+        <input
+          type="text"
+          placeholder="Search city or country (e.g., Nepal)"
+          className="flex-1 outline-none bg-transparent text-sm md:text-base"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button
+          type="submit"
+          className="px-3 py-1.5 rounded-lg bg-black text-white text-sm md:text-base"
+        >
+          Search
+        </button>
+      </form>
+
+      <MapContainer
+        center={defaultCenter}
+        zoom={8}
+        scrollWheelZoom
+        style={{ height: "100%", width: "100%" }}
+      >
+        {/* Automatically fly to searched location */}
+        <FlyTo center={markerPos} zoom={8} />
+
         <LayersControl position="topright">
-          {/* Base Map Layer */}
+          {/* Base Map */}
           <LayersControl.BaseLayer checked name="OpenStreetMap">
             <TileLayer
-              attribution='<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
           </LayersControl.BaseLayer>
 
-          {/* OpenWeatherMap Overlays with opacity set */}
-          <LayersControl.Overlay name="Clouds">
+          {/* Weather Layers */}
+          <LayersControl.Overlay name="🌡 Temperature">
             <TileLayer
-              attribution='© <a href="https://openweathermap.org/">OpenWeatherMap</a>'
-              url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
-              opacity={0.5} // Key change: Added opacity
-            />
-          </LayersControl.Overlay>
-
-          <LayersControl.Overlay name="Global Precipitation">
-            <TileLayer
-              attribution='© <a href="https://openweathermap.org/">OpenWeatherMap</a>'
-              url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
-              opacity={0.6} // Key change: Added opacity
-            />
-          </LayersControl.Overlay>
-
-          <LayersControl.Overlay name="Temperature">
-            <TileLayer
-              attribution='© <a href="https://openweathermap.org/">OpenWeatherMap</a>'
               url={`https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
-              opacity={0.7} // Key change: Added opacity
+              attribution="&copy; OpenWeatherMap"
             />
           </LayersControl.Overlay>
-          
+
+          <LayersControl.Overlay name="☁ Clouds">
+            <TileLayer
+              url={`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
+              attribution="&copy; OpenWeatherMap"
+            />
+          </LayersControl.Overlay>
+
+          <LayersControl.Overlay name="🌧 Precipitation">
+            <TileLayer
+              url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
+              attribution="&copy; OpenWeatherMap"
+            />
+          </LayersControl.Overlay>
+
+          <LayersControl.Overlay name="💨 Wind">
+            <TileLayer
+              url={`https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${OPENWEATHERMAP_API_KEY}`}
+              attribution="&copy; OpenWeatherMap"
+            />
+          </LayersControl.Overlay>
+      
         </LayersControl>
 
-        <Marker position={brusselsCoords}>
+        
+
+        {/* Marker */}
+        <Marker position={markerPos}>
           <Popup>
             <div className="text-center">
-              <h3 className="font-bold text-lg mb-2">MiningToken Office</h3>
-              <p className="text-sm">
-                Avenue des Arts 56
-                <br />
-                1000 Brussels, Belgium
-              </p>
+              <h3 className="font-bold text-base mb-1">{placeLabel}</h3>
+              {temperature !== null && (
+                <p className="text-sm font-semibold text-orange-600 mb-1">
+                  🌡️ {temperature}°C
+                </p>
+              )}
+              <p className="text-xs opacity-70">Search to update location</p>
             </div>
           </Popup>
         </Marker>
