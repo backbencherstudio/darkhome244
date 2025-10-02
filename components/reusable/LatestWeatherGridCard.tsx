@@ -23,7 +23,7 @@ interface NewsGridProps {
     //   adConfig?: AdConfig;
 }
 
-const GridCard = ({ newsItems }: NewsGridProps) => {
+const LatestWeatherGridCard = ({ newsItems }: NewsGridProps) => {
     const formatDate = (dateString: string) => {
         const s = dateString ?? "";
         const m = s.match(/^(?:[A-Za-z]{3},\s*)?(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\s+(\d{2}):(\d{2})/);
@@ -105,4 +105,4 @@ const GridCard = ({ newsItems }: NewsGridProps) => {
     );
 };
 
-export default GridCard;
+export default LatestWeatherGridCard;

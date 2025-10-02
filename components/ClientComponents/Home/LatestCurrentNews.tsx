@@ -6,8 +6,9 @@ import { useXMLParser } from '@/hooks/usexmlParser';
 import Link from 'next/link';
 import { useFilterPagination } from '@/hooks/useFilterHook';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
-import GridCard from '@/components/reusable/GridCard';
+
 import Loading from '@/app/loading';
+import LatestWeatherGridCard from '@/components/reusable/LatestWeatherGridCard';
 
 
 
@@ -41,7 +42,7 @@ const LatestCurrentNews = () => {
             </div>
 
             {/* News Grid */}
-            <GridCard newsItems={currentItems} />
+            <LatestWeatherGridCard newsItems={currentItems} />
             {/* pagination component  */}
             <div>
                 {!loading && (
