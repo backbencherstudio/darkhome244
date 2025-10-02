@@ -119,7 +119,7 @@ const MapComponent = () => {
     <div className="relative h-[80vh] w-full rounded-2xl overflow-hidden border border-[#ffffff1a]">
       <MapContainer
         center={defaultCenter}
-        zoom={8}
+        zoom={12}
         minZoom={3}
         scrollWheelZoom
         style={{ height: "100%", width: "100%" }}

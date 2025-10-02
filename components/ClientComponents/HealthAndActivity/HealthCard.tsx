@@ -39,10 +39,14 @@ export default function HealthCard({ newsItems }: NewsGridProps) {
                         <div className="flex flex-col flex-grow">
                             <div>
                                 <a target='_blank' href={news?.link} className="md:text-2xl text-xl font-bold transition-colors duration-300 group-hover:text-white hover:underline leading-[130%] underline-offset-[25%]">
-                                    {news?.title}
+                                    {news?.title?.length > 80
+                                        ? `${news.title.slice(0, 80)}…`
+                                        : news?.title}
                                 </a>
                                 <p className="md:text-base text-sm mb-6 mt-5 leading-[160%] tracking-[-0.0160px] transition-colors group-hover:text-[#E9E9EA] duration-300">
-                                    {news?.description}
+                                    {news?.description?.length > 200
+                                        ? `${news.description.slice(0, 200)}…`
+                                        : news?.description}
                                 </p>
                             </div>
 
