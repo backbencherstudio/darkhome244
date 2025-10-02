@@ -19,7 +19,7 @@ interface NewsGridProps {
 export default function HealthCard({ newsItems }: NewsGridProps) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2  gap-6'>
-            {newsItems?.map((news, index) => (
+            {newsItems?.map((news) => (
                 <div key={news?.id}>
                     {/* News Item */}
                     <div
