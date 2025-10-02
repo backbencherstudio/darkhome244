@@ -29,7 +29,7 @@ const LatestCurrentNews = () => {
 
     console.log(parsedNews, "parseddddddd ")
     if (loading) return <Loading />;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <div>Error: Failed To Fetch {error}</div>;
 
     return (
         <div className="" ref={idRef} >

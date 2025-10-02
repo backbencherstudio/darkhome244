@@ -1,7 +1,30 @@
+"use client"
+
 import React from 'react'
 import WeatherStoriesCard from './WeatherStoriesCard'
+import { useRSSFeed } from '@/hooks/useXmlApi';
+import { useXMLParser } from '@/hooks/usexmlParser';
+import { useFilterPagination } from '@/hooks/useFilterHook';
+import Loading from '@/app/loading';
+
+const RSS_FEEDS = {
+    latestNews: 'https://feeds.npr.org/1165/rss.xml',
+    weatherNews: 'https://www.fox4news.com/rss/category/weather',
+    extremeWeather: 'https://fox2now.com/news/weather/feed/'
+};
+
 
 export default function TopWeatherStories() {
+
+    const { data, loading, error } = useRSSFeed(RSS_FEEDS?.weatherNews)
+    const parsedNews = useXMLParser(data)
+    const { currentItems, currentPage, totalPages, setCurrentPage } =
+        useFilterPagination(parsedNews, 8);
+
+    console.log(parsedNews, "parseddddddd ")
+    if (loading) return <Loading />;
+    if (error) return <div>Error: Failed To Fetch {error}</div>;
+
     return (
         <div>
             {/* Header */}
@@ -14,7 +37,7 @@ export default function TopWeatherStories() {
             <div>
                 <div className='flex md:flex-row flex-col gap-6 '>
                     <div className="md:w-[66%] w-full ">
-                        <WeatherStoriesCard/>
+                        <WeatherStoriesCard newsItems={currentItems} />
                     </div>
                     <div className='md:w-[32.12%] w-full  border'>
                         Google adds will show here

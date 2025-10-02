@@ -93,11 +93,15 @@ export const useXMLParser = (xmlData: string | null) => {
         // Try to extract image from various sources
         let image = "";
 
-        // Method 1: Try various media namespace selectors
-      if (!image) {
-          const mediaElements = item.getElementsByTagName("media:content");
-          if (mediaElements.length > 0) {
-            image = mediaElements[0].getAttribute("url") || "";
+        const mediaContentElements = item.getElementsByTagName("media:content");
+        if (mediaContentElements.length > 0) {
+          image = mediaContentElements[0].getAttribute("url") || "";
+        }
+
+        if (!image) {
+          const enclosureElements = item.getElementsByTagName("enclosure");
+          if (enclosureElements.length > 0) {
+            image = enclosureElements[0].getAttribute("url") || "";
           }
         }
         // Clean up description by removing HTML tags and truncating
