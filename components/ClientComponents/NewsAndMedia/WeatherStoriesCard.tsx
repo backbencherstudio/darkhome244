@@ -1,3 +1,4 @@
+import CustomImage from '@/components/reusable/CustomImage';
 import Image from 'next/image'
 import React from 'react'
 
@@ -45,7 +46,8 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                 {newsItems?.map((news) => (
                     <div key={news?.id} className='flex gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
                         <div className='w-[310px] '>
-                            <img src={news?.image} alt='' width={100} height={100} className='w-full h-full object-cover'  />
+                            <Image src={news?.image ? news?.image : "/placeholder-img.png"} alt={news?.title} width={100} height={100} className='w-full h-full object-cover' unoptimized />
+                            {/* <CustomImage src={news?.image} alt='dfd' /> */}
                         </div>
                         <div className="flex flex-col flex-grow flex-1">
                             <a target='_blank' href={news?.link} className="lg:text-[32px] md:text-[28px] text-2xl font-bold transition-colors duration-300 group-hover:text-white hover:underline text-[#1D1F2C] leading-[120%] underline-offset-[25%]">
