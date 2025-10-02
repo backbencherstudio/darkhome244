@@ -31,7 +31,6 @@ const LatestCurrentNews = () => {
         useFilterPagination(parsedNews, currentPageItem);
 
     console.log(parsedNews, "parseddddddd ")
-    if (loading) return <Loading />;
     if (error) return <div>Error: Failed To Fetch {error}</div>;
 
     const viewHandlerButton = () => {
@@ -54,8 +53,15 @@ const LatestCurrentNews = () => {
                 </button>
             </div>
 
-            {/* News Grid */}
-            <LatestWeatherGridCard newsItems={currentItems} />
+            {error ? (
+                <div className="text-red-600 font-semibold">
+                    ❌ Error: Failed to fetch —
+                </div>
+            ) : loading ? (
+                <Loading />
+            ) : (
+                <LatestWeatherGridCard newsItems={currentItems} />
+            )}
             {/* pagination component  */}
             <div>
                 {!loading && (
