@@ -3,7 +3,7 @@ import "../style/style.css"
 
 export default function Loading({height = ""}) {
   return (
-    <div className={`${height ? height:"h-[60vh]"} flex justify-center items-center`}>
+    <div className={`${height ? height:"h-[60vh]"} flex justify-center items-center `}>
       <div id="wifi-loader">
         <svg className="circle-outer" viewBox="0 0 86 86">
           <circle className="back" cx="43" cy="43" r="40"></circle>

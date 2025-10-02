@@ -1,3 +1,4 @@
+import HealthAndActivity from '@/components/ClientComponents/HealthAndActivity/HealthAndActivity'
 import React from 'react'
 
 export default function HealthActivityPage() {
@@ -13,7 +14,15 @@ export default function HealthActivityPage() {
         <div className='text-white'>
           {/* <WeatherForecastTab /> */}
         </div>
-        
+      </div>
+      <div className='maxContainer'>
+        <div className='text center py-12  text-center'>
+          Google Adds Here
+        </div>
+
+        <div>
+          <HealthAndActivity/>
+        </div>
       </div>
     </div>
   )
