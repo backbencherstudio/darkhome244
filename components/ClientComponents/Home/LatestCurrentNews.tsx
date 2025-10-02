@@ -36,7 +36,7 @@ const LatestCurrentNews = () => {
 
     const viewHandlerButton = () => {
         if (viewAll) {
-            setCurrentPageItems(8);
+            setCurrentPageItems(6);
             setViewAll(false);
         } else {
             setCurrentPageItems(parsedNews?.length || 0);

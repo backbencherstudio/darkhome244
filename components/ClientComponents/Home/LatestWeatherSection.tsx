@@ -42,7 +42,7 @@ const LatesWeatherSection = () => {
 
     const viewHandlerButton = () => {
         if (viewAll) {
-            setCurrentPageItems(8);
+            setCurrentPageItems(itemPerPage);
             setViewAll(false);
         } else {
             setCurrentPageItems(parsedNews?.length || 0);
