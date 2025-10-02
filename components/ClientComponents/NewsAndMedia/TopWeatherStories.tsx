@@ -11,7 +11,7 @@ export default function TopWeatherStories() {
 
     return (
         <div>
-            <NewsAndMediaCard RSS_FEEDS = {RSS_FEEDS} />
+            <NewsAndMediaCard RSS_FEEDS = {RSS_FEEDS} headerTitle = "Top Weather Stories" />
         </div>
     )
 }

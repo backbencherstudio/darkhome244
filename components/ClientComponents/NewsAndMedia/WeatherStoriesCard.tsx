@@ -43,10 +43,14 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                         </div>
                         <div className="flex flex-col flex-grow flex-1">
                             <a target='_blank' href={news?.link} className="lg:text-[32px] md:text-[28px] text-2xl font-bold transition-colors duration-300 group-hover:text-white hover:underline text-[#1D1F2C] leading-[120%] underline-offset-[25%]">
-                                {news?.title}
+                                {news?.title?.length > 80
+                                    ? `${news.title.slice(0, 80)}…`
+                                    : news?.title}
                             </a>
                             <p className="md:text-base text-sm mb-3 mt-3 leading-[160%] tracking-[-0.0160px] text-[#4A4C56] transition-colors group-hover:text-[#E9E9EA] duration-300">
-                                {news?.description}
+                                {news?.description?.length > 200
+                                    ? `${news.description.slice(0, 200)}…`
+                                    : news?.description}
                             </p>
                             <p className="md:text-sm text-xs text-[#777980] leading-[100%] tracking-[-.014px] transition-colors duration-300 group-hover:text-[#E9E9EA]">
                                 {formatPublishDate(news?.pubDate)}

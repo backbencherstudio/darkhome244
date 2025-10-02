@@ -11,7 +11,7 @@ const RSS_FEEDS = {
 export default function SpaceAndAstronomy() {
   return (
     <div>
-      <NewsAndMediaCard RSS_FEEDS={RSS_FEEDS} />
+      <NewsAndMediaCard RSS_FEEDS={RSS_FEEDS} headerTitle = "Space And Astronomy" />
     </div>
   )
 }

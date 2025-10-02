@@ -11,7 +11,7 @@ import PaginationComponent from '@/components/reusable/PaginationComponent';
 
 
 
-export default function NewsAndMediaCard({ RSS_FEEDS }) {
+export default function NewsAndMediaCard({ RSS_FEEDS,headerTitle }) {
 
 
     const idRef = React.useRef<HTMLDivElement>(null);
@@ -24,7 +24,6 @@ export default function NewsAndMediaCard({ RSS_FEEDS }) {
         useFilterPagination(parsedNews, currentPageItem);
 
     console.log(parsedNews, "parseddddddd ")
-    if (loading) return <Loading />;
     if (error) return <div>Error: Failed To Fetch {error}</div>;
 
     const viewHandlerButton = () => {
@@ -41,7 +40,7 @@ export default function NewsAndMediaCard({ RSS_FEEDS }) {
         <div ref={idRef}>
             {/* Header */}
             <div className="flex justify-between items-center mb-6 mt-8">
-                <h1 className="lg:text-[32px] md:text-[28px]  text:2xl leading-[130%] font-bold text-[#4A4C56] py-[3px]">Top Weather Stories</h1>
+                <h1 className="lg:text-[32px] md:text-[28px]  text:2xl leading-[130%] font-bold text-[#4A4C56] py-[3px]">{headerTitle}</h1>
                 <button onClick={viewHandlerButton} className="leading-[130%] text-[#4A4C56] md:text-base text-sm font-normal md:py-[13.5px] py-[8px] md:px-[20px] px-4 bg-[] rounded-[4px] bg-white cursor-pointer shadow-[0 0 20px 0 rgba(19, 142, 255, 0.10)] hover:bg-[#0080C4] hover:text-white duration-200">
                     {viewAll ? "See Less" : "View All"}
                 </button>
@@ -49,7 +48,9 @@ export default function NewsAndMediaCard({ RSS_FEEDS }) {
             <div>
                 <div className='flex md:flex-row flex-col gap-6 '>
                     <div className="md:w-[66%] w-full ">
-                        <WeatherStoriesCard newsItems={currentItems} />
+                        {loading ? <Loading height='h-[40vh]' /> :
+                            <WeatherStoriesCard newsItems={currentItems} />
+                        }
 
                         {/* pagination component  */}
                         <div>
