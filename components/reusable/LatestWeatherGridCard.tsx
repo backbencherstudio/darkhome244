@@ -1,5 +1,6 @@
 "use client"
 
+import formatPublishDate from '@/helper/formatedPublishDate';
 // components/reusable/NewsGridComponent.tsx
 import Link from 'next/link';
 
@@ -24,15 +25,6 @@ interface NewsGridProps {
 }
 
 const LatestWeatherGridCard = ({ newsItems }: NewsGridProps) => {
-    const formatDate = (dateString: string) => {
-        const s = dateString ?? "";
-        const m = s.match(/^(?:[A-Za-z]{3},\s*)?(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\s+(\d{2}):(\d{2})/);
-        if (!m) return s;
-        const [, datePart, HH, MM] = m;
-        const h = (parseInt(HH, 10) % 12) || 12;
-        const ampm = parseInt(HH, 10) >= 12 ? "pm" : "am";
-        return `${datePart} at ${h}:${MM} ${ampm}`;
-    };
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -86,7 +78,7 @@ const LatestWeatherGridCard = ({ newsItems }: NewsGridProps) => {
                                                     {news?.author}
                                                 </p>
                                                 <p className="md:text-sm text-xs text-[#777980] leading-[100%] tracking-[-.014px] transition-colors duration-300">
-                                                    {formatDate(news?.pubDate)}
+                                                    {formatPublishDate(news?.pubDate)}
                                                 </p>
                                             </div>
                                         </div>

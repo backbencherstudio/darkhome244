@@ -1,4 +1,5 @@
 import CustomImage from '@/components/reusable/CustomImage';
+import formatPublishDate from '@/helper/formatedPublishDate';
 import Image from 'next/image'
 import React from 'react'
 
@@ -20,15 +21,6 @@ interface NewsGridProps {
 
 export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
 
-    const formatDate = (dateString: string) => {
-        const s = dateString ?? "";
-        const m = s.match(/^(?:[A-Za-z]{3},\s*)?(\d{1,2}\s+[A-Za-z]{3}\s+\d{4})\s+(\d{2}):(\d{2})/);
-        if (!m) return s;
-        const [, datePart, HH, MM] = m;
-        const h = (parseInt(HH, 10) % 12) || 12;
-        const ampm = parseInt(HH, 10) >= 12 ? "pm" : "am";
-        return `${datePart} at ${h}:${MM} ${ampm}`;
-    };
 
     return (
         <div className=''>
@@ -45,7 +37,7 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
             ) : (<div className='flex flex-col gap-6'>
                 {newsItems?.map((news) => (
                     <div key={news?.id} className='flex gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
-                        <div className='w-[310px] '>
+                        <div className='w-[310px] max-h-[250px]'>
                             <Image src={news?.image ? news?.image : "/placeholder-img.png"} alt={news?.title} width={100} height={100} className='w-full h-full object-cover' unoptimized />
                             {/* <CustomImage src={news?.image} alt='dfd' /> */}
                         </div>
@@ -57,7 +49,7 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                                 {news?.description}
                             </p>
                             <p className="md:text-sm text-xs text-[#777980] leading-[100%] tracking-[-.014px] transition-colors duration-300 group-hover:text-[#E9E9EA]">
-                                {formatDate(news?.pubDate)}
+                                {formatPublishDate(news?.pubDate)}
                             </p>
                         </div>
                     </div>

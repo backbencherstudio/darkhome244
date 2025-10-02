@@ -104,6 +104,22 @@ export const useXMLParser = (xmlData: string | null) => {
             image = enclosureElements[0].getAttribute("url") || "";
           }
         }
+
+        if (!image) {
+          const contentEncodedElements = item.getElementsByTagName("content:encoded");
+          if (contentEncodedElements.length > 0) {
+            const cdataString = contentEncodedElements[0].textContent || "";
+            image = extractOriginalImageUrlFromContentEncoded(cdataString);
+          }
+        }
+
+        if (!image) {
+          const descriptionElements = item.getElementsByTagName("description");
+          if (descriptionElements.length > 0) {
+            const descriptionCDATA = descriptionElements[0].textContent || "";
+            image = extractImageFromDescription(descriptionCDATA);
+          }
+        }
         // Clean up description by removing HTML tags and truncating
         const cleanDescription = description
           .replace(/<[^>]*>/g, "")
@@ -126,7 +142,7 @@ export const useXMLParser = (xmlData: string | null) => {
       })
 
       console.log("[XML Parser] Successfully parsed items:", parsedItems.length)
-      // return parsedItems.slice(0, 20) // Limit to 20 items
+      return parsedItems.slice(0, 25) // Limit to 20 items
       return parsedItems // all data parsed
 
     } catch (error) {
@@ -137,4 +153,42 @@ export const useXMLParser = (xmlData: string | null) => {
   }, [xmlData])
 
   return parsedData
+}
+
+
+
+function extractOriginalImageUrlFromContentEncoded(contentEncodedString) {
+  // 1. Parse out the first img src using regex
+  const imgSrcMatch = contentEncodedString.match(/<img[^>]+src=['"]([^'"]+)['"]/);
+  if (!imgSrcMatch) return "";
+
+  const cdnUrl = imgSrcMatch[1];
+
+  // 2. Parse the query string to get the 'url' param (which is the encoded original URL)
+  try {
+    const urlObj = new URL(cdnUrl);
+    const originalUrlEncoded = urlObj.searchParams.get("url");
+
+    if (originalUrlEncoded) {
+      // Decode the original URL
+      const originalUrl = decodeURIComponent(originalUrlEncoded);
+      return originalUrl;
+    }
+
+    // If no 'url' param found, return the CDN url itself
+    return cdnUrl;
+  } catch {
+    // If URL parsing fails, return the CDN url
+    return cdnUrl;
+  }
+}
+
+
+function extractImageFromDescription(descriptionString) {
+  // Use regex to find first img src in the description HTML string
+  const imgMatch = descriptionString.match(/<img[^>]+src=['"]([^'"]+)['"]/);
+  if (imgMatch && imgMatch[1]) {
+    return imgMatch[1];
+  }
+  return "";
 }
