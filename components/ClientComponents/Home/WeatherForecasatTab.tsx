@@ -8,7 +8,7 @@ import WeeklyForecast from '../ForecastTab/WeeklyForecast';
 import MonthlyForecast from '../ForecastTab/MonthlyForecast';
 import { usePathname } from 'next/navigation';
 
-export default function WeatherForecast() {
+export default function WeatherForecastTab() {
 
     const types = ["Hourly", "Daily", "Weekly", "Monthly"]
     const [selectedType, setSelectedType] = useState(types[0]);

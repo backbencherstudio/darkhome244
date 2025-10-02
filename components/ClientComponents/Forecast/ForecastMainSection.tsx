@@ -1,9 +1,10 @@
 "use client"
 import React from 'react'
-import WeatherForecasat from '../Home/WeatherForecasat'
+
 import ForecastCurrentCard from './ForecastCurrentCard'
 import UpcomingWeather from './UpcomingWeather'
 import LatesWeatherSection from '../Home/LatestWeatherSection'
+import WeatherForecastTab from '../Home/WeatherForecasatTab'
 
 
 
@@ -22,7 +23,7 @@ export default function ForecastMainSection() {
                     backgroundRepeat: "no-repeat"
                 }}>
                 <div className='text-white'>
-                    <WeatherForecasat />
+                    <WeatherForecastTab />
                 </div>
             </div>
             {/* cards  */}

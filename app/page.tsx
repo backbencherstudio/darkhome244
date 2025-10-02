@@ -1,7 +1,7 @@
 import BannerSection from "@/components/ClientComponents/Home/BannerSection";
 import LatestCurrentNews from "@/components/ClientComponents/Home/LatestCurrentNews";
 import LatesWeatherSection from "@/components/ClientComponents/Home/LatestWeatherSection";
-import WeatherForecast from "@/components/ClientComponents/Home/WeatherForecasat";
+import WeatherForecast from "@/components/ClientComponents/Home/WeatherForecasatTab";
 
 
 export default function Home() {
