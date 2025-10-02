@@ -46,8 +46,8 @@ export default function NewsAndMediaCard({ RSS_FEEDS,headerTitle }) {
                 </button>
             </div>
             <div>
-                <div className='flex md:flex-row flex-col gap-6 '>
-                    <div className="md:w-[66%] w-full ">
+                <div className='flex lg:flex-row flex-col gap-6 '>
+                    <div className="lg:w-[66%] w-full ">
                         {loading ? <Loading height='h-[40vh]' /> :
                             <WeatherStoriesCard newsItems={currentItems} />
                         }
@@ -69,7 +69,7 @@ export default function NewsAndMediaCard({ RSS_FEEDS,headerTitle }) {
                             )}
                         </div>
                     </div>
-                    <div className='md:w-[32.12%] w-full  border'>
+                    <div className='lg:w-[32.12%] w-full  border'>
                         Google adds will show here
                     </div>
                 </div>

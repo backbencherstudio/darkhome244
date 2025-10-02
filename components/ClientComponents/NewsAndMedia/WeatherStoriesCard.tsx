@@ -36,8 +36,8 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                 </div>
             ) : (<div className='flex flex-col gap-6'>
                 {newsItems?.map((news) => (
-                    <div key={news?.id} className='flex gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
-                        <div className='w-[310px] max-h-[250px]'>
+                    <div key={news?.id} className='flex md:flex-row flex-col gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
+                        <div className='md:w-[310px] md:max-h-[250px]'>
                             <Image src={news?.image ? news?.image : "/placeholder-img.png"} alt={news?.title} width={100} height={100} className='w-full h-full object-cover' unoptimized />
                             {/* <CustomImage src={news?.image} alt='dfd' /> */}
                         </div>
