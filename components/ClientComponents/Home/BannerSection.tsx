@@ -1,10 +1,16 @@
 "use client"
+import Loading from '@/app/loading';
 import CloudIcon from '@/components/Icons/CloudIcon';
 import PrecipitationIcon from '@/components/Icons/Precipitation';
 import UvIndexIcon from '@/components/Icons/UvIndex';
 import WindSpeedIcon from '@/components/Icons/WindSpeedIcon';
+import { useLocation } from '@/components/Provider/LocationProvider';
+import getFormattedDate from '@/helper/formatedDate';
+import formatPublishDate from '@/helper/formatedPublishDate';
+import { useWeatherData } from '@/hooks/useWeatherData';
+import { countries } from 'countries-list';
 import { CloudRain, MapPin, Search, Sun, Wind } from 'lucide-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 
@@ -27,10 +33,106 @@ export default function BannerSection() {
 }
 
 
-
 function WeatherDashboard() {
+
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const { location, refreshLocation } = useLocation()
+  const { data, error, loading } = useWeatherData(location?.latitude, location?.longitude)
+  console.log(data, "Dataaaaa")
+
+  const [query, setQuery] = useState("");
+  const [hanldeSearchInput, setHandleSearchInput] = useState(false)
+  const [country, setCountry] = useState(null)
+  const [city, setCityName] = useState(null)
+  const [weather, setWeather] = useState(null)
+
+  console.log(weather, "dhddddddddddddddddddd")
+
+  const OPENWEATHERMAP_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY as string;
+
+  useEffect(() => {
+    const dataFetch = async () => {
+
+      try {
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${location?.latitude}&lon=${location?.longitude}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
+        const weatherRes = await fetch(weatherUrl);
+        const weatherData = await weatherRes.json();
+        setWeather(weatherData)
+
+        const countryCode = weatherData?.sys?.country
+        const countryName = countries[countryCode]?.name;
+        setCountry(countryName)
+
+
+
+        const locationUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${location?.latitude}&lon=${location?.longitude}&limit=1&appid=${OPENWEATHERMAP_API_KEY}`;
+        const locationRes = await fetch(locationUrl);
+        const locations = await locationRes.json();
+        console.log(locations, "loca=====")
+        setCityName(locations[0]?.name || locations[0]?.state)
+
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    dataFetch()
+  }, [loading])
+
+  async function handleSearch(e?: React.FormEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    const q = query.trim();
+    setHandleSearchInput(!hanldeSearchInput)
+    if (!q) return;
+    try {
+      const countryEntry = Object.entries(countries).find(
+        ([code, country]) => country.name.toLowerCase() === q.toLowerCase()
+      );
+
+      // If it's a country, search for its capital instead
+      const searchQuery = countryEntry
+        ? `${countryEntry[1].capital},${countryEntry[0]}`
+        : q;
+
+      const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
+        searchQuery
+      )}&limit=1&appid=${OPENWEATHERMAP_API_KEY}`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const countryCode = data[0]?.country;
+      const countryName = countries[countryCode]?.name;
+      console.log(data, "Dataaaaaaa")
+      setCountry(countryName)
+      setCityName(data?.name || data?.state)
+
+      if (!data?.length) {
+        alert("No results found. Try 'City, CountryCode' (e.g. Paris, FR)");
+        return;
+      }
+
+      const top = data[0];
+      const center: [number, number] = [top.lat, top.lon];
+
+      // Fetch weather data for temperature
+      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${top.lat}&lon=${top.lon}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
+      const weatherRes = await fetch(weatherUrl);
+      const weatherData = await weatherRes.json();
+
+      console.log(weatherData, "weathererrrrrrrr")
+
+    } catch (err) {
+      console.error(err);
+      alert("Search error. Please try again.");
+    }
+  }
+
+  const handleCurrentLocation = () => {
+    refreshLocation()
+  }
 
   const weatherData = {
     location: 'Sydney NSW',
@@ -40,19 +142,19 @@ function WeatherDashboard() {
     condition: 'Sunny Cloudy',
     windSpeed: '22 km/h',
     precipitation: '75%',
-    uvIndex: '2 out of 10'
+    uvIndex: ` ${data?.daily?.uv_index_max[0]} of 15`
   };
 
   const weatherStats = [
     {
       icon: <WindSpeedIcon />,
       title: "Wind Speed",
-      value: weatherData.windSpeed,
+      value: `${weather?.wind?.speed} Km/h`,
     },
     {
       icon: <PrecipitationIcon />,
       title: "Precipitation",
-      value: weatherData.precipitation,
+      value: `${data?.hourly?.precipitation_probability[0]}%`,
     },
     {
       icon: <UvIndexIcon />,
@@ -108,49 +210,54 @@ function WeatherDashboard() {
         {/* Weather Card */}
         <div className="bg-[#0000004D] backdrop-blur-[50px] rounded-[4px] p-6 md:p-8 text-white   ">
           {/* Header */}
-          <div className="flex justify-between items-start pb-3 border-b border-[#FFFFFF26]">
+          {loading ? <Loading height='60px' /> : (
             <div>
-              <h3 className="text-base md:text-lg leading-[160%] font-semibold mb-2">Today's Weather</h3>
-              <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{weatherData.date}</p>
-            </div>
-            <div className="text-right">
-              <h2 className="text-base md:text-lg leading-[160%] font-semibold mb-2">{weatherData.location}</h2>
-              <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{weatherData.country}</p>
-            </div>
-          </div>
-
-          {/* Main Weather Display */}
-          <div className="flex md:flex-row flex-col md:mt-8 mt-6">
-            {/* Temperature and Condition */}
-            <div className="md:w-[43%] w-full flex justify-center md:justify-start items-center mb-6 md:mb-0  ">
-              <div className=' flex gap-4 items-center '>
-                <div className="block ">
-                  {/* Weather Icon - Sunny Cloudy */}
-                  <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />
+              <div className="flex justify-between items-start pb-3 border-b border-[#FFFFFF26]">
+                <div>
+                  <h3 className="text-base md:text-lg leading-[160%] font-semibold mb-2">Today's Weather</h3>
+                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{getFormattedDate(data?.current?.time)}</p>
                 </div>
-                <div className='flex flex-col'>
-                  <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{weatherData.temperature}</div>
-                  <div className="text-gray-300 text-sm md:text-base">{weatherData.condition}</div>
+                <div className="text-right">
+                  <h2 className="text-base md:text-lg leading-[160%] font-semibold mb-2">{city}</h2>
+                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{country}</p>
+                </div>
+              </div>
+
+              {/* Main Weather Display */}
+              <div className="flex md:flex-row flex-col md:mt-8 mt-6">
+                {/* Temperature and Condition */}
+                <div className="md:w-[43%] w-full flex justify-center md:justify-start items-center mb-6 md:mb-0  ">
+                  <div className=' flex gap-4 items-center '>
+                    <div className="block ">
+                      {/* Weather Icon - Sunny Cloudy */}
+                      {weather?.weather[0]?.main === "Rain" ? <img src="/rain.png" alt="" className=' object-cover w-[72px] h-full ' /> : <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />}
+
+                    </div>
+                    <div className='flex flex-col'>
+                      <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather?.main?.temp)}°</div>
+                      <div className="text-gray-300 text-sm md:text-base">{weather?.weather[0]?.description}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Weather Stats */}
+                <div className="md:w-[53%] w-full flex gap-3 justify-between">
+                  {/* Wind Speed */}
+                  {weatherStats.map((stat, index) => (
+                    <div className="border-l border-[#FFFFFF26] md:pl-4 pl-4" key={index}>
+
+                      <div className="flex mb-4">
+                        <span>{stat?.icon}</span>
+                      </div>
+                      <div className="text-xs md:text-sm text-white mb-2 font-semibold">{stat?.title}</div>
+                      <div className="text-sm leading-[100%] text-[#E9E9EA] ">{stat?.value}</div>
+                    </div>
+                  ))}
+
                 </div>
               </div>
             </div>
-
-            {/* Weather Stats */}
-            <div className="md:w-[53%] w-full flex gap-3 justify-between">
-              {/* Wind Speed */}
-              {weatherStats.map((stat, index) => (
-                <div className="border-l border-[#FFFFFF26] md:pl-4 pl-4" key={index}>
-                  
-                  <div className="flex mb-4">
-                    <span>{stat?.icon}</span>
-                  </div>
-                  <div className="text-xs md:text-sm text-white mb-2 font-semibold">{stat?.title}</div>
-                  <div className="text-sm leading-[100%] text-[#E9E9EA] ">{stat?.value}</div>
-                </div>
-              ))}
-
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ function FlyTo({ center, zoom = 8 }: { center: [number, number]; zoom?: number }
 const MapComponent = () => {
 
   const { location, refreshLocation } = useLocation()
-  console.log(refreshLocation, "locationnnnnnnnnnnnnnnnnnn")
+  // console.log(refreshLocation, "locationnnnnnnnnnnnnnnnnnn")
 
   const defaultCenter: [number, number] = [location?.latitude, location?.longitude];
 
@@ -71,11 +71,12 @@ const MapComponent = () => {
       const countryEntry = Object.entries(countries).find(
         ([code, country]) => country.name.toLowerCase() === q.toLowerCase()
       );
-
       // If it's a country, search for its capital instead
       const searchQuery = countryEntry
-        ? `${countryEntry[1].capital},${countryEntry[0]}`
-        : q;
+      ? `${countryEntry[1].capital},${countryEntry[0]}`
+      : q;
+      
+   
 
       const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
         searchQuery
@@ -84,6 +85,8 @@ const MapComponent = () => {
       const res = await fetch(url);
       const data = await res.json();
 
+
+      
 
 
       if (!data?.length) {
@@ -98,6 +101,8 @@ const MapComponent = () => {
       const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${top.lat}&lon=${top.lon}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
       const weatherRes = await fetch(weatherUrl);
       const weatherData = await weatherRes.json();
+
+      console.log(weatherData,"weathererrrrrrrr")   
 
       setMarkerPos(center);
       setPlaceLabel([top.name, top.state, top.country].filter(Boolean).join(", "));
