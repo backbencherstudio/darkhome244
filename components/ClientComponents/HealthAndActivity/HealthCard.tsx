@@ -1,4 +1,5 @@
 import formatPublishDate from '@/helper/formatedPublishDate';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 interface NewsItem {
     id?: string;
@@ -17,10 +18,13 @@ interface NewsGridProps {
 
 
 export default function HealthCard({ newsItems }: NewsGridProps) {
+
+    const router = useRouter();
+
     return (
         <div className='grid grid-cols-1 md:grid-cols-2  gap-6'>
             {newsItems?.map((news) => (
-                <div key={news?.id}>
+                <div  onClick={() => router.push(`/news-and-media/${news?.id}`) }  key={news?.id}>
                     {/* News Item */}
                     <div
 

@@ -13,6 +13,7 @@ export const RSS_LATEST_CURRENT_NEWS_FEEDS = {
 };
 
 
+// ==========news and feeds ===============
 
 export const RSS_TOP_WEATHER_FEEDS = {
     latestNews: 'https://feeds.npr.org/1165/rss.xml',
@@ -31,6 +32,8 @@ export const RSS_SPACE_ASTRONY_FEEDS = {
   weatherNews: 'https://gunsamerica.com/digest/feed/',
   extremeWeather: 'https://feeds.npr.org/1165/rss.xml'
 };
+
+// =================health and activity==============
 
 export const RSS_HEALTH_FEEDS = {
   latestNews: 'https://artofhealthyliving.com/category/wellbeing/feed/',

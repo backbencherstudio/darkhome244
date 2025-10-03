@@ -7,9 +7,10 @@ import { useRSSFeed } from '@/hooks/useXmlApi';
 import { useXMLParser } from '@/hooks/usexmlParser';
 // components/reusable/NewsGridComponent.tsx
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HealthCard from './HealthCard';
 import PaginationComponent from '@/components/reusable/PaginationComponent';
+import { useRSSStore } from '@/store/rssStore';
 
 
 
@@ -18,13 +19,32 @@ const HealthAndActivityCard = ({ RSS_FEEDS, headerTitle }) => {
     const idRef = React.useRef<HTMLDivElement>(null);
     const { data, loading, error } = useRSSFeed(RSS_FEEDS?.weatherNews || RSS_FEEDS?.latestNews || RSS_FEEDS?.extremeWeather)
     const parsedNews = useXMLParser(data)
-
     const [viewAll, setViewAll] = useState(false)
     const [currentPageItem, setCurrentPageItems] = useState(4)
     const { currentItems, currentPage, totalPages, setCurrentPage } =
         useFilterPagination(parsedNews, currentPageItem);
 
-    console.log(parsedNews, "parseddddddd ")
+
+    // Save only if this category doesn't exist yet
+    const { categoryData, addOrUpdateCategoryData, clearData } = useRSSStore()
+    const category = "Health And Activity"
+
+    // Clear old data on first mount (remove this after clearing once)
+    useEffect(() => {
+        clearData()
+    }, [])
+
+    // Save only once
+    useEffect(() => {
+        if (parsedNews?.length > 0 && !loading) {
+            const exists = categoryData.some(cat => cat.category === category)
+            if (!exists) {
+                addOrUpdateCategoryData(category, parsedNews)
+            }
+        }
+    }, [parsedNews, loading])
+
+
     if (error) return <div>Error: Failed To Fetch {error}</div>;
 
     const viewHandlerButton = () => {
