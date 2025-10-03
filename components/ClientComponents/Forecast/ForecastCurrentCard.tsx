@@ -7,6 +7,7 @@ import RainUmbrellaIcon from '@/components/Icons/RainUmbrellaIcon'
 import WindSpeedIcon from '@/components/Icons/WindSpeedIcon'
 import TempretureIcon from '@/components/Icons/TempretureIcon'
 import RadialChart from './RadialChart'
+import "@/style/style.css"
 
 export default function ForecastCurrentCard() {
 
@@ -35,19 +36,22 @@ export default function ForecastCurrentCard() {
 
 
     const cardData = [
-        { title: "UV Index", type: "uv", value: `${data?.daily?.uv_index_max[0]}`, rawValue: data?.daily?.uv_index_max[0], icon: <UvIndexIcon className='text-[#0080C4]' /> },
+        { title: "UV Index", type: "uv", value: ` ${data?.daily?.uv_index_max[0]}`, rawValue: data?.daily?.uv_index_max[0], icon: <UvIndexIcon className='text-[#0080C4]' /> },
         { title: "Rain", type: "rain", value: `${data?.hourly?.precipitation_probability[0]}%`, rawValue: data?.hourly?.precipitation_probability[0] ?? 0, icon: <RainUmbrellaIcon className='' /> },
         { title: "Wind Speed", type: "wind", value: `${data?.current?.wind_speed_10m} km/h`, rawValue: data?.current?.wind_speed_10m, icon: <WindSpeedIcon className='text-[#0080C4]' /> },
         { title: "Temperature", type: "temperature", value: `${data?.current?.temperature_2m}°C`, rawValue: data?.current?.temperature_2m, icon: <TempretureIcon className='fill-[#0080C4]' /> },
     ]
-    console.log(data?.hourly?.precipitation_probability[0], "temsfdffffff     ")
+
 
     return (
         <div className='maxContainer py-[40px]'>
             <div className='grid lg:grid-cols-4 md:grid-cols-2  xl:gap-8 lg:gap-6 gap-4'>
                 {cardData?.map((item) => (
                     <div key={item?.title} className='bg-white pb-4 flex items-center flex-col justify-center'>
-                        <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
+                        {loading ?
+                            <Loading2 /> : (
+                            <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
+                        )}
                         {/* <span>{item?.value}</span> */}
                         <div className='flex items-center gap-2 mt-2'>
                             <span>{item?.icon}</span>
@@ -56,6 +60,19 @@ export default function ForecastCurrentCard() {
                     </div>
                 ))}
             </div>
+        </div>
+    )
+}
+
+
+const Loading2 = () => {
+    return (
+        <div className="loading">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     )
 }
