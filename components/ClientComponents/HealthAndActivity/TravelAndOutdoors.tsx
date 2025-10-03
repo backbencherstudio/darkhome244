@@ -1,16 +1,12 @@
 import React from 'react'
 import HealthAndActivityCard from './HealthAndActivityCard';
-const RSS_FEEDS = {
-  latestNews: 'https://www.outdoorlife.com/feed/',
-  weatherNews: 'https://www.outdoorlife.com/feed/',
-  extremeWeather: 'https://www.outdoorhub.com/feed/'
-};
+import { RSS_TRAVEL_OUTDOOR_FEEDS } from '@/lib/RssFeeds';
 
 
 export default function TravelAndOutdoors() {
   return (
     <div>
-      <HealthAndActivityCard RSS_FEEDS={RSS_FEEDS} headerTitle="Latest Travel & Outdoors News" />
+      <HealthAndActivityCard RSS_FEEDS={RSS_TRAVEL_OUTDOOR_FEEDS} headerTitle="Latest Travel & Outdoors News" />
     </div>
   )
 }

@@ -1,16 +1,12 @@
 import React from 'react'
 import HealthAndActivityCard from './HealthAndActivityCard';
-const RSS_FEEDS = {
-  latestNews: 'https://www.nursingtimes.net/cancer/feed/',
-  weatherNews: 'https://healthykidshappykids.com/feed/',
-  extremeWeather: 'https://feeds.npr.org/1165/rss.xml'
-};
+import { RSS_COLD_FLU_FEEDS } from '@/lib/RssFeeds';
 
 
 export default function ColdAndFluTracker() {
   return (
     <div>
-       <HealthAndActivityCard RSS_FEEDS={RSS_FEEDS} headerTitle="Latest Cold & Flu Tracker News" />
+       <HealthAndActivityCard RSS_FEEDS={RSS_COLD_FLU_FEEDS} headerTitle="Latest Cold & Flu Tracker News" />
     </div>
   )
 }
