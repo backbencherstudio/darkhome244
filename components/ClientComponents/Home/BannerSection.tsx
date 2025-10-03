@@ -195,7 +195,7 @@ function WeatherDashboard() {
               </button>
             </div>
 
-            {showLocationDropdown && (
+            {/* {showLocationDropdown && (
               <div className="absolute md:text-base text-sm  top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                 <div className="p-2">
                   <div className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Current Location</div>
@@ -203,7 +203,7 @@ function WeatherDashboard() {
                   <div className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Melbourne, VIC</div>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         </div>
 
@@ -230,7 +230,7 @@ function WeatherDashboard() {
                   <div className=' flex gap-4 items-center '>
                     <div className="block ">
                       {/* Weather Icon - Sunny Cloudy */}
-                      {weather?.weather[0]?.main === "Rain" ? <img src="/rain.png" alt="" className=' object-cover w-[72px] h-full ' /> : <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />}
+                      <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />
 
                     </div>
                     <div className='flex flex-col'>
