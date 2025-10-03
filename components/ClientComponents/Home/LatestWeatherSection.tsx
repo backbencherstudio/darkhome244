@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bookmark } from 'lucide-react';
 import { useRSSFeed } from '@/hooks/useXmlApi';
 import { useXMLParser } from '@/hooks/usexmlParser';
@@ -11,6 +11,7 @@ import Loading from '@/app/loading';
 import { usePathname } from 'next/navigation';
 import LatestWeatherGridCard from '@/components/reusable/LatestWeatherGridCard';
 import { RSS_LATEST_WEATHER_FEEDS } from '@/lib/RssFeeds';
+import { useRSSStore } from '@/store/rssStore';
 
 
 
@@ -28,9 +29,23 @@ const LatesWeatherSection = () => {
     const { currentItems, currentPage, totalPages, setCurrentPage } =
         useFilterPagination(parsedNews, currentPageItem);
 
+    const { categoryData, addOrUpdateCategoryData, clearData } = useRSSStore()
+    const category = "Latest Weather News"
 
+    // Clear old data on first mount (remove this after clearing once)
+    useEffect(() => {
+        clearData()
+    }, [])
 
-
+    // Save only once
+    useEffect(() => {
+        if (parsedNews?.length > 0 && !loading) {
+            const exists = categoryData.some(cat => cat.category === category)
+            if (!exists) {
+                addOrUpdateCategoryData(category, parsedNews)
+            }
+        }
+    }, [parsedNews, loading])
 
     console.log(parsedNews, "parseddddddd ")
     if (error) return <div>Error: {error}</div>;
