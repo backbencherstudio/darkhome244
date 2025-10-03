@@ -1,17 +1,14 @@
 import React from 'react'
 import NewsAndMediaCard from './NewsAndMediaCard'
+import { RSS_TOP_WEATHER_FEEDS } from '@/lib/RssFeeds'
 
-const RSS_FEEDS = {
-    latestNews: 'https://feeds.npr.org/1165/rss.xml',
-    weatherNews: 'https://www.fox4news.com/rss/category/weather',
-    extremeWeather: 'https://feeds.npr.org/1165/rss.xml'
-};
+
 
 export default function TopWeatherStories() {
 
     return (
         <div>
-            <NewsAndMediaCard RSS_FEEDS = {RSS_FEEDS} headerTitle = "Top Weather Stories" />
+            <NewsAndMediaCard RSS_FEEDS = {RSS_TOP_WEATHER_FEEDS} headerTitle = "Top Weather Stories" />
         </div>
     )
 }

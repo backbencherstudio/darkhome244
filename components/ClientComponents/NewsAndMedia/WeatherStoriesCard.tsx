@@ -1,6 +1,9 @@
+"use client"
+
 import CustomImage from '@/components/reusable/CustomImage';
 import formatPublishDate from '@/helper/formatedPublishDate';
 import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 import React from 'react'
 
 interface NewsItem {
@@ -21,6 +24,7 @@ interface NewsGridProps {
 
 export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
 
+    const router = useRouter();
 
     return (
         <div className=''>
@@ -36,7 +40,7 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                 </div>
             ) : (<div className='flex flex-col gap-6'>
                 {newsItems?.map((news) => (
-                    <div key={news?.id} className='flex md:flex-row flex-col gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
+                    <div onClick={() => router.push(`/news-and-media/${news?.id}`) } key={news?.id} className='flex md:flex-row flex-col gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
                         <div className='md:w-[310px] md:max-h-[250px]'>
                             <Image src={news?.image ? news?.image : "/placeholder-img.png"} alt={news?.title} width={100} height={100} className='w-full h-full object-cover' unoptimized />
                             {/* <CustomImage src={news?.image} alt='dfd' /> */}

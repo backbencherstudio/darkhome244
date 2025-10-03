@@ -8,6 +8,7 @@ import WindSpeedIcon from '@/components/Icons/WindSpeedIcon'
 import TempretureIcon from '@/components/Icons/TempretureIcon'
 import RadialChart from './RadialChart'
 import "@/style/style.css"
+import LoadingMin from '@/components/reusable/LoadingMin'
 
 export default function ForecastCurrentCard() {
 
@@ -49,7 +50,7 @@ export default function ForecastCurrentCard() {
                 {cardData?.map((item) => (
                     <div key={item?.title} className='bg-white pb-4 flex items-center flex-col justify-center'>
                         {loading ?
-                            <Loading2 /> : (
+                            <LoadingMin /> : (
                             <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
                         )}
                         {/* <span>{item?.value}</span> */}
@@ -65,14 +66,3 @@ export default function ForecastCurrentCard() {
 }
 
 
-const Loading2 = () => {
-    return (
-        <div className="loading">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    )
-}
