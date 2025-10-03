@@ -235,7 +235,7 @@ function WeatherDashboard() {
                     </div>
                     <div className='flex flex-col'>
                       <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather?.main?.temp)}°</div>
-                      <div className="text-gray-300 text-sm md:text-base">{weather?.weather[0]?.description}</div>
+                      <div className="text-gray-300 text-sm md:text-base">  {weather?.weather?.[0]?.description || 'Description not available'}</div>
                     </div>
                   </div>
                 </div>
