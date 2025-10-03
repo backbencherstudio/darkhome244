@@ -40,7 +40,8 @@ export default function WeatherStoriesCard({ newsItems }: NewsGridProps) {
                 </div>
             ) : (<div className='flex flex-col gap-6'>
                 {newsItems?.map((news) => (
-                    <div onClick={() => router.push(`/news-and-media/${news?.id}`) } key={news?.id} className='flex md:flex-row flex-col gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
+                    <div key={news?.id} className='flex md:flex-row flex-col gap-8 bg-white rounded-[4px] shadow-md p-5 group hover:bg-[#0080C4]'>
+                         {/* ==========onClick={() => router.push(`/news-and-media/${news?.id}`) }========== */}
                         <div className='md:w-[310px] md:max-h-[250px]'>
                             <Image src={news?.image ? news?.image : "/placeholder-img.png"} alt={news?.title} width={100} height={100} className='w-full h-full object-cover' unoptimized />
                             {/* <CustomImage src={news?.image} alt='dfd' /> */}

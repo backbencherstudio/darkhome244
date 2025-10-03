@@ -24,8 +24,9 @@ export default function HealthCard({ newsItems }: NewsGridProps) {
     return (
         <div className='grid grid-cols-1 md:grid-cols-2  gap-6'>
             {newsItems?.map((news) => (
-                <div  onClick={() => router.push(`/news-and-media/${news?.id}`) }  key={news?.id}>
+                <div  key={news?.id}>
                     {/* News Item */}
+                     {/* onClick={() => router.push(`/news-and-media/${news?.id}`) } //need to add letter */}
                     <div
 
                         className="group rounded-[4px] overflow-hidden bg-white hover:bg-[#0080C4] transition-colors duration-300  p-5 flex flex-col h-full md:gap-8 gap-6"
