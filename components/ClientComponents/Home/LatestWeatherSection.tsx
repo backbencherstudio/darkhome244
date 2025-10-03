@@ -10,13 +10,10 @@ import PaginationComponent from '@/components/reusable/PaginationComponent';
 import Loading from '@/app/loading';
 import { usePathname } from 'next/navigation';
 import LatestWeatherGridCard from '@/components/reusable/LatestWeatherGridCard';
+import { RSS_LATEST_WEATHER_FEEDS } from '@/lib/RssFeeds';
 
 
-const RSS_FEEDS = {
-    latest: 'https://moxie.foxweather.com/google-publisher/latest.xml',
-    weatherNews: 'https://moxie.foxweather.com/google-publisher/weather-news.xml',
-    extremeWeather: 'https://moxie.foxweather.com/google-publisher/extreme-weather.xml'
-};
+
 
 const LatesWeatherSection = () => {
 
@@ -26,7 +23,7 @@ const LatesWeatherSection = () => {
     const [viewAll, setViewAll] = useState(false)
     const [currentPageItem, setCurrentPageItems] = useState(itemPerPage)
     const idRef = React.useRef<HTMLDivElement>(null);
-    const { data, loading, error } = useRSSFeed(RSS_FEEDS.weatherNews)
+    const { data, loading, error } = useRSSFeed(RSS_LATEST_WEATHER_FEEDS?.weatherNews)
     const parsedNews = useXMLParser(data)
     const { currentItems, currentPage, totalPages, setCurrentPage } =
         useFilterPagination(parsedNews, currentPageItem);

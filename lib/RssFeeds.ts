@@ -1,3 +1,19 @@
+// =====latest weather ========
+export const RSS_LATEST_WEATHER_FEEDS = {
+    latest: 'https://moxie.foxweather.com/google-publisher/latest.xml',
+    weatherNews: 'https://moxie.foxweather.com/google-publisher/weather-news.xml',
+    extremeWeather: 'https://moxie.foxweather.com/google-publisher/extreme-weather.xml'
+};
+
+// =====latest current news ===========
+export const RSS_LATEST_CURRENT_NEWS_FEEDS = {
+    latestNews: 'https://moxie.foxweather.com/google-publisher/latest.xml',
+    weatherNews: 'https://moxie.foxweather.com/google-publisher/weather-news.xml',
+    extremeWeather: 'https://moxie.foxweather.com/google-publisher/extreme-weather.xml'
+};
+
+
+
 export const RSS_TOP_WEATHER_FEEDS = {
     latestNews: 'https://feeds.npr.org/1165/rss.xml',
     weatherNews: 'https://www.fox4news.com/rss/category/weather',
