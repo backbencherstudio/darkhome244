@@ -230,12 +230,12 @@ function WeatherDashboard() {
                   <div className=' flex gap-4 items-center '>
                     <div className="block ">
                       {/* Weather Icon - Sunny Cloudy */}
-                      <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />
+                      {weather?.weather[0]?.main === "Rain" ? <img src="/rain.png" alt="" className=' object-cover w-[72px] h-full ' /> : <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />}
 
                     </div>
                     <div className='flex flex-col'>
                       <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather?.main?.temp)}°</div>
-                      <div className="text-gray-300 text-sm md:text-base">  {weather?.weather?.[0]?.description || 'Description not available'}</div>
+                      <div className="text-gray-300 text-sm md:text-base">{weather?.weather[0]?.description}</div>
                     </div>
                   </div>
                 </div>
