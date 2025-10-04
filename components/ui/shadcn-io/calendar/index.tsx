@@ -1,6 +1,6 @@
 'use client';
 
-import { getDay, getDaysInMonth, isSameDay } from 'date-fns';
+import { getDay, getDaysInMonth, isSameDay, isToday } from 'date-fns';
 import { atom, useAtom } from 'jotai';
 import {
   Check,
@@ -63,13 +63,21 @@ export type Status = {
   color: string;
 };
 
-export type Feature = {
-  id: string;
-  name: string;
-  startAt: Date;
-  endAt: Date;
-  status: Status;
-};
+type Feature = {
+  id: string
+  name: string
+  startAt: Date
+  endAt: Date
+  isToday?: Boolean
+  status: {
+    id: string
+    name: string
+    color: string
+  }
+  temp?: number  // ✅ more flexible
+  icon?: React.ReactNode
+}
+
 
 type ComboboxProps = {
   value: string;
@@ -137,7 +145,7 @@ const Combobox = ({
             : labels.button}
           {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
            */}
-           <ArrowDownIcon className='text-[#4A4C56] '/>
+          <ArrowDownIcon className='text-[#4A4C56] ' />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-40 p-0">
@@ -191,7 +199,7 @@ const OutOfBoundsDay = ({ day }: OutOfBoundsDayProps) => (
 
 export type CalendarBodyProps = {
   features: Feature[];
-  children: (props: { feature: Feature }) => ReactNode;
+  children?: (props: { feature: Feature }) => ReactNode;
 };
 
 export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
@@ -253,7 +261,7 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
   for (let i = 0; i < firstDay; i++) {
     const day =
       prevMonthData.prevMonthDaysArray[
-        prevMonthData.prevMonthDays - firstDay + i
+      prevMonthData.prevMonthDays - firstDay + i
       ];
 
     if (day) {
@@ -263,21 +271,39 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
 
   for (let day = 1; day <= daysInMonth; day++) {
     const featuresForDay = featuresByDay[day] || [];
-
+    console.log(featuresForDay, "dddd")
     days.push(
       <div
-        className="relative flex h-full w-full flex-col gap-1 p-1 text-muted-foreground text-xs"
+        className={`relative flex h-full w-full flex-col items-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-red-500 text-white" : ""} `}
         key={day}
       >
-        {day}
+        <div className='flex items-center gap-2 justify-between'>
+          <div className='flex flex-col'>
+            <div>
+              {day}
+            </div>
+            {featuresForDay?.length > 0 && (
+              <div className=''>
+                {Math.floor(featuresForDay[0]?.temp)}°
+              </div>
+            )}
+          </div>
+          {featuresForDay?.length > 0 && (
+            <div>
+              {featuresForDay[0]?.icon}
+            </div>
+          )}
+        </div>
+        {/* {day}
+
         <div>
           {featuresForDay.slice(0, 3).map((feature) => children({ feature }))}
         </div>
-        {featuresForDay.length > 3 && (
+        {featuresForDay.length > 0 && (
           <span className="block text-muted-foreground text-xs">
-            +{featuresForDay.length - 3} more
+           
           </span>
-        )}
+        )} */}
       </div>
     );
   }
@@ -298,7 +324,7 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
       {days.map((day, index) => (
         <div
           className={cn(
-            'relative aspect-square overflow-hidden border-t border-r',
+            'relative aspect-square overflow-hidden border-r',
             index % 7 === 6 && 'border-r-0'
           )}
           key={index}
