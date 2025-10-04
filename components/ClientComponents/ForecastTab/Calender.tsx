@@ -1,5 +1,7 @@
 'use client';
 
+import CloudMiniIcon from '@/components/Icons/CloudIconMini';
+import PrecipitationIcon from '@/components/Icons/Precipitation';
 import UvIndexIcon from '@/components/Icons/UvIndex';
 import { useLocation } from '@/components/Provider/LocationProvider';
 import {
@@ -30,17 +32,14 @@ const Example = () => {
             const temp = data?.daily?.temperature_2m_max?.[index] ?? 0;
             const code = data?.daily?.weather_code?.[index]; // optional, depending on your API
 
-            let icon;
+
             let name = 'Sunny';
 
-            if ([61, 63, 65, 80, 81, 82,85,86,95,96,99].includes(code)) {
-                icon = <CloudRain className="w-6 h-6 text-blue-500" />;
+            if ([61, 63, 65, 80, 81, 82, 85, 86, 95, 96, 99].includes(code)) {
                 name = 'Rainy';
-            } else if ([ 2, 3, 45, 48].includes(code)) {
-                icon = <CloudSun className="w-6 h-6 text-gray-500" />;
+            } else if ([2, 3, 45, 48].includes(code)) {
                 name = 'Cloudy';
-            } else if([0,1].includes(code)) {
-                icon = <Sun className="w-6 h-6 text-yellow-400" />;
+            } else {
                 name = 'Sunny';
             }
 
@@ -54,7 +53,6 @@ const Example = () => {
                     name,
                     color: code === 61 ? '#3B82F6' : code === 3 ? '#6B7280' : '#FDB813',
                 },
-                icon,
                 temp,
                 isToday:
                     date.getDate() === new Date().getDate() &&

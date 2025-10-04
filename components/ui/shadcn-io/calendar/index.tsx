@@ -33,6 +33,9 @@ import {
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import ArrowDownIcon from '@/components/Icons/ArrowDownIcon';
+import PrecipitationIcon from '@/components/Icons/Precipitation';
+import CloudMiniIcon from '@/components/Icons/CloudIconMini';
+import UvIndexIcon from '@/components/Icons/UvIndex';
 
 export type CalendarState = {
   month: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
@@ -271,10 +274,10 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
 
   for (let day = 1; day <= daysInMonth; day++) {
     const featuresForDay = featuresByDay[day] || [];
-    console.log(featuresForDay, "dddd")
+    console.log(featuresForDay[0], "dddd")
     days.push(
       <div
-        className={`relative flex h-full w-full flex-col items-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-red-500 text-white" : ""} `}
+        className={`relative flex h-full w-full flex-col items-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-[#0080C4] text-white" : ""} `}
         key={day}
       >
         <div className='flex items-center gap-2 justify-between'>
@@ -290,7 +293,15 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
           </div>
           {featuresForDay?.length > 0 && (
             <div>
-              {featuresForDay[0]?.icon}
+              {featuresForDay[0]?.name === 'Rainy' && (
+                <PrecipitationIcon className={`w-6 h-6  ${featuresForDay[0]?.isToday ? " text-white" : "text-[#0080C4] "} `} />
+              )}
+              {featuresForDay[0]?.name === 'Cloudy' && (
+                <CloudMiniIcon className={` w-6 h-6  ${featuresForDay[0]?.isToday ? " text-white" : "text-[#0080C4] "} `} />
+              )}
+              {featuresForDay[0]?.name === 'Sunny' && (
+                <UvIndexIcon className="w-6 h-6 text-[#0080C4]" />
+              )}
             </div>
           )}
         </div>
