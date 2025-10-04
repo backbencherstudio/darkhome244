@@ -64,7 +64,7 @@ const Example = () => {
     return (
         <CalendarProvider className=''>
             <CalendarDate >
-                <CalendarDatePicker className='w-full '>
+                <CalendarDatePicker className='w-full mb-4 '>
                     {/* Only month dropdown */}
                     <div className='flex justify-between  w-full '>
                         <TodaysForecast />
@@ -77,7 +77,7 @@ const Example = () => {
             <CalendarHeader />
 
             {/* Calendar body (empty for now — can add items later if needed) */}
-            <CalendarBody features={weatherData} />
+            <CalendarBody features={weatherData}  />
 
         </CalendarProvider>
     );
