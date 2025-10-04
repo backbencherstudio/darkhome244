@@ -488,7 +488,7 @@ export const CalendarHeader = ({ className }: CalendarHeaderProps) => {
   return (
     <div className={cn('grid flex-grow grid-cols-7', className)}>
       {daysData.map((day) => (
-        <div className="p-3 text-right text-muted-foreground text-xs" key={day}>
+        <div className="p-3 text-center text-muted-foreground text-xs" key={day}>
           {day}
         </div>
       ))}

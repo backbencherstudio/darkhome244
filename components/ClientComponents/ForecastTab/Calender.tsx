@@ -74,7 +74,7 @@ const Example = () => {
             </CalendarDate>
 
             {/* Header (like week names: Mon, Tue, etc.) */}
-            <CalendarHeader />
+            <CalendarHeader className='font-medium text-center' />
 
             {/* Calendar body (empty for now — can add items later if needed) */}
             <CalendarBody features={weatherData}  />
