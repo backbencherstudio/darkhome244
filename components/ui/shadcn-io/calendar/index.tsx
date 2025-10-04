@@ -277,7 +277,7 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
     console.log(featuresForDay[0], "dddd")
     days.push(
       <div
-        className={`relative flex h-full w-full flex-col items-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-[#0080C4] text-white" : ""} `}
+        className={`relative flex h-full w-full flex-col items-center justify-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-[#0080C4] text-white" : ""} `}
         key={day}
       >
         <div className='flex items-center gap-2 justify-between'>
@@ -470,7 +470,7 @@ export type CalendarDateProps = {
 };
 
 export const CalendarDate = ({ children }: CalendarDateProps) => (
-  <div className="flex items-center justify-between p-3">{children}</div>
+  <div className="flex items-center justify-between ">{children}</div>
 );
 
 export type CalendarHeaderProps = {

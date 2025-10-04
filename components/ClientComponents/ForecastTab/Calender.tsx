@@ -63,8 +63,8 @@ const Example = () => {
 
     return (
         <CalendarProvider className=''>
-            <CalendarDate>
-                <CalendarDatePicker className='w-full'>
+            <CalendarDate >
+                <CalendarDatePicker className='w-full '>
                     {/* Only month dropdown */}
                     <div className='flex justify-between  w-full '>
                         <TodaysForecast />
@@ -87,7 +87,7 @@ export default Example;
 
 const TodaysForecast = () => {
     return (
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between">
             <div className="flex gap-4">
                 <UvIndexIcon className="size-12 text-[#0080C4]" />
                 <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">44<span className='md:text-base text-sm font-medium'>°C</span> </div>
