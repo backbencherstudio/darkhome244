@@ -84,7 +84,7 @@ const MonthlyForecast: React.FC = () => {
     <div className="">
       <div className="mx-auto flex gap-6">
         {/* Calendar Card */}
-        <div className="bg-white p-6 w-[56.36%] relative">
+        <div className="bg-white p-6 w-[56.36%] relative h-fit">
           {/* <div className="flex items-center justify-between mb-8">
             <div className="flex gap-4">
               <UvIndexIcon className="size-12 text-[#0080C4]" />
