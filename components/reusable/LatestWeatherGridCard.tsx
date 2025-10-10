@@ -47,7 +47,7 @@ const LatestWeatherGridCard = ({ newsItems }: NewsGridProps) => {
                             className="group rounded-[4px] overflow-hidden bg-white hover:bg-[#0080C4] transition-colors duration-300  p-5 flex flex-col h-full md:gap-8 gap-6"
                         >
                             {/* Image */}
-                            <div className="relative max-h-[280px] overflow-hidden">
+                            <div className="relative h-[280px] overflow-hidden">
                                 <img
                                     src={news?.image || "/placeholder-img.png"}
                                     alt={news?.title}
