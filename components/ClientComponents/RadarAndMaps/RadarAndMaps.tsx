@@ -25,7 +25,7 @@ import SearchIcon from "@/components/Icons/SearchIcon";
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
+  iconUrl: markerIcon?.src,
   shadowUrl: markerShadow,
 });
 
