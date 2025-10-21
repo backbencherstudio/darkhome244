@@ -15,9 +15,7 @@ export default function ForecastCurrentCard() {
     const { location, refreshLocation } = useLocation()
     const latitude = location?.latitude
     const longitude = location?.longitude
-    const { data, error, loading } = useWeatherData("forecast",latitude, longitude)
-    console.log(data, "user current location data")
-    console.log(data?.forecast?.forecastday[0]?.day?.daily_chance_of_rain, "user current location data")
+    const { data, error, loading } = useWeatherData("forecast",latitude, longitude,1)
 
     const getPercentageValue = (value: number, type: string): number => {
 
@@ -65,7 +63,7 @@ export default function ForecastCurrentCard() {
         {
             title: "Wind Speed", 
             type: "wind", 
-            value: `${data?.current?.wind_kph} km/h`, 
+            value: `${(data?.current?.wind_kph)?.toFixed(1)} km/h`, 
             rawValue: data?.current?.wind_kph, 
             icon: <WindSpeedIcon className='text-[#0080C4]' />
         },
