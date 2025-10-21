@@ -6,7 +6,7 @@ import { RSS_TRAVEL_OUTDOOR_FEEDS } from '@/lib/RssFeeds';
 export default function TravelAndOutdoors() {
   return (
     <div>
-      <HealthAndActivityCard RSS_FEEDS={RSS_TRAVEL_OUTDOOR_FEEDS} headerTitle="Latest Travel & Outdoors News" />
+      <HealthAndActivityCard RSS_FEEDS={RSS_TRAVEL_OUTDOOR_FEEDS} headerTitle="Travel" />
     </div>
   )
 }
