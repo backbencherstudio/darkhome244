@@ -156,7 +156,7 @@ function WeatherDashboard() {
     {
       icon: <WindSpeedIcon />,
       title: "Wind Speed",
-      value: `${weather?.wind?.speed} Km/h`,
+      value: `${weather2?.current?.wind_kph} Km/h`,
     },
     {
       icon: <PrecipitationIcon />,
@@ -166,7 +166,7 @@ function WeatherDashboard() {
     {
       icon: <UvIndexIcon />,
       title: "UV Index",
-      value: weatherData.uvIndex,
+      value: weather2?.current?.uv,
     }
   ];
 
