@@ -1,12 +1,16 @@
 "use client";
+
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+
+type GeoLocation = { latitude: number; longitude: number } | null;
 
 const LocationContext = createContext(null);
 
-export const LocationProvider = ({ children, fallback = { latitude: 52.52, longitude: 13.41 } }) => {
-  const [location, setLocation] = useState(fallback);
+export const LocationProvider = ({ children}) => {
+  const [location, setLocation] = useState<GeoLocation>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   const getLocation = useCallback(() => {
     if (!navigator?.geolocation) {
@@ -22,6 +26,7 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
         });
+
         setLoading(false);
       },
       (err) => {
@@ -39,6 +44,7 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
 
   useEffect(() => {
     // automatically get location on mount
+    getLocation();
     getLocation();
   }, [getLocation]);
 

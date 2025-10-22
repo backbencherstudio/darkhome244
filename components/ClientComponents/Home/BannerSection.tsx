@@ -38,17 +38,18 @@ function WeatherDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const { location, refreshLocation } = useLocation()
-  const { data, error, loading } = useWeatherData("current", location?.latitude, location?.longitude, 1)
-  console.log(data, "Dataaaaa")
+  const [cityName, setCityName] = useState("")
+  const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
+  console.log(cityName, "Dataaaaa")
 
   const [query, setQuery] = useState("");
-  const [hanldeSearchInput, setHandleSearchInput] = useState(false)
+  // const [hanldeSearchInput, setHandleSearchInput] = useState(false)
   // const [country, setCountry] = useState(null)
   // const [city, setCityName] = useState(null)
   const [weather, setWeather] = useState(null)
   const [weather2, setWeather2] = useState(null)
 
-  console.log(weather2, "dhddddddddddddddddddd")
+  // console.log(weather2, "dhddddddddddddddddddd")
 
   const OPENWEATHERMAP_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY as string;
 
@@ -56,7 +57,7 @@ function WeatherDashboard() {
     if (data) {
       setWeather2(data);
     }
-  }, [data, loading]);
+  }, [data, loading, cityName]);
 
   // useEffect(() => {
   //   const dataFetch = async () => {
@@ -88,53 +89,13 @@ function WeatherDashboard() {
   // }, [loading])
 
   async function handleSearch(e?: React.FormEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    const q = query.trim();
-    setHandleSearchInput(!hanldeSearchInput)
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    const q = searchQuery.trim();
     if (!q) return;
-    try {
-      const countryEntry = Object.entries(countries).find(
-        ([code, country]) => country.name.toLowerCase() === q.toLowerCase()
-      );
-
-      // If it's a country, search for its capital instead
-      const searchQuery = countryEntry
-        ? `${countryEntry[1].capital},${countryEntry[0]}`
-        : q;
-
-      const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
-        searchQuery
-      )}&limit=1&appid=${OPENWEATHERMAP_API_KEY}`;
-
-      const res = await fetch(url);
-      const data = await res.json();
-
-      const countryCode = data[0]?.country;
-      const countryName = countries[countryCode]?.name;
-      console.log(data, "Dataaaaaaa")
-      setCountry(countryName)
-      setCityName(data?.name || data?.state)
-
-      if (!data?.length) {
-        alert("No results found. Try 'City, CountryCode' (e.g. Paris, FR)");
-        return;
-      }
-
-      const top = data[0];
-      const center: [number, number] = [top.lat, top.lon];
-
-      // Fetch weather data for temperature
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${top.lat}&lon=${top.lon}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
-      const weatherRes = await fetch(weatherUrl);
-      const weatherData = await weatherRes.json();
-
-      console.log(weatherData, "weathererrrrrrrr")
-
-    } catch (err) {
-      console.error(err);
-      alert("Search error. Please try again.");
-    }
+    setCityName(q);
+    setShowLocationDropdown(false);
   }
 
   const handleCurrentLocation = () => {
@@ -177,7 +138,9 @@ function WeatherDashboard() {
         <div className="mb-4">
           <div className="relative z-50   ">
             <div className="flex items-center bg-[#FFFFFFE5] w-full rounded-[4px] backdrop-blur-sm  shadow-md">
-              <Search className="absolute md:left-6 left-4 text-gray-400" size={20} />
+              <button type="button" onClick={() => handleSearch()}  className='flex items-center cursor-pointer group'>
+                <Search className="absolute md:left-6 left-4 text-[#777980] hover:text-[#3399D0]" size={20} />
+              </button>
               <input
                 type="text"
                 placeholder="Search by City or Zip Code"
