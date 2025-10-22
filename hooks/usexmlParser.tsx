@@ -13,51 +13,51 @@ export interface RSSItem {
 
 export const useXMLParser = (xmlData: string | null) => {
   const parsedData = useMemo(() => {
-    console.log("[XML Parser] Raw data received:", xmlData ? "Data exists" : "No data")
+    // console.log("[XML Parser] Raw data received:", xmlData ? "Data exists" : "No data")
 
     if (!xmlData) {
-      console.log("[XML Parser] No XML data provided")
+      // console.log("[XML Parser] No XML data provided")
       return []
     }
 
     // Check if we received HTML instead of XML
     if (xmlData.includes('<!DOCTYPE html>') || xmlData.includes('<html')) {
-      console.error("[XML Parser] Error: Received HTML instead of XML. Check your RSS feed URL.");
+      // console.error("[XML Parser] Error: Received HTML instead of XML. Check your RSS feed URL.");
       return []
     }
 
     try {
-      console.log("[XML Parser] Starting to parse XML...")
+      // console.log("[XML Parser] Starting to parse XML...")
       const parser = new DOMParser()
       const xmlDoc = parser.parseFromString(xmlData, "text/xml")
 
       // Check for parsing errors
       const parserError = xmlDoc.querySelector("parsererror")
       if (parserError) {
-        console.error("[XML Parser] Parsing error:", parserError.textContent)
+        // console.error("[XML Parser] Parsing error:", parserError.textContent)
         return []
       }
 
-      console.log("[XML Parser] Document root", xmlDoc.documentElement.tagName)
+      // console.log("[XML Parser] Document root", xmlDoc.documentElement.tagName)
 
       // Handle both RSS and Atom feeds
       let items = xmlDoc.querySelectorAll("item")
       if (items.length === 0) {
         items = xmlDoc.querySelectorAll("entry") // Atom feeds
-        console.log("[XML Parser] No RSS items found, checking for Atom entries...")
+        // console.log("[XML Parser] No RSS items found, checking for Atom entries...")
       }
 
-      console.log("[XML Parser] Found items:", items.length)
+      // console.log("[XML Parser] Found items:", items.length)
 
       if (items.length === 0) {
-        console.warn("[XML Parser] No items or entries found in the feed")
+        // console.warn("[XML Parser] No items or entries found in the feed")
         return []
       }
 
       const parsedItems: RSSItem[] = []
 
       items.forEach((item, index) => {
-        console.log(`[XML Parser] Processing item ${index + 1}`)
+        // console.log(`[XML Parser] Processing item ${index + 1}`)
 
         // Extract title
         const titleElement = item.querySelector("title")
@@ -88,7 +88,7 @@ export const useXMLParser = (xmlData: string | null) => {
           item.querySelector("creator")
         const author = authorElement?.textContent?.trim() || "Unknown"
 
-        console.log(`[XML Parser] Item ${index + 1} title:`, title)
+        // console.log(`[XML Parser] Item ${index + 1} title:`, title)
 
         // Try to extract image from various sources
         let image = "";
@@ -141,13 +141,13 @@ export const useXMLParser = (xmlData: string | null) => {
         })
       })
 
-      console.log("[XML Parser] Successfully parsed items:", parsedItems.length)
+      // console.log("[XML Parser] Successfully parsed items:", parsedItems.length)
       return parsedItems.slice(0, 25) // Limit to 20 items
       return parsedItems // all data parsed
 
     } catch (error) {
-      console.error("[XML Parser] Error parsing XML:", error)
-      console.error("[XML Parser] XML data that failed to parse:", xmlData?.substring(0, 500))
+      // console.error("[XML Parser] Error parsing XML:", error)
+      // console.error("[XML Parser] XML data that failed to parse:", xmlData?.substring(0, 500))
       return []
     }
   }, [xmlData])

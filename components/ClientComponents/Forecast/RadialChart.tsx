@@ -57,7 +57,7 @@ const RadialChart = ({ series, startAngle, endAngle, chartId, value }) => {
         labels: ["Progress"],
     };
 
-    return <ApexCharts options={options} series={[series]} type="radialBar" height={164} />;
+    return <ApexCharts options={options} series={[series]} type="radialBar" height={174} />;
 };
 
 export default RadialChart;

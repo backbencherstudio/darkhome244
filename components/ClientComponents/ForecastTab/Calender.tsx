@@ -68,7 +68,7 @@ const Example = () => {
                     {/* Only month dropdown */}
                     <div className='flex justify-between  w-full '>
                         <TodaysForecast />
-                        <CalendarMonthPicker className='border-0 cursor-pointer rounded-[4px] background-white shadow-[0_0_20px_0_rgba(19,142,255,0.10)] text-base leading-[140%] py-[13.5px] px-3 h-fit' />
+                        <CalendarMonthPicker className='border-0 cursor-pointer rounded-[4px] background-white shadow-[0_0_20px_0_rgba(19,142,255,0.10)] text-base leading-[140%] py-[13.5px] px-3 h-fit text-[#4A4C56]' />
                     </div>
                 </CalendarDatePicker>
             </CalendarDate>

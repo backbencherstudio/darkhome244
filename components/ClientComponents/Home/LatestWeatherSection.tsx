@@ -47,7 +47,7 @@ const LatesWeatherSection = () => {
         }
     }, [parsedNews, loading])
 
-    console.log(parsedNews, "parseddddddd ")
+    // console.log(parsedNews, "parseddddddd ")
     if (error) return <div>Error: {error}</div>;
 
 
