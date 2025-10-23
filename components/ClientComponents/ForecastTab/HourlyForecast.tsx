@@ -100,7 +100,8 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
 
   return (
   <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="w-full  p-6 bg-white ">
+    
+       <div className="w-full p-6 bg-white ">
       {/* Current Weather Section */}
       <div className="flex justify-between items-start ">
        <div className="flex justify-between gap-[120px]">
@@ -159,7 +160,8 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
         </div>
       </div>
      
-    </div>
+   
+     </div>
      <div className=" grid grid-cols-1 md:grid-cols-2  gap-6 ">
         {
           Hourly.map((index)=>{
@@ -173,12 +175,12 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
                 </div>
               {getWeatherIcons(index.icon, 64)}
               </div>
-             <div className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off] flex gap-4"
+             <div className=" flex gap-4"
 >
                <div className="">
                 <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]">Precipitation: {index.precipitation}</p>
-                  <p className=""> Humidity:   {index.humidity}</p>
-                  <p>Wind: {index.wind}</p>
+                  <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]"> Humidity:   {index.humidity}</p>
+                  <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]">Wind: {index.wind}</p>
                     
               </div>
               <div className="">
@@ -196,8 +198,10 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
           })
         }
       </div>
+     
   </div>
   );
 };
 
 export default HourlyForecast;
+

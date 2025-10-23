@@ -12,7 +12,13 @@ import { countries } from 'countries-list';
 import { CloudRain, MapPin, Search, Sun, Wind } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
-
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from "@/components/ui/select";
 
 
 export default function BannerSection() {
@@ -37,18 +43,20 @@ function WeatherDashboard() {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showLocationDropdown, setShowLocationDropdown] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { location, refreshLocation } = useLocation()
-  const { data, error, loading } = useWeatherData("current", location?.latitude, location?.longitude, 1)
-  console.log(data, "Dataaaaa")
+  const [cityName, setCityName] = useState("")
+  const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
+  console.log(cityName, "Dataaaaa")
 
   const [query, setQuery] = useState("");
-  const [hanldeSearchInput, setHandleSearchInput] = useState(false)
+  // const [hanldeSearchInput, setHandleSearchInput] = useState(false)
   // const [country, setCountry] = useState(null)
   // const [city, setCityName] = useState(null)
   const [weather, setWeather] = useState(null)
   const [weather2, setWeather2] = useState(null)
 
-  console.log(weather2, "dhddddddddddddddddddd")
+  // console.log(weather2, "dhddddddddddddddddddd")
 
   const OPENWEATHERMAP_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY as string;
 
@@ -56,7 +64,7 @@ function WeatherDashboard() {
     if (data) {
       setWeather2(data);
     }
-  }, [data, loading]);
+  }, [data, loading, cityName, refreshLocation]);
 
   // useEffect(() => {
   //   const dataFetch = async () => {
@@ -87,70 +95,56 @@ function WeatherDashboard() {
   //   dataFetch()
   // }, [loading])
 
-  async function handleSearch(e?: React.FormEvent) {
-    e.preventDefault();
-    e.stopPropagation();
-    const q = query.trim();
-    setHandleSearchInput(!hanldeSearchInput)
-    if (!q) return;
+  useEffect(() => {
     try {
-      const countryEntry = Object.entries(countries).find(
-        ([code, country]) => country.name.toLowerCase() === q.toLowerCase()
-      );
+      const saved = JSON.parse(localStorage.getItem("recentWeatherSearches") || "[]");
+      if (Array.isArray(saved)) setRecentSearches(saved.slice(0, 2));
+    } catch { }
+  }, []);
 
-      // If it's a country, search for its capital instead
-      const searchQuery = countryEntry
-        ? `${countryEntry[1].capital},${countryEntry[0]}`
-        : q;
+  // helper to keep last two unique searches
+  function addRecentSearch(q: string) {
+    setRecentSearches(prev => {
+      const next = [q, ...prev.filter(x => x.toLowerCase() !== q.toLowerCase())].slice(0, 2);
+      localStorage.setItem("recentWeatherSearches", JSON.stringify(next));
+      return next;
+    });
+  }
 
-      const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(
-        searchQuery
-      )}&limit=1&appid=${OPENWEATHERMAP_API_KEY}`;
-
-      const res = await fetch(url);
-      const data = await res.json();
-
-      const countryCode = data[0]?.country;
-      const countryName = countries[countryCode]?.name;
-      console.log(data, "Dataaaaaaa")
-      setCountry(countryName)
-      setCityName(data?.name || data?.state)
-
-      if (!data?.length) {
-        alert("No results found. Try 'City, CountryCode' (e.g. Paris, FR)");
-        return;
-      }
-
-      const top = data[0];
-      const center: [number, number] = [top.lat, top.lon];
-
-      // Fetch weather data for temperature
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${top.lat}&lon=${top.lon}&units=metric&appid=${OPENWEATHERMAP_API_KEY}`;
-      const weatherRes = await fetch(weatherUrl);
-      const weatherData = await weatherRes.json();
-
-      console.log(weatherData, "weathererrrrrrrr")
-
-    } catch (err) {
-      console.error(err);
-      alert("Search error. Please try again.");
-    }
+  // search submit (form submit or icon click)
+  async function handleSearch(e?: React.FormEvent) {
+    e?.preventDefault();
+    e?.stopPropagation();
+    const q = searchQuery.trim();
+    if (!q) return;
+    setCityName(q);                 // use city
+    addRecentSearch(q);             // save to recent
+    setShowLocationDropdown(false);
   }
 
   const handleCurrentLocation = () => {
-    refreshLocation()
+    setCityName("");
+    setSearchQuery("");
+    setShowLocationDropdown(false);
+    refreshLocation();
   }
 
-  const weatherData = {
-    location: 'Sydney NSW',
-    country: 'Australia',
-    date: 'Sep, 07, 2025',
-    temperature: '32°',
-    condition: 'Sunny Cloudy',
-    windSpeed: '22 km/h',
-    precipitation: '75%',
-    uvIndex: ` ${data?.daily?.uv_index_max[0]} of 15`
+  const handleChooseRecent = (q: string) => {
+    setCityName(q);
+    setSearchQuery(q);
+    setShowLocationDropdown(false);
   };
+
+  // const weatherData = {
+  //   location: 'Sydney NSW',
+  //   country: 'Australia',
+  //   date: 'Sep, 07, 2025',
+  //   temperature: '32°',
+  //   condition: 'Sunny Cloudy',
+  //   windSpeed: '22 km/h',
+  //   precipitation: '75%',
+  //   uvIndex: ` ${data?.daily?.uv_index_max[0]} of 15`
+  // };
 
   const weatherStats = [
     {
@@ -177,7 +171,9 @@ function WeatherDashboard() {
         <div className="mb-4">
           <div className="relative z-50   ">
             <div className="flex items-center bg-[#FFFFFFE5] w-full rounded-[4px] backdrop-blur-sm  shadow-md">
-              <Search className="absolute md:left-6 left-4 text-gray-400" size={20} />
+              <button type="button" onClick={() => handleSearch()} className='flex items-center cursor-pointer group'>
+                <Search className="absolute md:left-6 left-4 text-[#777980] hover:text-[#3399D0]" size={20} />
+              </button>
               <input
                 type="text"
                 placeholder="Search by City or Zip Code"
@@ -201,16 +197,45 @@ function WeatherDashboard() {
                 </svg>
               </button>
             </div>
-
             {/* {showLocationDropdown && (
-              <div className="absolute md:text-base text-sm  top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+              <div className="absolute md:text-base text-sm  top-full left-0 right-0 mt-2 bg-white rounded-[4px] shadow-lg border border-gray-200 z-50">
                 <div className="p-2">
-                  <div className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Current Location</div>
+                  <div onClick={handleCurrentLocation} className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Current Location</div>
                   <div className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Sydney, NSW</div>
                   <div className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer">Melbourne, VIC</div>
                 </div>
               </div>
             )} */}
+            {showLocationDropdown && (
+              <div className="absolute md:text-base text-sm top-full left-0 right-0 mt-2 bg-white rounded-[4px] shadow-lg border border-gray-200 z-50">
+                <div className="p-2">
+                  <div
+                    onClick={handleCurrentLocation}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleCurrentLocation()}
+                    className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer"
+                  >
+                   Current Location  
+                  </div>
+
+                  {/* recent searches (newest first) */}
+                  {recentSearches.length === 0 ? (
+                    <div className="px-3 md:py-2 py-1 text-center text-gray-500">No recent cities</div>
+                  ) : (
+                    recentSearches.map((q) => (
+                      <div
+                        key={q}
+                        onClick={() => handleChooseRecent(q)}
+                        className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer"
+                      >
+                        {q}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from '@/components/Provider/LocationProvider'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import UvIndexIcon from '@/components/Icons/UvIndex'
@@ -12,10 +12,14 @@ import LoadingMin from '@/components/reusable/LoadingMin'
 
 export default function ForecastCurrentCard() {
 
-    const { location, refreshLocation } = useLocation()
-    const latitude = location?.latitude
-    const longitude = location?.longitude
-    const { data, error, loading } = useWeatherData("forecast",latitude, longitude,1)
+    const { location, refreshLocation} = useLocation()
+    const latitude = location?.latitude 
+    const longitude = location?.longitude 
+    console.log(location,'============================')
+    const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,1)
+
+
+
 
     const getPercentageValue = (value: number, type: string): number => {
 

@@ -1,15 +1,23 @@
 "use client";
+import { useWeatherData } from "@/hooks/useWeatherData";
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+
+type GeoLocation = { latitude: number; longitude: number } | null;
 
 const LocationContext = createContext(null);
 
 export const LocationProvider = ({ children, fallback = { latitude: 52.52, longitude: 13.41 } }) => {
-  const [location, setLocation] = useState(fallback);
+  const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
+    // const { data } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
+    // const { data:data2 } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
+
   const getLocation = useCallback(() => {
     if (!navigator?.geolocation) {
+      setLocation(fallback);
       setError(new Error("Geolocation is not supported by this browser."));
       setLoading(false);
       return;
@@ -22,6 +30,7 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
           latitude: pos.coords.latitude,
           longitude: pos.coords.longitude,
         });
+
         setLoading(false);
       },
       (err) => {
@@ -39,6 +48,7 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
 
   useEffect(() => {
     // automatically get location on mount
+    getLocation();
     getLocation();
   }, [getLocation]);
 
