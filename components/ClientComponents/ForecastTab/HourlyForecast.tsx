@@ -1,7 +1,207 @@
-import React from 'react'
+"use client";
 
-export default function HourlyForecast() {
-  return (
-    <div>HourlyForecast</div>
-  )
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+
+// Dynamically import ApexCharts
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
+import { Cloud, CloudRain, Sun, CloudDrizzle } from 'lucide-react';
+interface HourleyWeather {
+  name: string;
+  temp: number;
+  precipitation: number;
+  humidity: number;
+  wind: number;
+  day: string;
+  time: string;
+  icon: 'sun' | 'cloud' | 'rain' | 'drizzle';
 }
+
+
+interface HourlyData { time: string; temp: number; }
+interface ForecastDay { day: string; high: number; low: number; condition: string; icon: string; }
+interface WeatherData {
+  temp: number; condition: string; location: string; date: string;
+  precipitation: number; humidity: number; windSpeed: number;
+  hourlyData: HourlyData[]; forecast: ForecastDay[];
+}
+
+const HourlyForecast = () => {
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+
+  
+  useEffect(() => {
+    const mockData: WeatherData = {
+      temp: 29, condition: "Sunny", location: "New York, NY", date: "Wednesday 04:00",
+      precipitation: 2, humidity: 70, windSpeed: 3,
+      hourlyData: [
+        { time: "5 AM", temp: 27 }, { time: "8 AM", temp: 19 },
+        { time: "11 AM", temp: 20 }, { time: "2 PM", temp: 25 },
+        { time: "5 PM", temp: 21 }, { time: "8 PM", temp: 28 },
+        { time: "11 PM", temp: 29 }, { time: "2 AM", temp: 21 },
+      ],
+      forecast: [
+        { day: "Tue", high: 29, low: 20, condition: "rainbow", icon: "" },
+        { day: "Wed", high: 29, low: 20, condition: "calendar", icon: "" },
+        { day: "Thu", high: 29, low: 20, condition: "location", icon: "" },
+        { day: "Fri", high: 29, low: 20, condition: "Rainy", icon: "" },
+        { day: "Sat", high: 29, low: 20, condition: "Sunny", icon: "" },
+        { day: "Sun", high: 29, low: 20, condition: "Night", icon: "" },
+        { day: "Mon", high: 29, low: 20, condition: "Cloudy", icon: "" },
+        { day: "Tue", high: 29, low: 20, condition: "Rainy", icon: "" },
+      ],
+    };
+    setWeatherData(mockData); setIsLoading(false);
+  }, []);
+
+  const Hourly: HourleyWeather[] = [
+    { name: 'Ankara', temp: 32, precipitation: 10, humidity: 44, wind: 14, day: 'Tuesday', time: '10:00 PM', icon: 'cloud' },
+    { name: 'Alaska', temp: 25, precipitation: 10, humidity: 44, wind: 14, day: 'Tuesday', time: '10:00 PM', icon: 'rain' },
+    { name: 'Berlin', temp: 24, precipitation: 10, humidity: 44, wind: 14, day: 'Tuesday', time: '10:00 PM', icon: 'rain' },
+    { name: 'Paris', temp: 24, precipitation: 10, humidity: 44, wind: 14, day: 'Tuesday', time: '10:00 PM', icon: 'rain' }
+  ];
+
+  if (isLoading || !weatherData) return <div className="p-6 text-center text-gray-500">Loading weather data...</div>;
+
+  const chartOptions = {
+    chart: { type: "area" as const, height: 128, sparkline: { enabled: false }, toolbar: { show: false } },
+    dataLabels: { enabled: false },
+    stroke: { curve: "smooth" as const, width: 2, colors: ["#0ea5e9"] },
+    fill: { type: "gradient", gradient: { opacityFrom: 0.45, opacityTo: 0.05 } },
+    xaxis: { categories: weatherData.hourlyData.map(d => d.time), axisBorder: { show: false }, axisTicks: { show: false }, labels: { style: { colors: "#9ca3af", fontSize: "12px" } } },
+    yaxis: { show: false },
+    grid: { show: false },
+    tooltip: { theme: "light", y: { formatter: (value: number) => `${value}°C` } },
+  };
+
+  const chartSeries = [{ name: "Temperature", data: weatherData.hourlyData.map(d => d.temp) }];
+
+  const getWeatherIcon = (condition: string) => {
+    switch (condition.toLowerCase()) {
+      case "rainbow": return <Cloud className="h-12 w-12 text-blue-600" />;
+      case "calendar": return <Sun className="h-12 w-12 text-red-600" />;
+      case "location": return <Sun className="h-12 w-12 text-green-600" />;
+      default: return <Sun className="h-[48px] w-[48px] text-[#0080C4]" />;
+    }
+  };
+
+const getWeatherIcons = (icon: string, size: number = 24) => {
+    const props = { size, className: 'text-blue-500' };
+    switch (icon) {
+      case 'sun': return <Sun {...props} className="text-yellow-500" />;
+      case 'cloud': return <Cloud {...props} />;
+      case 'rain': return <CloudRain {...props} />;
+      case 'drizzle': return <CloudDrizzle {...props} />;
+      default: return <Cloud {...props} />;
+    }
+  };
+
+  return (
+  <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
+    
+       <div className="w-full p-6 bg-white ">
+      {/* Current Weather Section */}
+      <div className="flex justify-between items-start ">
+       <div className="flex justify-between gap-[120px]">
+         <div className="flex gap-[27px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-2 lg:gap-4 items-center">
+            {getWeatherIcon(weatherData.condition)}
+            <div className="flex">
+              <span className="text-3xl font-bold text-[48px]">{weatherData.temp}</span>
+              <p className="ml-2 text-xl">°C</p>
+            </div>
+          </div>
+          <div className="text-sm text-gray-600">
+            <p className="text-[var(--Gray-Black-300,#777980)] text-sm leading-normal font-normal capitalize">
+              Precipitation: {weatherData.precipitation}%
+            </p>
+            <p className="text-[var(--Gray-Black-300,#777980)] text-sm leading-normal font-normal capitalize">
+              Humidity: {weatherData.humidity}%
+            </p>
+            <p className="text-[var(--Gray-Black-300,#777980)] text-sm leading-normal font-normal capitalize">
+              Wind: {weatherData.windSpeed} Km/H
+            </p>
+          </div>
+        </div>
+        
+       </div>
+        <div className="text-right">
+          <h2 className="text-[var(--Gray-Black-500,#1D1F2C)] text-right text-[18px] md:text-[24px]  font-medium leading-normal capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]">
+            {weatherData.location}
+          </h2>
+          <p className="text-gray-500">{weatherData.date}</p>
+        </div>
+      </div>
+
+      {/* Temperature Trend Chart */}
+      <div className="relative bg-white rounded-lg overflow-hidden border-none py-[38px]">
+       
+        <Chart options={chartOptions} series={chartSeries} type="area" height={128} />
+      </div>
+
+      {/* 8-Day Forecast */}
+      <div className="">
+        <div className="grid grid-cols-4 gap-3 md:grid-cols-8">
+          {weatherData.forecast.map((day, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center p-2 bg-white rounded-lg hover:bg-[#F5F5F5] transition-colors duration-200"
+            >
+              <p className="text-sm font-semibold text-gray-700 mb-1">{day.day}</p>
+              <div className="mb-1">{getWeatherIcon(day.condition)}</div>
+              <div className="text-xs text-center flex gap-3">
+                <p className="font-semibold text-gray-800">{day.high}°</p>
+                <p className="text-gray-500">{day.low}°</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+     
+   
+     </div>
+     <div className=" grid grid-cols-1 md:grid-cols-2  gap-6 ">
+        {
+          Hourly.map((index)=>{
+            return <div key={index.temp} className="bg-white gap-8 p-6 ">
+              <div className="flex gap-4 justify-center items-center mx-auto pb-6">
+                <div className="flex">
+                  <p className="text-[var(--Black,#3E3232)] text-[36px] font-semibold leading-normal [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]"
+
+>{index.temp}</p>
+                  <p>°C</p>
+                </div>
+              {getWeatherIcons(index.icon, 64)}
+              </div>
+             <div className=" flex gap-4"
+>
+               <div className="">
+                <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]">Precipitation: {index.precipitation}</p>
+                  <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]"> Humidity:   {index.humidity}</p>
+                  <p className="text-[var(--Gray-Black-400,#4A4C56)] text-[16px] font-normal leading-[132%] capitalize [font-family:'Mulish',sans-serif] [font-feature-settings:'liga'_off,'clig'_off]">Wind: {index.wind}</p>
+                    
+              </div>
+              <div className="">
+                
+                <p className="text-end text-[20px] font-bold ">{index.name}</p>
+                <div className="flex  gap-1 mt-4">
+                  <p className="text-[14px]">{index.day}</p>
+                <p className="text-[14px]">{index.time}</p>
+                
+                </div>
+              </div>
+             </div>
+              
+            </div>
+          })
+        }
+      </div>
+     
+  </div>
+  );
+};
+
+export default HourlyForecast;
+
