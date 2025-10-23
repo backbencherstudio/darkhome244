@@ -25,7 +25,7 @@ const weatherData: WeatherData[] = [
 
 export default function DailyForecast() {
   return (
-    <div className="w-full overflow-x-auto bg-[#FFFFFF] ">
+    <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
       <div className="inline-block min-w-full align-middle p-6 ">
         <table className="min-w-full text-sm text-[#2c261d] font-mulish border-collapse">
           
