@@ -2,8 +2,9 @@
 
 import PrecipitationIcon from '@/components/Icons/Precipitation'
 import { useLocation } from '@/components/Provider/LocationProvider'
+import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface WeatherData {
   date: string
@@ -15,30 +16,38 @@ interface WeatherData {
   pressure: string
 }
 
-const weatherData: WeatherData[] = [
-  { date: '01, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
-  { date: '02, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
-  { date: '03, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
-  { date: '04, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
-  { date: '05, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '3 ~ 5', humidity: '78%', pressure: '754' },
-  { date: '06, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 4', humidity: '75%', pressure: '754' },
-  { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
-]
+// const weatherData: WeatherData[] = [
+//   { date: '01, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
+//   { date: '02, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
+//   { date: '03, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
+//   { date: '04, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
+//   { date: '05, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '3 ~ 5', humidity: '78%', pressure: '754' },
+//   { date: '06, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 4', humidity: '75%', pressure: '754' },
+//   { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
+// ]
 
 export default function DailyForecast() {
 
-     const { location, refreshLocation} = useLocation()
-      const latitude = location?.latitude 
-      const longitude = location?.longitude 
-      console.log(location,'============================')
-      const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,7)
-      console.log(data,'user daily forecast data============================')
+  const { location, refreshLocation } = useLocation()
+  const latitude = location?.latitude
+  const longitude = location?.longitude
+  console.log(location, '============================')
+  const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
+
+  const [weatherData2, setWeatherData] = useState(data)
+  console.log("data :::", data)
+
+  useEffect(() => {
+    setWeatherData(data)
+  }, [data, location])
+
+  console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
       <div className="inline-block min-w-full align-middle p-6 ">
         <table className="min-w-full text-sm text-[#2c261d] font-mulish border-collapse">
-          
+
           {/* ✅ Header */}
           <thead>
             <tr className='text-[#1D1F2C] font-mulish text-[16px] not-italic font-medium leading-normal '>
@@ -72,40 +81,49 @@ export default function DailyForecast() {
 
           {/* ✅ Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
-            {weatherData.map((day, index) => (
-              <tr 
-                key={index}
-                className={`${
-                  index % 2 === 0 ? 'bg-[#F3F3F3] ' : 'bg-white '
-                } hover:bg-[#F3F3F3] transition`}
-              >
-                <td className="pl-3 whitespace-nowrap text-[14px] sm:text-[15px] py-4">
-                  {day.date}
-                </td>
 
-                <td className=" flex items-center gap-4 whitespace-nowrap py-4 ">
-                  <span>{day.temp}</span>
-                  <PrecipitationIcon className='text-[#0080C4] h-5 w-5'/>
-                  <span>{day.condition}</span>
-                </td>
+            {weatherData2?.forecast?.forecastday?.map((day, index) => {
+              console.log("inside day :: ", day.day)
+              // const{}=day?.day;
+              return (
+                <tr
+                  key={index}
+                  className={`${index % 2 === 0 ? 'bg-[#F3F3F3] ' : 'bg-white '
+                    } hover:bg-[#F3F3F3] transition`}
+                >
 
-                <td className="   whitespace-nowrap py-4 ">
-                  {day.feelsLike}
-                </td>
+                  <td className="pl-3 whitespace-nowrap text-[14px] sm:text-[15px] py-4">
+                    {day.date}
+                  </td>
 
-                <td className="  whitespace-nowrap py-4 ">
-                  {day.wind}
-                </td>
+                  <td className=" flex items-center gap-4 whitespace-nowrap py-4 ">
+                    <span>{day.temp}</span>
+                    <PrecipitationIcon className='text-[#0080C4] h-5 w-5' />
+                    <span>{day?.condition}</span>
+                  </td>
 
-                <td className="  whitespace-nowrap py-4 ">
-                  {day.humidity}
-                </td>
+                  <td className="   whitespace-nowrap py-4 ">
+                    {day?.day?.hour?.feelslike_c
+}
+                  </td>
 
-                <td className="   whitespace-nowrap py-4 ">
-                  {day.pressure}
-                </td>
-              </tr>
-            ))}
+                  <td className="  whitespace-nowrap py-4 ">
+                    {day?.day?.maxwind_kph}
+                  </td>
+
+                  <td className="  whitespace-nowrap py-4 ">
+                    {day.day?.avghumidity }
+                  </td>
+
+                  <td className="   whitespace-nowrap py-4 ">
+                    {day.pressure}
+                  </td>
+                </tr>
+              )
+            }
+
+
+            )}
           </tbody>
         </table>
       </div>
@@ -115,4 +133,3 @@ export default function DailyForecast() {
 
 
 
-       
