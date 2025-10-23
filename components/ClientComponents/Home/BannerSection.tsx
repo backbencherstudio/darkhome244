@@ -9,7 +9,7 @@ import getFormattedDate from '@/helper/formatedDate';
 import formatPublishDate from '@/helper/formatedPublishDate';
 import { useWeatherData } from '@/hooks/useWeatherData';
 import { countries } from 'countries-list';
-import { CloudRain, MapPin, Search, Sun, Wind } from 'lucide-react';
+import { CloudRain, LocateFixed, MapPin, Search, Sun, Wind } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
 import {
@@ -47,7 +47,8 @@ function WeatherDashboard() {
   const { location, refreshLocation } = useLocation()
   const [cityName, setCityName] = useState("")
   const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
-  console.log(cityName, "Dataaaaa")
+  const { data: forecastData } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
+  console.log(error, "Dataaaaa")
 
   const [query, setQuery] = useState("");
   // const [hanldeSearchInput, setHandleSearchInput] = useState(false)
@@ -56,7 +57,7 @@ function WeatherDashboard() {
   const [weather, setWeather] = useState(null)
   const [weather2, setWeather2] = useState(null)
 
-  // console.log(weather2, "dhddddddddddddddddddd")
+
 
   const OPENWEATHERMAP_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY as string;
 
@@ -155,7 +156,7 @@ function WeatherDashboard() {
     {
       icon: <PrecipitationIcon />,
       title: "Precipitation",
-      value: `${data?.hourly?.precipitation_probability[0]}%`,
+      value: `${forecastData?.forecast?.forecastday[0]?.day?.daily_chance_of_rain}%`,
     },
     {
       icon: <UvIndexIcon />,
@@ -170,8 +171,8 @@ function WeatherDashboard() {
         {/* Search Bar */}
         <div className="mb-4">
           <div className="relative z-50   ">
-            <div className="flex items-center bg-[#FFFFFFE5] w-full rounded-[4px] backdrop-blur-sm  shadow-md">
-              <button type="button" onClick={() => handleSearch()} className='flex items-center cursor-pointer group'>
+            <form onSubmit={handleSearch} className="flex items-center bg-[#FFFFFFE5] w-full rounded-[4px] backdrop-blur-sm  shadow-md">
+              <button type="submit" className='flex items-center cursor-pointer group'>
                 <Search className="absolute md:left-6 left-4 text-[#777980] hover:text-[#3399D0]" size={20} />
               </button>
               <input
@@ -183,7 +184,8 @@ function WeatherDashboard() {
               />
               <button
                 onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="absolute flex items-center gap-[9px] text-[#3399D0] right-3  top-1/2 -translate-y-1/2  md:px-6 px-4 py-2 md:py-3 rounded-[2px] leading-[100%] font-semibold md:text-base text-sm cursor-pointer"
+                type='button'
+                className="absolute flex items-center gap-[9px] text-[#3399D0] right-3  top-1/2 -translate-y-1/2  md:px-6 px-4 py-2 md:py-3 rounded-[2px] leading-[100%] font-semibold md:text-base text-sm cursor-pointer  "
               >
                 <MapPin size={16} />
                 Location
@@ -196,7 +198,7 @@ function WeatherDashboard() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-            </div>
+            </form>
             {/* {showLocationDropdown && (
               <div className="absolute md:text-base text-sm  top-full left-0 right-0 mt-2 bg-white rounded-[4px] shadow-lg border border-gray-200 z-50">
                 <div className="p-2">
@@ -214,9 +216,9 @@ function WeatherDashboard() {
                     role="button"
                     tabIndex={0}
                     onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && handleCurrentLocation()}
-                    className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer"
+                    className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer flex items-center gap-1 text-[#777980] hover:text-[#3399D0]"
                   >
-                   Current Location  
+                    <LocateFixed className='' /> Current Location
                   </div>
 
                   {/* recent searches (newest first) */}
@@ -227,7 +229,7 @@ function WeatherDashboard() {
                       <div
                         key={q}
                         onClick={() => handleChooseRecent(q)}
-                        className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer"
+                        className="px-3 md:py-2 py-1 hover:bg-gray-100 rounded cursor-pointer text-[#777980] hover:text-[#3399D0] capitalize"
                       >
                         {q}
                       </div>
@@ -242,7 +244,21 @@ function WeatherDashboard() {
         {/* Weather Card */}
         <div className="bg-[#0000004D] backdrop-blur-[50px] rounded-[4px] p-6 md:p-8 text-white   ">
           {/* Header */}
-          {loading ? <Loading height='60px' /> : (
+          {loading ? <Loading height='60px' /> : error ? <div
+            className="mb-4 rounded-md border border-red-500/40 bg-red-500/10 p-4 text-red-200"
+            role="alert"
+            aria-live="assertive"
+          >
+            <p className="font-semibold text-center">{error ? error: "No matching City found."}</p>
+
+            {/* Optional retry button if you have a refetch or can re-trigger search */}
+            {/* <button
+        onClick={() => handleSearch()}
+        className="mt-3 rounded px-3 py-1 text-sm bg-red-500/20 hover:bg-red-500/30"
+      >
+        Try again
+      </button> */}
+          </div> : (
             <div>
               <div className="flex justify-between items-start pb-3 border-b border-[#FFFFFF26]">
                 <div>

@@ -6,6 +6,7 @@ import Header from "@/components/Shared/Navbar";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { LocationProvider } from "@/components/Provider/LocationProvider";
+import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: AppConfig().app.name,
@@ -31,6 +32,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
+            <Toaster richColors position="top-right"/>
           </LocationProvider>
         </Suspense>
       </body>

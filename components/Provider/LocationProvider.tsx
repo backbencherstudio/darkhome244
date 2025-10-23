@@ -49,7 +49,6 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
   useEffect(() => {
     // automatically get location on mount
     getLocation();
-    getLocation();
   }, [getLocation]);
 
   return (
