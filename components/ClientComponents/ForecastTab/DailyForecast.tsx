@@ -1,6 +1,8 @@
 'use client'
 
 import PrecipitationIcon from '@/components/Icons/Precipitation'
+import { useLocation } from '@/components/Provider/LocationProvider'
+import { useWeatherData } from '@/hooks/useWeatherData'
 import React from 'react'
 
 interface WeatherData {
@@ -24,6 +26,14 @@ const weatherData: WeatherData[] = [
 ]
 
 export default function DailyForecast() {
+
+     const { location, refreshLocation} = useLocation()
+      const latitude = location?.latitude 
+      const longitude = location?.longitude 
+      console.log(location,'============================')
+      const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,7)
+      console.log(data,'user daily forecast data============================')
+
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
       <div className="inline-block min-w-full align-middle p-6 ">

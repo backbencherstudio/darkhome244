@@ -18,7 +18,7 @@ export default function ForecastCurrentCard() {
     console.log(location,'============================')
     const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,1)
 
-
+    
 
 
     const getPercentageValue = (value: number, type: string): number => {

@@ -142,7 +142,7 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
       </div>
 
       {/* 8-Day Forecast */}
-      <div className="">
+      {/* <div className="">
         <div className="grid grid-cols-4 gap-3 md:grid-cols-8">
           {weatherData.forecast.map((day, index) => (
             <div
@@ -158,7 +158,7 @@ const getWeatherIcons = (icon: string, size: number = 24) => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
      
    
      </div>
