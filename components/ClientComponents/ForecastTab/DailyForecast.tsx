@@ -41,6 +41,14 @@ export default function DailyForecast() {
     setWeatherData(data)
   }, [data, location])
 
+    if (loading) {
+    return (
+      <div className="flex justify-center items-center h-60">
+        <LoadingMin />
+      </div>
+    )
+  }
+
   console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
@@ -83,6 +91,7 @@ export default function DailyForecast() {
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
             {weatherData2?.forecast?.forecastday?.map((day, index) => {
+              console.log("day::",day)
               console.log("inside day :: ", day.day)
               // const{}=day?.day;
               return (
@@ -96,15 +105,19 @@ export default function DailyForecast() {
                     {day.date}
                   </td>
 
-                  <td className=" flex items-center gap-4 whitespace-nowrap py-4 ">
-                    <span>{day.temp}</span>
+                  <td className=" flex items-center space-x-3.5 whitespace-nowrap py-4">
+                    <span>{day?.day?.mintemp_c}</span>
                     <PrecipitationIcon className='text-[#0080C4] h-5 w-5' />
                     <span>{day?.condition}</span>
                   </td>
 
-                  <td className="   whitespace-nowrap py-4 ">
-                    {day?.day?.hour?.feelslike_c
-}
+                  <td className="   whitespace-nowrap py-4">
+                    {day?.hour?.[0].feelslike_c}
+                    {/* {day?.hour?. map((data)=>{
+                      return (
+                        data?.feelslike_c
+                      )
+                    })} */}
                   </td>
 
                   <td className="  whitespace-nowrap py-4 ">
@@ -116,7 +129,8 @@ export default function DailyForecast() {
                   </td>
 
                   <td className="   whitespace-nowrap py-4 ">
-                    {day.pressure}
+                    {day?.hour[0].pressure_in}
+                    
                   </td>
                 </tr>
               )
