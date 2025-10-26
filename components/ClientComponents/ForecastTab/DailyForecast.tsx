@@ -5,6 +5,7 @@ import { useLocation } from '@/components/Provider/LocationProvider'
 import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import React, { useEffect, useState } from 'react'
+import Loading from './../../../app/loading';
 
 interface WeatherData {
   date: string
@@ -26,16 +27,16 @@ interface WeatherData {
 //   { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
 // ]
 
-export default function DailyForecast() {
+export default function DailyForecast({data,loading}) {
 
-  const { location, refreshLocation } = useLocation()
-  const latitude = location?.latitude
-  const longitude = location?.longitude
-  console.log(location, '============================')
-  const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
+  // const { location, refreshLocation } = useLocation()
+  // const latitude = location?.latitude
+  // const longitude = location?.longitude
+  // console.log(location, '============================')
+  // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
 
   const [weatherData2, setWeatherData] = useState(data)
-  console.log("data :::", data)
+  
 
   useEffect(() => {
     setWeatherData(data)
@@ -49,7 +50,7 @@ export default function DailyForecast() {
     )
   }
 
-  console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
+  // console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
@@ -90,7 +91,7 @@ export default function DailyForecast() {
           {/* ✅ Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
-            {weatherData2?.forecast?.forecastday?.map((day, index) => {
+            {weatherData2?.map((day, index) => {
               console.log("day::",day)
               console.log("inside day :: ", day.day)
               // const{}=day?.day;
@@ -132,10 +133,10 @@ export default function DailyForecast() {
                     {day?.hour[0].pressure_in}
                     
                   </td>
+                
                 </tr>
               )
             }
-
 
             )}
           </tbody>

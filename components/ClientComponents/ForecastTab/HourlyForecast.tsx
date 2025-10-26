@@ -26,12 +26,10 @@ interface WeatherData {
   hourlyData: HourlyData[]; forecast: ForecastDay[];
 }
 
-const HourlyForecast = () => {
+const HourlyForecast = ({data}) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-
-  
   useEffect(() => {
     const mockData: WeatherData = {
       temp: 29, condition: "Sunny", location: "New York, NY", date: "Wednesday 04:00",
