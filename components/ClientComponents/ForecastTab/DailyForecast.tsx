@@ -27,7 +27,7 @@ interface WeatherData {
 //   { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
 // ]
 
-export default function DailyForecast({data,loading}) {
+export default function DailyForecast({ data, loading }) {
 
   // const { location, refreshLocation } = useLocation()
   // const latitude = location?.latitude
@@ -36,13 +36,13 @@ export default function DailyForecast({data,loading}) {
   // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
 
   const [weatherData2, setWeatherData] = useState(data)
-  
+
 
   useEffect(() => {
     setWeatherData(data)
   }, [data, location])
 
-    if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-60">
         <LoadingMin />
@@ -92,7 +92,7 @@ export default function DailyForecast({data,loading}) {
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
             {weatherData2?.map((day, index) => {
-              console.log("day::",day)
+              console.log("day::", day)
               console.log("inside day :: ", day.day)
               // const{}=day?.day;
               return (
@@ -126,14 +126,14 @@ export default function DailyForecast({data,loading}) {
                   </td>
 
                   <td className="  whitespace-nowrap py-4 ">
-                    {day.day?.avghumidity }
+                    {day.day?.avghumidity}
                   </td>
 
                   <td className="   whitespace-nowrap py-4 ">
                     {day?.hour[0].pressure_in}
-                    
+
                   </td>
-                
+
                 </tr>
               )
             }

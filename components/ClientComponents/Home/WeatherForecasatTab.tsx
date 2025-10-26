@@ -31,13 +31,13 @@ export default function WeatherForecastTab() {
     const renderSelectedComponent = () => {
         switch (selectedType) {
             case "Hourly":
-                return <HourlyForecast data={data?.forecast?.forecastday} />;
+                return <HourlyForecast data={data} />;
             case "Daily":
                 return <DailyForecast data={data?.forecast?.forecastday} loading={loading} />;
             case "Weekly":
                 return <WeeklyForecast />;
             case "Monthly":
-                return <MonthlyForecast />;
+                return <MonthlyForecast data={data}/>;
             default:
                 return;
         }
