@@ -5,6 +5,7 @@ import { useLocation } from '@/components/Provider/LocationProvider'
 import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import React, { useEffect, useState } from 'react'
+import Loading from './../../../app/loading';
 
 interface WeatherData {
   date: string
@@ -26,22 +27,22 @@ interface WeatherData {
 //   { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
 // ]
 
-export default function DailyForecast() {
+export default function DailyForecast({ data, loading }) {
 
-  const { location, refreshLocation } = useLocation()
-  const latitude = location?.latitude
-  const longitude = location?.longitude
-  console.log(location, '============================')
-  const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
+  // const { location, refreshLocation } = useLocation()
+  // const latitude = location?.latitude
+  // const longitude = location?.longitude
+  // console.log(location, '============================')
+  // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
 
   const [weatherData2, setWeatherData] = useState(data)
-  console.log("data :::", data)
+
 
   useEffect(() => {
     setWeatherData(data)
   }, [data, location])
 
-    if (loading) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-60">
         <LoadingMin />
@@ -49,11 +50,11 @@ export default function DailyForecast() {
     )
   }
 
-  console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
+  // console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
-      <div className="inline-block min-w-full align-middle p-6 ">
+      <div className="inline-block min-w-[914px] lg:w-full align-middle p-6 ">
         <table className="min-w-full text-sm text-[#2c261d] font-mulish border-collapse">
 
           {/* ✅ Header */}
@@ -62,18 +63,19 @@ export default function DailyForecast() {
               <th className="text-left text-[15px] sm:text-[16px">
                 Date
               </th>
-              <th className=""></th>
-              <th className="text-left  text-[15px] sm:text-[16px] ">
+              <th className="text-start">Av. Tempreture</th>
+              <th className="text-start">weather</th>
+              {/* <th className="text-left  text-[15px] sm:text-[16px] ">
                 Feels Like
-              </th>
+              </th> */}
               <th className="text-left text-[15px] sm:text-[16px] ">
-                Wind
+               Max Wind(kph)
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
                 Humidity
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
-                Pressure
+                Rain Possibility
               </th>
             </tr>
           </thead>
@@ -90,9 +92,7 @@ export default function DailyForecast() {
           {/* ✅ Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
-            {weatherData2?.forecast?.forecastday?.map((day, index) => {
-              console.log("day::",day)
-              console.log("inside day :: ", day.day)
+            {weatherData2?.map((day, index) => {
               // const{}=day?.day;
               return (
                 <tr
@@ -105,37 +105,42 @@ export default function DailyForecast() {
                     {day.date}
                   </td>
 
-                  <td className=" flex items-center space-x-3.5 whitespace-nowrap py-4">
-                    <span>{day?.day?.mintemp_c}</span>
-                    <PrecipitationIcon className='text-[#0080C4] h-5 w-5' />
-                    <span>{day?.condition}</span>
+                  <td className=" space-x-3.5 whitespace-nowrap py-4">
+                    <span>{day?.day?.avgtemp_c}°C</span>
+                    {/* <PrecipitationIcon className='text-[#0080C4] h-5 w-5' /> */}
                   </td>
-
+                  <td className=" flex  space-x-3.5 whitespace-nowrap py-4">
+                    <span>
+                      <img src={day?.day?.condition?.icon} alt="" className=' object-cover w-5 h-full ' />
+                    </span>
+                    <span>{day?.day?.condition?.text}</span>
+                  </td>
+{/* 
                   <td className="   whitespace-nowrap py-4">
                     {day?.hour?.[0].feelslike_c}
-                    {/* {day?.hour?. map((data)=>{
+                    {day?.hour?. map((data)=>{
                       return (
                         data?.feelslike_c
                       )
-                    })} */}
-                  </td>
+                    })}
+                  </td> */}
 
                   <td className="  whitespace-nowrap py-4 ">
                     {day?.day?.maxwind_kph}
                   </td>
 
                   <td className="  whitespace-nowrap py-4 ">
-                    {day.day?.avghumidity }
+                    {day.day?.avghumidity}%
                   </td>
 
                   <td className="   whitespace-nowrap py-4 ">
-                    {day?.hour[0].pressure_in}
-                    
+                    {day?.day?.daily_chance_of_rain}%
+
                   </td>
+
                 </tr>
               )
             }
-
 
             )}
           </tbody>

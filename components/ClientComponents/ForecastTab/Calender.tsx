@@ -22,7 +22,7 @@ const Example = () => {
 
     const { location } = useLocation()
     const { data } = useWeatherData(location?.latitude, location?.longitude)
-    console.log(data, "dataaaaaaaa")
+
 
     // ✅ Transform API data into calendar features
     const weatherData =

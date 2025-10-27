@@ -24,7 +24,7 @@ import {
 export default function BannerSection() {
   return (
     <div>
-      <div className='w-full h-[588px]'
+      <div className='w-full h-[588px] '
         style={{
           backgroundImage: "url('/home-banner.png')",
           backgroundSize: 'cover',
