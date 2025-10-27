@@ -7,7 +7,6 @@ import LoadingMin from "@/components/reusable/LoadingMin";
 
 // ⛳ ApexCharts dynamic import
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
-
 /* ============================
    🌤️ Type Definitions
 ============================ */
@@ -102,7 +101,6 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     wind: data?.current?.wind_kph ?? forecastData[0]?.day?.maxwind_kph ?? 0,
     precipitation:
       data?.current?.precip_mm ?? forecastData[0]?.day?.totalprecip_mm ?? 0,
-    // replace "Dhaka" with "New York"
     location:
       (data?.location?.name ?? "Unknown") === "Dhaka"
         ? "New York"
@@ -114,16 +112,29 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
       "",
   };
 
-  // ✅ Chart Config
+  // ✅ Chart Config (updated for 2nd image style)
+  const filteredHours =
+    forecastData[0]?.hour?.filter((_, i) => i % 3 === 0) || [];
+
   const chartOptions: any = {
     chart: { type: "area", height: 128, toolbar: { show: false } },
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: 2, colors: ["#0ea5e9"] },
-    fill: { type: "gradient", gradient: { opacityFrom: 0.45, opacityTo: 0.05 } },
+    fill: {
+      type: "gradient",
+      gradient: { opacityFrom: 0.45, opacityTo: 0.05 },
+    },
     xaxis: {
-      categories:
-        forecastData[1]?.hour?.map((h) => h.time.split(" ")[1]) || [],
-      labels: { style: { colors: "#9ca3af", fontSize: "12px" } },
+      categories: filteredHours.map((h) => {
+        const date = new Date(h.time);
+        return date.toLocaleString("en-US", {
+          hour: "numeric",
+          hour12: true,
+        });
+      }),
+      labels: {
+        style: { colors: "#9ca3af", fontSize: "12px" },
+      },
     },
     yaxis: { show: false },
     grid: { show: false },
@@ -133,7 +144,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
   const chartSeries = [
     {
       name: "Temperature",
-      data: forecastData[0]?.hour?.map((h) => h.temp_c) || [],
+      data: filteredHours.map((h) => h.temp_c),
     },
   ];
 
@@ -142,7 +153,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     const props = { size, className: "text-blue-500" };
     const text = condition?.toLowerCase() || "";
     if (text.includes("sun") || text.includes("clear"))
-      return <Sun {...props} className="text-yellow-500" />;
+      return <Sun {...props} className="text-blue-500" />;
     if (text.includes("rain")) return <CloudRain {...props} />;
     if (text.includes("drizzle")) return <CloudDrizzle {...props} />;
     return <Cloud {...props} />;
@@ -159,9 +170,9 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
       {/* 🌤️ Current Weather Section */}
-      <div className="w-full p-6 bg-white shadow rounded-xl">
+      <div className="w-full p-6 bg-white active:red shadow rounded-xl">
         <div className="flex justify-between items-start">
           <div className="flex gap-20">
             <div className="flex gap-6 items-center">
@@ -239,6 +250,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
 };
 
 export default HourlyForecast;
+
 
 
 
