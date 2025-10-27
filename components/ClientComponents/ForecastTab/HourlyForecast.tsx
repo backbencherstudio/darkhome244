@@ -8,9 +8,7 @@ import LoadingMin from "@/components/reusable/LoadingMin";
 // ⛳ ApexCharts dynamic import
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-/* ============================
-   🌤️ Type Definitions
-============================ */
+// ✅ Type Definitions
 interface WeatherCondition {
   text: string;
   icon?: string;
@@ -62,23 +60,21 @@ interface WeatherAPIResponse {
   };
 }
 
-/* ============================
-   🌦️ Component Props
-============================ */
 interface HourlyForecastProps {
   data: WeatherAPIResponse;
 }
 
-/* ============================
-   🌤️ Component
-============================ */
 const HourlyForecast = ({ data }: HourlyForecastProps) => {
   const [forecastData, setForecastData] = useState<ForecastDay[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isClient, setIsClient] = useState(false);
 
-  // ✅ Bangladeshi Districts
-  const cities = ["Gazipur", "Pabna", "Kustia", "Khulna"];
+  // ✅ Run only on client (fix hydration issue)
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
+  // ✅ Set forecast data
   useEffect(() => {
     const forecast = data?.forecast?.forecastday;
     if (forecast && forecast.length > 0) {
@@ -87,7 +83,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     setLoading(false);
   }, [data]);
 
-  if (loading) {
+  if (loading || !isClient) {
     return (
       <div className="flex justify-center items-center h-60">
         <LoadingMin />
@@ -95,7 +91,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     );
   }
 
-  // ✅ Current Weather (Live data for main city)
+  // ✅ Current Weather
   const current = {
     temp: data?.current?.temp_c ?? forecastData[0]?.day?.avgtemp_c ?? 0,
     humidity: data?.current?.humidity ?? forecastData[0]?.day?.avghumidity ?? 0,
@@ -108,31 +104,64 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
       data?.current?.condition?.text ??
       forecastData[0]?.day?.condition?.text ??
       "",
+    icon:
+      data?.current?.condition?.icon ??
+      forecastData[0]?.day?.condition?.icon ??
+      "",
   };
 
-  // ✅ Chart Config (every 3 hours)
+  // ✅ Safe formatted date (only on client)
+  const formatDateTime = (dateString: string) => {
+    if (typeof window === "undefined") return ""; // skip SSR render
+    const date = new Date(dateString);
+    return date.toLocaleString("en-US", {
+      weekday: "long",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  // ✅ Weather Icon (real API icon)
+  const renderWeatherIcon = (icon?: string, text?: string, size: number = 64) => {
+    if (icon) {
+      const url = icon.startsWith("http") ? icon : `https:${icon}`;
+      return (
+        <img
+          src={url}
+          alt={text || "weather-icon"}
+          width={size}
+          height={size}
+          className="object-cover"
+        />
+      );
+    }
+    // fallback if no icon
+    return <Cloud size={size} className="text-blue-500" />;
+  };
+
+  // ✅ Add random variation (client-side only)
+  const addVariation = (value: number, range: number = 3) => {
+    if (!isClient) return value; // SSR fix
+    const offset = (Math.random() * range * 2 - range).toFixed(1);
+    return Math.max(0, Number(value) + Number(offset));
+  };
+
+  // ✅ Filter every 3 hours
   const filteredHours =
     forecastData[0]?.hour?.filter((_, i) => i % 3 === 0) || [];
 
+  // ✅ Chart Config
   const chartOptions: any = {
     chart: { type: "area", height: 128, toolbar: { show: false } },
     dataLabels: { enabled: false },
     stroke: { curve: "smooth", width: 2, colors: ["#0ea5e9"] },
-    fill: {
-      type: "gradient",
-      gradient: { opacityFrom: 0.45, opacityTo: 0.05 },
-    },
+    fill: { type: "gradient", gradient: { opacityFrom: 0.45, opacityTo: 0.05 } },
     xaxis: {
-      categories: filteredHours.map((h) => {
-        const date = new Date(h.time);
-        return date.toLocaleString("en-US", {
-          hour: "numeric",
-          hour12: true,
-        });
-      }),
-      labels: {
-        style: { colors: "#9ca3af", fontSize: "12px" },
-      },
+      categories: filteredHours.map((h) =>
+        new Date(h.time).toLocaleString("en-US", { hour: "numeric", hour12: true })
+      ),
+      labels: { style: { colors: "#9ca3af", fontSize: "12px" } },
     },
     yaxis: { show: false },
     grid: { show: false },
@@ -146,43 +175,17 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     },
   ];
 
-  // ✅ Weather Icon Generator
-  const getWeatherIcon = (condition: string, size: number = 48) => {
-    const props = { size, className: "text-blue-500" };
-    const text = condition?.toLowerCase() || "";
-    if (text.includes("sun") || text.includes("clear"))
-      return <Sun {...props} className="text-blue-500" />;
-    if (text.includes("rain")) return <CloudRain {...props} />;
-    if (text.includes("drizzle")) return <CloudDrizzle {...props} />;
-    return <Cloud {...props} />;
-  };
-
-  // ✅ Format actual weekday + local time dynamically
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      weekday: "long",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
-  // ✅ Add random variation to simulate different city conditions
-  const addVariation = (value: number, range: number = 3) => {
-    const offset = (Math.random() * range * 2 - range).toFixed(1);
-    return Math.max(0, Number(value) + Number(offset));
-  };
+  const cities = ["Gazipur", "Pabna", "Kustia", "Khulna"];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* 🌤️ Current Weather Section */}
+      {/* 🌤️ Current Weather */}
       <div className="w-full p-6 bg-white shadow rounded-xl">
         <div className="flex justify-between items-start">
           <div className="flex gap-20">
             <div className="flex gap-6 items-center">
               <div className="flex flex-col md:flex-row gap-4 items-center">
-                {getWeatherIcon(current.condition)}
+                {renderWeatherIcon(current.icon, current.condition)}
                 <div className="flex">
                   <span className="text-5xl font-bold">{current.temp}</span>
                   <p className="ml-2 text-xl -mt-2">°C</p>
@@ -196,25 +199,18 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
             </div>
           </div>
           <div className="text-right">
-            <h2 className="text-2xl font-semibold text-gray-800">
-              {current.location}
-            </h2>
+            <h2 className="text-2xl font-semibold text-gray-800">{current.location}</h2>
             <p className="text-gray-500">{formatDateTime(current.date)}</p>
           </div>
         </div>
 
-        {/* 📊 Temperature Chart */}
+        {/* 📊 Chart */}
         <div className="relative bg-white rounded-lg overflow-hidden py-8">
-          <Chart
-            options={chartOptions}
-            series={chartSeries}
-            type="area"
-            height={128}
-          />
+          <Chart options={chartOptions} series={chartSeries} type="area" height={128} />
         </div>
       </div>
 
-      {/* 🕐 Forecast Cards — Each with slight variation */}
+      {/* 🕐 Forecast Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cities.map((city, index) => {
           const today = forecastData[0];
@@ -228,12 +224,10 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
               key={index}
               className="bg-white shadow rounded-xl p-6 transition hover:shadow-lg"
             >
-              <div className="flex gap-3 flex-col md:flex-row items-center pb-4">
-                {getWeatherIcon(today.day.condition?.text || "cloud", 64)}
+              <div className="flex gap-3 flex-col md:flex-row justify-center items-center pb-4">
+                {renderWeatherIcon(today.day.condition?.icon, today.day.condition?.text)}
                 <div className="flex gap-2">
-                  <p className="text-4xl font-bold text-gray-800">
-                    {current.temp}
-                  </p>
+                  <p className="text-4xl font-bold text-gray-800">{current.temp}</p>
                   <span className="text-xl text-gray-500 -mt-2">°C</span>
                 </div>
               </div>

@@ -26,7 +26,7 @@ const LatestCurrentNews = () => {
     const { currentItems, currentPage, totalPages, setCurrentPage } =
         useFilterPagination(parsedNews, currentPageItem);
 
-    console.log(parsedNews, "parseddddddd ")
+    // console.log(parsedNews, "parseddddddd ")
     if (error) return <div>Error: Failed To Fetch {error}</div>;
 
     const viewHandlerButton = () => {
