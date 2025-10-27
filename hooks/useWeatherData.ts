@@ -12,6 +12,7 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
     : `${latitude},${longitude}`;
 
   console.log(location, "Fetching weather data for location");
+  console.log(latitude, longitude, "Fetching weather data for location");
 
   const fetchData = async () => {
     try {
@@ -39,9 +40,16 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
     }
   };
 
+  // useEffect(() => {
+  //   fetchData();
+  // }, [latitude, longitude, cityName, method, days, apiKey, location]);
+
   useEffect(() => {
-    fetchData();
-  }, [latitude, longitude, cityName, method, days, apiKey, location]);
+    if (!location.includes('undefined')) {
+      fetchData();
+    }
+  }, [location, method, days, apiKey]);
+
 
   return { data, loading, error };
 };
