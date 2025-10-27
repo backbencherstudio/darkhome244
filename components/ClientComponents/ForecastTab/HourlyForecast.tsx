@@ -224,7 +224,8 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
               key={index}
               className="bg-white shadow rounded-xl p-6 transition hover:shadow-lg"
             >
-              <div className="flex gap-3 flex-col md:flex-row justify-center items-center pb-4">
+              <div className="flex gap-3 flex-col md:flex-row justify-center
+               items-center pb-4">
                 {renderWeatherIcon(today.day.condition?.icon, today.day.condition?.text)}
                 <div className="flex gap-2">
                   <p className="text-4xl font-bold text-gray-800">{current.temp}</p>
