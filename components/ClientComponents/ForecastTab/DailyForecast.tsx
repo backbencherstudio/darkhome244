@@ -6,6 +6,7 @@ import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import React, { useEffect, useState } from 'react'
 import Loading from './../../../app/loading';
+import getFormattedDate from '@/helper/formatedDate'
 
 interface WeatherData {
   date: string
@@ -84,7 +85,7 @@ export default function DailyForecast({ data, loading }) {
           <tbody>
             <tr>
               <td colSpan={6}>
-                <div className="border-b-1 border-[#7F7F7F]  mb-4 mt-1" />
+                <div className="border-b-1 border-[#1D1F2C]/40  mb-4 mt-1" />
               </td>
             </tr>
           </tbody>
@@ -102,7 +103,7 @@ export default function DailyForecast({ data, loading }) {
                 >
 
                   <td className="pl-3 whitespace-nowrap text-[14px] sm:text-[15px] py-4">
-                    {day.date}
+                    {getFormattedDate(day?.date)}
                   </td>
 
                   <td className=" space-x-3.5 whitespace-nowrap py-4">
