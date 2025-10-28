@@ -18,10 +18,17 @@ import { CloudRain, CloudSun, Sun } from 'lucide-react';
 
 
 
-const Example = () => {
+const MonthlyCalender = () => {
 
-    const { location } = useLocation()
-    const { data } = useWeatherData(location?.latitude, location?.longitude)
+    const { location, refreshLocation } = useLocation()
+    const latitude = location?.latitude
+    const longitude = location?.longitude
+
+
+    const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
+
+
+
 
 
     // ✅ Transform API data into calendar features
@@ -77,13 +84,13 @@ const Example = () => {
             <CalendarHeader className='font-medium text-center' />
 
             {/* Calendar body (empty for now — can add items later if needed) */}
-            <CalendarBody features={weatherData}  />
+            <CalendarBody features={weatherData} />
 
         </CalendarProvider>
     );
 };
 
-export default Example;
+export default MonthlyCalender;
 
 const TodaysForecast = () => {
     return (

@@ -81,7 +81,7 @@ export default function DailyForecast({ data, loading }) {
             </tr>
           </thead>
 
-          {/* ✅ Full-width border with top & bottom margin effect */}
+          {/*  Full-width border with top & bottom margin effect */}
           <tbody>
             <tr>
               <td colSpan={6}>
@@ -90,7 +90,7 @@ export default function DailyForecast({ data, loading }) {
             </tr>
           </tbody>
 
-          {/* ✅ Body */}
+          {/*  Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
             {weatherData2?.map((day, index) => {

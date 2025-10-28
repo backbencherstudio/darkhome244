@@ -8,21 +8,16 @@ import TempretureChart from "./TempretureChart";
 import { useLocation } from "@/components/Provider/LocationProvider";
 import { useWeatherData } from "@/hooks/useWeatherData";
 
-// ⛳ ApexCharts dynamic import
 
 
-/* ============================
-   🌤️ Type Definitions
-============================ */
-
-// ✅ Weather condition details (used in both current and forecast)
+// Weather condition details (used in both current and forecast)
 export interface WeatherCondition {
   text: string;
   icon: string;
   code: number;
 }
 
-// ✅ Hourly forecast entry
+// Hourly forecast entry
 export interface WeatherHour {
   time: string;
   temp_c: number;
@@ -31,7 +26,7 @@ export interface WeatherHour {
   condition: WeatherCondition;
 }
 
-// ✅ Daily forecast summary
+//  Daily forecast summary
 export interface WeatherDayData {
   maxtemp_c: number;
   mintemp_c: number;
@@ -42,14 +37,14 @@ export interface WeatherDayData {
   condition: WeatherCondition;
 }
 
-// ✅ A forecast day (with date, daily data, and 24-hour breakdown)
+//  A forecast day (with date, daily data, and 24-hour breakdown)
 export interface ForecastDay {
   date: string;
   day: WeatherDayData;
   hour: WeatherHour[];
 }
 
-// ✅ Location metadata
+//  Location metadata
 export interface LocationData {
   name: string;
   region: string;
@@ -60,7 +55,7 @@ export interface LocationData {
   localtime: string;
 }
 
-// ✅ Current weather section
+//  Current weather section
 export interface CurrentData {
   temp_c: number;
   temp_f?: number;
@@ -70,7 +65,7 @@ export interface CurrentData {
   condition: WeatherCondition;
 }
 
-// ✅ The full weather API response
+// The full weather API response
 export interface WeatherAPIResponse {
   location: LocationData;
   current: CurrentData;
@@ -78,9 +73,7 @@ export interface WeatherAPIResponse {
     forecastday: ForecastDay[];
   };
 }
-/* ============================
-   🌤️ Component
-============================ */
+
 const HourlyForecast = () => {
 
   const { location, refreshLocation } = useLocation()
@@ -142,25 +135,6 @@ const HourlyForecast = () => {
     );
   }
 
-
-  // ✅ Format actual weekday + local time dynamically
-  const formatDateTime = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      weekday: "long",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
-
-
-  // ✅ Add random variation to simulate different city conditions
-  // const addVariation = (value: number, range: number = 3) => {
-  //   const offset = (Math.random() * range * 2 - range).toFixed(1);
-  //   return Math.max(0, Number(value) + Number(offset));
-  // };
 
   return (
     <div className="flex gap-6">

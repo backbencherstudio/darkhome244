@@ -1,7 +1,8 @@
 import React from 'react';
 import { Cloud, CloudRain, Sun, CloudDrizzle } from 'lucide-react';
-import UvIndexIcon from '@/components/Icons/UvIndex';
-import Example from './Calender';
+import MonthlyCalender from './Calender';
+import { useLocation } from '@/components/Provider/LocationProvider';
+import { useWeatherData } from '@/hooks/useWeatherData';
 
 interface WeatherDay {
   date: number;
@@ -22,6 +23,10 @@ interface CityWeather {
 }
 
 const MonthlyForecast: React.FC = () => {
+
+
+
+
   const currentWeather = {
     temp: 29,
     precipitation: 2,
@@ -85,7 +90,7 @@ const MonthlyForecast: React.FC = () => {
       <div className="mx-auto flex gap-6">
         {/* Calendar Card */}
         <div className="bg-white p-6 w-[56.36%] relative h-fit">
-          <Example/>
+          <MonthlyCalender/>
         </div>
 
         {/* City Cards */}
