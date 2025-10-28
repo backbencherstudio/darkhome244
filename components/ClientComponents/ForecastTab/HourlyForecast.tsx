@@ -214,8 +214,7 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cities.map((city, index) => {
           const today = forecastData[0];
-          if (!today) return null;
-
+          if (!today) return null
           const humidity = addVariation(current.humidity, 5);
           const wind = addVariation(current.wind, 2);
 
