@@ -90,8 +90,7 @@ const HourlyForecast = () => {
   const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
 
   const [forecastData, setForecastData] = useState<WeatherAPIResponse | null>(null);
-  const [currentData, setCurrentData] = useState<CurrentData | null>(null);
-  const [currentHourData, setCurrentHourData] = useState<WeatherHour | null>(null);
+ 
 
 
   console.log(data, "curent hour data")
@@ -129,16 +128,6 @@ const HourlyForecast = () => {
   useEffect(() => {
     if (data && !loading) {
       setForecastData(data);
-      const currentHour = new Date(data.location.localtime).getHours();
-      const todayHours = data?.forecast?.forecastday[0]?.hour ?? [];
-
-      const hourMatch = todayHours.find((h: any) => {
-        const hourTime = new Date(h.time).getHours();
-        return hourTime === currentHour;
-      })
-      if (hourMatch) {
-        setCurrentHourData(hourMatch);
-      }
     }
   }, [data, loading, refreshLocation]);
 
@@ -174,9 +163,9 @@ const HourlyForecast = () => {
   // };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="flex gap-6">
       {/* 🌤️ Current Weather Section */}
-      <div className="w-full p-6 bg-white shadow rounded-[4px]">
+      <div className="w-[60%] p-6 bg-white shadow rounded-[4px]">
         <div className="flex justify-between items-start">
           <div className="flex gap-20">
             <div className="flex gap-6 items-center">
@@ -195,7 +184,9 @@ const HourlyForecast = () => {
             <h2 className="text-2xl font-semibold text-gray-800">
               {forecastData?.location?.name}
             </h2>
+            <div className="text-[#777980]">
             <span ref={timeRef}></span>
+            </div>
           </div>
         </div>
 
