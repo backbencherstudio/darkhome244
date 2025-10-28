@@ -28,28 +28,28 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
     // const longitude = location?.longitude
     // console.log(location, '============================')
     // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
-    const [currentHourData, setCurrentHourData] = useState<WeatherHour | null>(null);
+    // const [currentHourData, setCurrentHourData] = useState<WeatherHour | null>(null);
 
-    console.log(currentHourData, "dataaaaaaaxx")
+    // console.log(currentHourData, "dataaaaaaaxx")
 
-    useEffect(() => {
-        if (forecastData) {
-            const currentHour = new Date(forecastData.location.localtime).getHours();
-            const todayHours = forecastData?.forecast?.forecastday[0]?.hour ?? [];
+    // useEffect(() => {
+    //     if (forecastData) {
+    //         const currentHour = new Date(forecastData.location.localtime).getHours();
+    //         const todayHours = forecastData?.forecast?.forecastday[0]?.hour ?? [];
 
-            const hourMatch = todayHours.find((h: any) => {
-                const hourTime = new Date(h.time).getHours();
-                return hourTime === currentHour;
-            })
-            if (hourMatch) {
-                setCurrentHourData(hourMatch);
-            }
-        }
-    }, [forecastData]);
+    //         const hourMatch = todayHours.find((h: any) => {
+    //             const hourTime = new Date(h.time).getHours();
+    //             return hourTime === currentHour;
+    //         })
+    //         if (hourMatch) {
+    //             setCurrentHourData(hourMatch);
+    //         }
+    //     }
+    // }, [forecastData]);
 
     const filteredHours =
         forecastData?.forecast?.forecastday[0]?.hour?.filter((h: any) => {
-            const currentHour = new Date(forecastData.location.localtime).getHours();
+            const currentHour = new Date(forecastData?.location?.localtime).getHours();
             const hourTime = new Date(h.time).getHours();
             return hourTime > currentHour; // only future hours today
         }) || [];
