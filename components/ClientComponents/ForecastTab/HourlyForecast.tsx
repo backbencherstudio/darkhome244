@@ -167,7 +167,7 @@ const HourlyForecast = () => {
         <TempretureChart forecastData={forecastData} />
       </div>
 
-      {/* 🕐 Forecast Cards — Each with slight variation */}
+      {/* 🕐 Forecast Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cities.map((city, index) => {
           const today = forecastData?.forecast?.forecastday?.[0];
