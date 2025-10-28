@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Cloud, CloudRain, Sun, CloudDrizzle, Cog } from "lucide-react";
 import LoadingMin from "@/components/reusable/LoadingMin";
@@ -94,12 +94,37 @@ const HourlyForecast = () => {
   const [currentHourData, setCurrentHourData] = useState<WeatherHour | null>(null);
 
 
-  console.log(forecastData, "curent hour data")
+  console.log(data, "curent hour data")
 
 
 
   // ✅ Bangladeshi Districts
   const cities = ["Gazipur", "Pabna", "Kustia", "Khulna"];
+
+  // Real-time
+  const timeRef = useRef<HTMLSpanElement>(null);
+  const locale = navigator.language || "en-US";
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString(locale, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+
+
+      if (timeRef.current) {
+        timeRef.current.textContent = `${timeString}`;
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (data && !loading) {
@@ -140,6 +165,8 @@ const HourlyForecast = () => {
     });
   };
 
+
+
   // ✅ Add random variation to simulate different city conditions
   // const addVariation = (value: number, range: number = 3) => {
   //   const offset = (Math.random() * range * 2 - range).toFixed(1);
@@ -155,7 +182,7 @@ const HourlyForecast = () => {
             <div className="flex gap-6 items-center">
               <div className="flex flex-col md:flex-row  items-center">
                 <span> <img src={forecastData?.current?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
-                <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.floor(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
+                <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
               </div>
               <div className="text-[#777980] text-sm flex flex-col gap-0 ">
                 <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>
@@ -168,7 +195,7 @@ const HourlyForecast = () => {
             <h2 className="text-2xl font-semibold text-gray-800">
               {forecastData?.location?.name}
             </h2>
-            {/* <p className="text-gray-500">{formatDateTime()}</p> */}
+            <span ref={timeRef}></span>
           </div>
         </div>
 
@@ -206,8 +233,8 @@ const HourlyForecast = () => {
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-semibold text-gray-800">{city}</p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {formatDateTime(today.date).split(" ")[0]}
+                  <p className="text-sm text-red-500 mt-1">
+
                   </p>
                 </div>
               </div>
