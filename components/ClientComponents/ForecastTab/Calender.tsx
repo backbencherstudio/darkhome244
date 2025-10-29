@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/shadcn-io/calendar';
 import { useWeatherData } from '@/hooks/useWeatherData';
 import { CloudRain, CloudSun, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 
 
@@ -23,12 +24,51 @@ const MonthlyCalender = () => {
     const { location, refreshLocation } = useLocation()
     const latitude = location?.latitude
     const longitude = location?.longitude
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY2;
 
-    const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
+    const method = "future";
 
+    console.log(data,"dataaaaaaa")
 
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            setError(null);
 
+            const response = await fetch(
+                `https://api.weatherapi.com/v1/${method}.json?key=${apiKey}&q=${location?.latitude,location?.longitude}&dt=2025-10-25`
+            );
+            console.log(response, "response from weather api");
+
+            const result = await response.json();
+            if (!response.ok) {
+                setError(result.error?.message || 'Error fetching weather data');
+                return
+            } else {
+                setError(null);
+                setData(result);
+            }
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // useEffect(() => {
+    //   fetchData();
+    // }, [latitude, longitude, cityName, method, days, apiKey, location]);
+
+    useEffect(() => {
+        if (location) {
+            fetchData();
+        }
+    }, [location]);
 
 
     // ✅ Transform API data into calendar features

@@ -11,9 +11,8 @@ import {
 import UpcomingCalender from './UpcomingCalender';
 
 const selectItem = [
-    { value: "3 days", label: "3 Days" },
-    { value: "7 days", label: "7 Days" },
-    { value: "10 days", label: "10 Days" }
+    { value: "3", label: "3 Days" },
+    { value: "7", label: "7 Days" },
 ]
 
 
@@ -22,8 +21,14 @@ const selectItem = [
 
 
 export default function WeatherForecast() {
-
+    
+    
     const [value, setValue] = React.useState("");
+    const [date, setDate] = React.useState<{ from: Date | undefined; to?: Date | undefined } | undefined>(undefined)
+
+
+
+    console.log(date,'dddddddddd')
 
     return (
         <div className='maxContainer'>
@@ -43,7 +48,7 @@ export default function WeatherForecast() {
                         </Select>
                     </div>
                     <div >
-                        <UpcomingCalender/>
+                        <UpcomingCalender date={date} setDate = {setDate}/>
                     </div>
 
                 </div>

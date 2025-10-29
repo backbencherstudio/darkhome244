@@ -16,10 +16,10 @@ type DateRange = {
 }
 
 
-export default function UpcomingCalender() {
+export default function UpcomingCalender({ date, setDate }: { date: DateRange | undefined, setDate: OnSelectHandler<DateRange> }) {
 
     const [open, setOpen] = React.useState(false)
-    const [date, setDate] = React.useState<{ from: Date | undefined; to?: Date | undefined } | undefined>(undefined)
+    
     
     console.log(date,"Dataaaaaaaaaa")
 
@@ -45,6 +45,7 @@ export default function UpcomingCalender() {
                         mode="range" 
                         selected={date}
                         onSelect={setDate}
+                        max={30}
                         defaultMonth={date?.from || new Date()} 
                         numberOfMonths={1} 
                         className="rounded-lg border shadow-sm"
