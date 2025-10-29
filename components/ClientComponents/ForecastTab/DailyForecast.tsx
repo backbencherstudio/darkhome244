@@ -6,6 +6,7 @@ import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import React, { useEffect, useState } from 'react'
 import Loading from './../../../app/loading';
+import getFormattedDate from '@/helper/formatedDate'
 
 interface WeatherData {
   date: string
@@ -54,7 +55,7 @@ export default function DailyForecast({ data, loading }) {
 
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
-      <div className="inline-block min-w-full align-middle p-6 ">
+      <div className="inline-block min-w-[914px] lg:w-full align-middle p-6 ">
         <table className="min-w-full text-sm text-[#2c261d] font-mulish border-collapse">
 
           {/* ✅ Header */}
@@ -63,37 +64,36 @@ export default function DailyForecast({ data, loading }) {
               <th className="text-left text-[15px] sm:text-[16px">
                 Date
               </th>
-              <th className=""></th>
-              <th className="text-left  text-[15px] sm:text-[16px] ">
+              <th className="text-start">Av. Tempreture</th>
+              <th className="text-start">weather</th>
+              {/* <th className="text-left  text-[15px] sm:text-[16px] ">
                 Feels Like
-              </th>
+              </th> */}
               <th className="text-left text-[15px] sm:text-[16px] ">
-                Wind
+               Max Wind(kph)
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
                 Humidity
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
-                Pressure
+                Rain Possibility
               </th>
             </tr>
           </thead>
 
-          {/* ✅ Full-width border with top & bottom margin effect */}
+          {/*  Full-width border with top & bottom margin effect */}
           <tbody>
             <tr>
               <td colSpan={6}>
-                <div className="border-b-1 border-[#7F7F7F]  mb-4 mt-1" />
+                <div className="border-b-1 border-[#1D1F2C]/40  mb-4 mt-1" />
               </td>
             </tr>
           </tbody>
 
-          {/* ✅ Body */}
+          {/*  Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
             {weatherData2?.map((day, index) => {
-              console.log("day::", day)
-              console.log("inside day :: ", day.day)
               // const{}=day?.day;
               return (
                 <tr
@@ -103,34 +103,39 @@ export default function DailyForecast({ data, loading }) {
                 >
 
                   <td className="pl-3 whitespace-nowrap text-[14px] sm:text-[15px] py-4">
-                    {day.date}
+                    {getFormattedDate(day?.date)}
                   </td>
 
-                  <td className=" flex items-center space-x-3.5 whitespace-nowrap py-4">
-                    <span>{day?.day?.mintemp_c}</span>
-                    <PrecipitationIcon className='text-[#0080C4] h-5 w-5' />
-                    <span>{day?.condition}</span>
+                  <td className=" space-x-3.5 whitespace-nowrap py-4">
+                    <span>{day?.day?.avgtemp_c}°C</span>
+                    {/* <PrecipitationIcon className='text-[#0080C4] h-5 w-5' /> */}
                   </td>
-
+                  <td className=" flex  space-x-3.5 whitespace-nowrap py-4">
+                    <span>
+                      <img src={day?.day?.condition?.icon} alt="" className=' object-cover w-5 h-full ' />
+                    </span>
+                    <span>{day?.day?.condition?.text}</span>
+                  </td>
+{/* 
                   <td className="   whitespace-nowrap py-4">
                     {day?.hour?.[0].feelslike_c}
-                    {/* {day?.hour?. map((data)=>{
+                    {day?.hour?. map((data)=>{
                       return (
                         data?.feelslike_c
                       )
-                    })} */}
-                  </td>
+                    })}
+                  </td> */}
 
                   <td className="  whitespace-nowrap py-4 ">
                     {day?.day?.maxwind_kph}
                   </td>
 
                   <td className="  whitespace-nowrap py-4 ">
-                    {day.day?.avghumidity}
+                    {day.day?.avghumidity}%
                   </td>
 
                   <td className="   whitespace-nowrap py-4 ">
-                    {day?.hour[0].pressure_in}
+                    {day?.day?.daily_chance_of_rain}%
 
                   </td>
 

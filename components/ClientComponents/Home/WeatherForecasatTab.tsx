@@ -16,13 +16,10 @@ export default function WeatherForecastTab() {
     const { location, refreshLocation } = useLocation()
     const latitude = location?.latitude
     const longitude = location?.longitude
-    if (!latitude || !longitude || !location) {
-        console.log("⏳ Waiting for location...");
-        return null; 
-    }
+
 
     const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
-    const types = ["Hourly", "Daily", "Weekly", "Monthly"]
+    const types = ["Hourly", "Daily", "Monthly"]
     const [selectedType, setSelectedType] = useState(types[0]);
 
     const pathName = usePathname()
@@ -31,13 +28,13 @@ export default function WeatherForecastTab() {
     const renderSelectedComponent = () => {
         switch (selectedType) {
             case "Hourly":
-                return <HourlyForecast data={data} />;
+                return <HourlyForecast />;
             case "Daily":
                 return <DailyForecast data={data?.forecast?.forecastday} loading={loading} />;
-            case "Weekly":
-                return <WeeklyForecast />;
+            // case "Weekly":
+            //     return <WeeklyForecast />;
             case "Monthly":
-                return <MonthlyForecast data={data}/>;
+                return <MonthlyForecast/>;
             default:
                 return;
         }

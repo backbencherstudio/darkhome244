@@ -1,27 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { Cloud, CloudRain, Sun, CloudDrizzle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+
+import { Cloud, CloudRain, Sun, CloudDrizzle, Cog } from "lucide-react";
 import LoadingMin from "@/components/reusable/LoadingMin";
+import TempretureChart from "./TempretureChart";
+import { useLocation } from "@/components/Provider/LocationProvider";
+import { useWeatherData } from "@/hooks/useWeatherData";
 
-// ⛳ ApexCharts dynamic import
-const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-// ✅ Type Definitions
-interface WeatherCondition {
+
+// Weather condition details (used in both current and forecast)
+export interface WeatherCondition {
   text: string;
-  icon?: string;
-  code?: number;
+  icon: string;
+  code: number;
 }
 
-interface WeatherHour {
+// Hourly forecast entry
+export interface WeatherHour {
   time: string;
   temp_c: number;
+  temp_f?: number;
+  is_day?: number;
   condition: WeatherCondition;
 }
 
-interface WeatherDayData {
+//  Daily forecast summary
+export interface WeatherDayData {
   maxtemp_c: number;
   mintemp_c: number;
   avgtemp_c: number;
@@ -31,28 +37,36 @@ interface WeatherDayData {
   condition: WeatherCondition;
 }
 
-interface ForecastDay {
+//  A forecast day (with date, daily data, and 24-hour breakdown)
+export interface ForecastDay {
   date: string;
   day: WeatherDayData;
   hour: WeatherHour[];
 }
 
-interface LocationData {
+//  Location metadata
+export interface LocationData {
   name: string;
-  region?: string;
-  country?: string;
+  region: string;
+  country: string;
+  lat?: number;
+  lon?: number;
+  tz_id?: string;
   localtime: string;
 }
 
-interface CurrentData {
+//  Current weather section
+export interface CurrentData {
   temp_c: number;
+  temp_f?: number;
   humidity: number;
   wind_kph: number;
   precip_mm: number;
   condition: WeatherCondition;
 }
 
-interface WeatherAPIResponse {
+// The full weather API response
+export interface WeatherAPIResponse {
   location: LocationData;
   current: CurrentData;
   forecast: {
@@ -60,30 +74,60 @@ interface WeatherAPIResponse {
   };
 }
 
-interface HourlyForecastProps {
-  data: WeatherAPIResponse;
-}
+const HourlyForecast = () => {
 
-const HourlyForecast = ({ data }: HourlyForecastProps) => {
-  const [forecastData, setForecastData] = useState<ForecastDay[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
+  const { location, refreshLocation } = useLocation()
+  const latitude = location?.latitude
+  const longitude = location?.longitude
+  console.log(location, '============================')
+  const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
 
-  // ✅ Run only on client (fix hydration issue)
+  const [forecastData, setForecastData] = useState<WeatherAPIResponse | null>(null);
+ 
+
+
+  console.log(data, "curent hour data")
+
+
+
+  // ✅ Bangladeshi Districts
+  const cities = ["Gazipur", "Pabna", "Kustia", "Khulna"];
+
+  // Real-time
+  const timeRef = useRef<HTMLSpanElement>(null);
+  const locale = navigator.language || "en-US";
+
   useEffect(() => {
-    setIsClient(true);
+    const updateTime = () => {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString(locale, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+
+
+      if (timeRef.current) {
+        timeRef.current.textContent = `${timeString}`;
+      }
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  // ✅ Set forecast data
   useEffect(() => {
-    const forecast = data?.forecast?.forecastday;
-    if (forecast && forecast.length > 0) {
-      setForecastData(forecast);
+    if (data && !loading) {
+      setForecastData(data);
     }
-    setLoading(false);
-  }, [data]);
+  }, [data, loading, refreshLocation]);
 
-  if (loading || !isClient) {
+
+
+
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-60">
         <LoadingMin />
@@ -91,143 +135,64 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
     );
   }
 
-  // ✅ Current Weather
-  const current = {
-    temp: data?.current?.temp_c ?? forecastData[0]?.day?.avgtemp_c ?? 0,
-    humidity: data?.current?.humidity ?? forecastData[0]?.day?.avghumidity ?? 0,
-    wind: data?.current?.wind_kph ?? forecastData[0]?.day?.maxwind_kph ?? 0,
-    precipitation:
-      data?.current?.precip_mm ?? forecastData[0]?.day?.totalprecip_mm ?? 0,
-    location: data?.location?.name ?? "Dhaka",
-    date: data?.location?.localtime ?? forecastData[0]?.date ?? "",
-    condition:
-      data?.current?.condition?.text ??
-      forecastData[0]?.day?.condition?.text ??
-      "",
-    icon:
-      data?.current?.condition?.icon ??
-      forecastData[0]?.day?.condition?.icon ??
-      "",
-  };
-
-  // ✅ Safe formatted date (only on client)
-  const formatDateTime = (dateString: string) => {
-    if (typeof window === "undefined") return ""; // skip SSR render
-    const date = new Date(dateString);
-    return date.toLocaleString("en-US", {
-      weekday: "long",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
-  // ✅ Weather Icon (real API icon)
-  const renderWeatherIcon = (icon?: string, text?: string, size: number = 64) => {
-    if (icon) {
-      const url = icon.startsWith("http") ? icon : `https:${icon}`;
-      return (
-        <img
-          src={url}
-          alt={text || "weather-icon"}
-          width={size}
-          height={size}
-          className="object-cover"
-        />
-      );
-    }
-    // fallback if no icon
-    return <Cloud size={size} className="text-blue-500" />;
-  };
-
-  // ✅ Add random variation (client-side only)
-  const addVariation = (value: number, range: number = 3) => {
-    if (!isClient) return value; // SSR fix
-    const offset = (Math.random() * range * 2 - range).toFixed(1);
-    return Math.max(0, Number(value) + Number(offset));
-  };
-
-  // ✅ Filter every 3 hours
-  const filteredHours =
-    forecastData[0]?.hour?.filter((_, i) => i % 3 === 0) || [];
-
-  // ✅ Chart Config
-  const chartOptions: any = {
-    chart: { type: "area", height: 128, toolbar: { show: false } },
-    dataLabels: { enabled: false },
-    stroke: { curve: "smooth", width: 2, colors: ["#0ea5e9"] },
-    fill: { type: "gradient", gradient: { opacityFrom: 0.45, opacityTo: 0.05 } },
-    xaxis: {
-      categories: filteredHours.map((h) =>
-        new Date(h.time).toLocaleString("en-US", { hour: "numeric", hour12: true })
-      ),
-      labels: { style: { colors: "#9ca3af", fontSize: "12px" } },
-    },
-    yaxis: { show: false },
-    grid: { show: false },
-    tooltip: { theme: "light", y: { formatter: (val: number) => `${val}°C` } },
-  };
-
-  const chartSeries = [
-    {
-      name: "Temperature",
-      data: filteredHours.map((h) => h.temp_c),
-    },
-  ];
-
-  const cities = ["Gazipur", "Pabna", "Kustia", "Khulna"];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* 🌤️ Current Weather */}
-      <div className="w-full p-6 bg-white shadow rounded-xl">
+    <div className="flex gap-6">
+      {/* 🌤️ Current Weather Section */}
+      <div className="w-[60%] p-6 bg-white shadow rounded-[4px]">
         <div className="flex justify-between items-start">
           <div className="flex gap-20">
             <div className="flex gap-6 items-center">
-              <div className="flex flex-col md:flex-row gap-4 items-center">
-                {renderWeatherIcon(current.icon, current.condition)}
-                <div className="flex">
-                  <span className="text-5xl font-bold">{current.temp}</span>
-                  <p className="ml-2 text-xl -mt-2">°C</p>
-                </div>
+              <div className="flex flex-col md:flex-row  items-center">
+                <span> <img src={forecastData?.current?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
+                <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
               </div>
-              <div className="text-gray-600 space-y-1">
-                <p>Precipitation: {current.precipitation} mm</p>
-                <p>Humidity: {current.humidity}%</p>
-                <p>Wind: {current.wind.toFixed(1)} Km/h</p>
+              <div className="text-[#777980] text-sm flex flex-col gap-0 ">
+                <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>
+                <p>Humidity: {forecastData?.current?.humidity}%</p>
+                <p>Wind: {forecastData?.current?.wind_kph} Km/h</p>
               </div>
             </div>
           </div>
           <div className="text-right">
-            <h2 className="text-2xl font-semibold text-gray-800">{current.location}</h2>
-            <p className="text-gray-500">{formatDateTime(current.date)}</p>
+            <h2 className="text-2xl font-semibold text-gray-800">
+              {forecastData?.location?.name}
+            </h2>
+            <div className="text-[#777980]">
+            <span ref={timeRef}></span>
+            </div>
           </div>
         </div>
 
-        {/* 📊 Chart */}
-        <div className="relative bg-white rounded-lg overflow-hidden py-8">
-          <Chart options={chartOptions} series={chartSeries} type="area" height={128} />
-        </div>
+        <TempretureChart forecastData={forecastData} />
       </div>
 
       {/* 🕐 Forecast Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {cities.map((city, index) => {
+<<<<<<< HEAD
           const today = forecastData[0];
           if (!today) return null
           const humidity = addVariation(current.humidity, 5);
           const wind = addVariation(current.wind, 2);
+=======
+          const today = forecastData?.forecast?.forecastday?.[0];
+          if (!today) return null;
+
+
+>>>>>>> a559dd5165d87bc5f5914ec535cce21c413993e4
 
           return (
             <div
               key={index}
-              className="bg-white shadow rounded-xl p-6 transition hover:shadow-lg"
+              className="bg-white shadow rounded-[4px] p-6 transition hover:shadow-lg"
             >
-              <div className="flex gap-3 flex-col md:flex-row justify-center
-               items-center pb-4">
-                {renderWeatherIcon(today.day.condition?.icon, today.day.condition?.text)}
+              <div className="flex gap-3 flex-col md:flex-row items-center pb-4">
+
                 <div className="flex gap-2">
-                  <p className="text-4xl font-bold text-gray-800">{current.temp}</p>
+                  <p className="text-4xl font-bold text-gray-800">
+
+                  </p>
                   <span className="text-xl text-gray-500 -mt-2">°C</span>
                 </div>
               </div>
@@ -235,13 +200,13 @@ const HourlyForecast = ({ data }: HourlyForecastProps) => {
               <div className="flex justify-between items-start">
                 <div className="text-gray-700 space-y-1 text-sm">
                   <p>Precipitation: {today.day.totalprecip_mm} mm</p>
-                  <p>Humidity: {humidity}%</p>
-                  <p>Wind: {wind.toFixed(1)} Km/h</p>
+                  {/* <p>Humidity: {humidity}%</p> */}
+                  {/* <p>Wind: {wind.toFixed(1)} Km/h</p> */}
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-semibold text-gray-800">{city}</p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    {formatDateTime(today.date).split(" ")[0]}
+                  <p className="text-sm text-red-500 mt-1">
+
                   </p>
                 </div>
               </div>

@@ -24,7 +24,7 @@ import {
 export default function BannerSection() {
   return (
     <div>
-      <div className='w-full h-[588px]'
+      <div className='w-full h-[588px] '
         style={{
           backgroundImage: "url('/home-banner.png')",
           backgroundSize: 'cover',
@@ -46,8 +46,8 @@ function WeatherDashboard() {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const { location, refreshLocation } = useLocation()
   const [cityName, setCityName] = useState("")
-  const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
-  const { data: forecastData } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
+  // const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
+  const {  data, error, loading  } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
   console.log(error, "Dataaaaa")
 
   const [query, setQuery] = useState("");
@@ -55,15 +55,14 @@ function WeatherDashboard() {
   // const [country, setCountry] = useState(null)
   // const [city, setCityName] = useState(null)
   const [weather, setWeather] = useState(null)
-  const [weather2, setWeather2] = useState(null)
+
+  console.log(weather)
 
 
-
-  const OPENWEATHERMAP_API_KEY = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY as string;
 
   useEffect(() => {
     if (data) {
-      setWeather2(data);
+      setWeather(data);
     }
   }, [data, loading, cityName, refreshLocation]);
 
@@ -136,32 +135,23 @@ function WeatherDashboard() {
     setShowLocationDropdown(false);
   };
 
-  // const weatherData = {
-  //   location: 'Sydney NSW',
-  //   country: 'Australia',
-  //   date: 'Sep, 07, 2025',
-  //   temperature: '32°',
-  //   condition: 'Sunny Cloudy',
-  //   windSpeed: '22 km/h',
-  //   precipitation: '75%',
-  //   uvIndex: ` ${data?.daily?.uv_index_max[0]} of 15`
-  // };
+
 
   const weatherStats = [
     {
       icon: <WindSpeedIcon />,
       title: "Wind Speed",
-      value: `${weather2?.current?.wind_kph} Km/h`,
+      value: `${weather?.current?.wind_kph} Km/h`,
     },
     {
       icon: <PrecipitationIcon />,
       title: "Precipitation",
-      value: `${forecastData?.forecast?.forecastday[0]?.day?.daily_chance_of_rain}%`,
+      value: `${weather?.forecast?.forecastday[0]?.day?.daily_chance_of_rain}%`,
     },
     {
       icon: <UvIndexIcon />,
       title: "UV Index",
-      value: weather2?.current?.uv,
+      value: weather?.current?.uv,
     }
   ];
 
@@ -263,11 +253,11 @@ function WeatherDashboard() {
               <div className="flex justify-between items-start pb-3 border-b border-[#FFFFFF26]">
                 <div>
                   <h3 className="text-base md:text-lg leading-[160%] font-semibold mb-2">Today's Weather</h3>
-                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{getFormattedDate(weather2?.location?.localtime)}</p>
+                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{getFormattedDate(weather?.location?.localtime)}</p>
                 </div>
                 <div className="text-right">
-                  <h2 className="text-base md:text-lg leading-[160%] font-semibold mb-2">{weather2?.location?.name}</h2>
-                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{weather2?.location?.country}</p>
+                  <h2 className="text-base md:text-lg leading-[160%] font-semibold mb-2">{weather?.location?.name}</h2>
+                  <p className="text-[#E9E9EA] text-sm leading-[136%] md:text-base">{weather?.location?.country}</p>
                 </div>
               </div>
 
@@ -279,12 +269,12 @@ function WeatherDashboard() {
                     <div className="block ">
                       {/* Weather Icon - Sunny Cloudy */}
                       {/* {weather?.weather[0]?.main === "Rain" ? <img src="/rain.png" alt="" className=' object-cover w-[72px] h-full ' /> : <img src="/cloudy.png" alt="" className=' object-cover w-full h-full ' />} */}
-                      <img src={weather2?.current?.condition?.icon} alt="" className=' object-cover w-[72px] h-full ' />
+                      <img src={weather?.current?.condition?.icon} alt="" className=' object-cover w-[72px] h-full ' />
 
                     </div>
                     <div className='flex flex-col'>
-                      <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather2?.current?.temp_c)}°</div>
-                      <div className="text-gray-300 text-sm md:text-base">{weather2?.current?.condition?.text}</div>
+                      <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather?.current?.temp_c)}°</div>
+                      <div className="text-gray-300 text-sm md:text-base">{weather?.current?.condition?.text}</div>
                     </div>
                   </div>
                 </div>
