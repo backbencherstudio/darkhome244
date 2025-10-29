@@ -36,7 +36,7 @@ export default function DailyForecast({ data, loading }) {
   // console.log(location, '============================')
   // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
 
-  const [weatherData2, setWeatherData] = useState(data)
+  const [weatherData, setWeatherData] = useState(data)
 
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function DailyForecast({ data, loading }) {
     )
   }
 
-  // console.log(weatherData2?.forecast?.forecastday, 'user daily forecast data============================')
+  // console.log(weatherData?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
     <div className="w-full overflow-x-auto bg-[#FFFFFF] border rounded-sm">
@@ -93,7 +93,7 @@ export default function DailyForecast({ data, loading }) {
           {/*  Body */}
           <tbody className="min-w-full text-sm font-mulish text-[#1D1F2C] text-[16px] not-italic font-semibold leading-normal ">
 
-            {weatherData2?.map((day, index) => {
+            {weatherData?.map((day, index) => {
               // const{}=day?.day;
               return (
                 <tr
