@@ -25,7 +25,20 @@ body {
   color: #4A4C56;
 }
 
+/* ================= */
 
+.custom-scroll::-webkit-scrollbar {
+  width: 2px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+  background-color: #0080C4;
+  border-radius: 15px;
+}
 
 
 
