@@ -40,7 +40,9 @@ body {
   border-radius: 15px;
 }
 
-
+div#logo-wrapper{
+  top: 200px !important;
+}
 
 @theme inline {
     --radius-sm: calc(var(--radius) - 4px);

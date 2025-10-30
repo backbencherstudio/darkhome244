@@ -43,11 +43,6 @@ export default function ForecastCurrentCard() {
     };
 
 
-    // const cardData = [
-    //     { title: "UV Index", type: "uv", value:  Number(data?.current?.uv) || 0, rawValue: data?.curremt?.uv, icon: <UvIndexIcon className='text-[#0080C4]' /> },
-    //     { title: "Rain", type: "rain", value: `${data?.hourly?.precipitation_probability[0]}%`, rawValue: data?.hourly?.precipitation_probability[0] ?? 0, icon: <RainUmbrellaIcon className='' /> },
-    //     { title: "Wind Speed", type: "wind", value: `${data?.current?.wind_speed_10m} km/h`, rawValue: data?.current?.wind_speed_10m, icon: <WindSpeedIcon className='text-[#0080C4]' /> },
-    //     { title: "Temperature", type: "temperature", value: `${data?.current?.temperature_2m}°C`, rawValue: data?.current?.temperature_2m, icon: <TempretureIcon className='fill-[#0080C4]' /> },
     // ]
      const cardData = [
         {
@@ -62,7 +57,7 @@ export default function ForecastCurrentCard() {
             type: "rain", 
             value: `${data?.forecast?.forecastday[0]?.day?.daily_chance_of_rain}%`,
             rawValue: data?.forecast?.forecastday[0]?.day?.daily_chance_of_rain ?? 0,
-            icon: <RainUmbrellaIcon className='' />
+            icon: <RainUmbrellaIcon className='text-[#0080C4]' />
         },
         {
             title: "Wind Speed", 
