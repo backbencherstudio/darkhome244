@@ -10,7 +10,7 @@ const MapComponent = dynamic(() => import('../../components/ClientComponents/Rad
 export default function RadarPage() {
   return (
     <div>
-      <MapComponent />
+      <MapComponent overlay = "wind" />
     </div>
   )
 }

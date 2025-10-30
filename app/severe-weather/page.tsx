@@ -11,6 +11,6 @@ import React from 'react'
 
 export default function SeverWeatherpage() {
     return (
-        <div><MapComponent /></div>
+        <div><MapComponent overlay='efiRain'/></div>
     )
 }

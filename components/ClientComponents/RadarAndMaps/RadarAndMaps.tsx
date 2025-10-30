@@ -7,14 +7,10 @@ import { useWeatherData } from '@/hooks/useWeatherData';
 import { LocateFixed, MapPin, Search, SearchIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 
-export default function RadarAndMaps() {
+export default function RadarAndMaps({overlay}:{overlay?:string}) {
 
 const { location, refreshLocation } = useLocation()
- const latitude = location?.latitude
-    const longitude = location?.longitude
 
-const [btnBorder, setButtonBorder] = useState(false)
- const [hanldeSearchInput, setHandleSearchInput] = useState(false)
  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
  const [searchQuery, setSearchQuery] = useState('');
@@ -75,8 +71,7 @@ useEffect(() => {
 
   return (
     <div className="relative h-[80vh] w-full  overflow-hidden border border-[#ffffff1a]">
-      <iframe  width="100%" height="100%" src={`https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=wind&product=ecmwf&level=surface&lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&marker=true`} ></iframe>
-
+      <iframe  width="100%" height="100%" src={`https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=mm&metricTemp=°C&metricWind=km/h&zoom=5&overlay=${overlay}&product=ecmwf&level=surface&lat=${lat}&lon=${lon}&detailLat=${lat}&detailLon=${lon}&marker=true`} ></iframe>
          <div className="absolute z-400 sm:left-1/2 left-2   sm:w-[400px] w-[70%] sm:-translate-x-1/2 top-2">
           <div className=" gap-1 w-full bg-transparent">
              <form onSubmit={handleSearch} className="flex items-center bg-[#FFFFFFE5] w-full  rounded-[4px] backdrop-blur-sm  shadow-md">
