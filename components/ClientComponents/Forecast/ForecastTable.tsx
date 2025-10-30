@@ -10,6 +10,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import LoadingMin from '@/components/reusable/LoadingMin';
+import getFormattedDate from '@/helper/formatedDate';
 
 
 export default function ForecastTable({ forecastData, loading }) {
@@ -17,6 +18,33 @@ export default function ForecastTable({ forecastData, loading }) {
 
     if (!forecastData?.length)
         return <p>No forecast data available.</p>;
+
+
+    const getHour = (timeStr) => {
+        const [time, modifier] = timeStr.split(' ');
+        let [hour, minute] = time.split(':').map(Number);
+        if (modifier === 'PM' && hour !== 12) hour += 12;
+        if (modifier === 'AM' && hour === 12) hour = 0;
+        return hour;
+    };
+
+    const findHourData = (hours, targetHour) => {
+        return hours.find(h => new Date(h.time).getHours() === targetHour)
+    }
+
+
+
+    const summarizedData = forecastData?.map(day => {
+        const sunriseHour = getHour(day?.astro.sunrise);
+        const sunsetHour = getHour(day?.astro?.sunset);
+        return {
+            date: day?.date,
+            morning: findHourData(day?.hour, sunriseHour),
+            afternoon: findHourData(day?.hour, 14),
+            evening: findHourData(day?.hour, sunsetHour),
+            night: findHourData(day?.hour, 23)
+        }
+    })
 
     const getWeatherIcon = (condition) => {
         switch (condition.toLowerCase()) {
@@ -33,50 +61,73 @@ export default function ForecastTable({ forecastData, loading }) {
         }
     };
 
-    console.log(forecastData,"forecast Dataaaaaaaaaaaaaaaa")
+    console.log('Summarized Data:', summarizedData);
+
 
     return (
-        <div className='space-y-6'>
+        <div className='space-y-6 max-h-screen overflow-y-auto custom-scroll'>
             {loading ? <LoadingMin /> : (
                 <>
-                    {forecastData?.map((day, dayIndex) => (
+                    {summarizedData?.map((day, dayIndex) => (
                         <div key={dayIndex} className="bg-white rounded-[4px] p-6">
                             {/* Weather Table */}
                             <Table>
                                 <TableHeader className=''>
                                     <TableRow className=''>
-                                        <TableHead className="md:w-[200px]  ">
+                                        <TableHead className="px-0">
                                             <div className=" ">
-                                                <h2 className="text-lg md:text-xl lg:text-2xl lg:w-[40%]  text-[#1D1F2C] font-semibold py-1.5">{day?.date}</h2>
+                                                <h2 className="text-lg md:text-xl lg:text-2xl text-[#1D1F2C] font-semibold py-1.5">{new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" })
+                                                    .format(new Date(day?.date))
+                                                    .replace(" ", ", ")}</h2>
                                             </div>
                                         </TableHead>
 
-                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-center"></TableHead>
-                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-center">Feels Like</TableHead>
-                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-center">Wind</TableHead>
-                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-center">Humidity</TableHead>
-                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-center">Pressure</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Temp</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Condition</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Feels Like</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Wind</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Humidity</TableHead>
+                                        <TableHead className="text-[#1D1F2C] md:text-base text-sm font-semibold text-start">Pressure</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody className=''>
-                                    {day?.periods?.map((period, periodIndex) => (
-                                        <TableRow key={periodIndex} className="hover:bg-gray-50 border-b-0 ">
-                                            <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  ${periodIndex === 0 ? "md:mt-8 pt-6" : ""}`}>{period?.time}</TableCell>
-                                            <TableCell className={`flex gap-4 ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>
-                                                <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.temp}</span>
-                                                <div className="flex items-center gap-2">
-                                                    {getWeatherIcon(period?.condition)}
-                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.condition}</span>
-                                                </div>
-                                            </TableCell>
-                                            {/* <TableCell className="hidden sm:table-cell">
-                                        </TableCell> */}
-                                            <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.feelsLike}</TableCell>
-                                            <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.wind}</TableCell>
-                                            <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.humidity}</TableCell>
-                                            <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.pressure}</TableCell>
-                                        </TableRow>
-                                    ))}
+                                    {["morning", "afternoon", "evening", "night"].map((periodKey, periodIndex) => {
+                                        const period = day[periodKey]
+                                        if (!period) return null;
+                                        return (
+                                            <TableRow key={periodIndex} className="hover:bg-gray-50 border-b-0 ">
+                                                <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  ${periodIndex === 0 ? "md:mt-8 pt-6" : ""}`}>{periodKey?.charAt(0).toUpperCase() + periodKey.slice(1)}</TableCell>
+                                                <TableCell className={`flex gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.temp_c}°C</span>
+
+                                                </TableCell>
+                                                <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <div className="flex items-center gap-2">
+                                                        <span> <img src={period?.condition?.icon} alt="" className=' object-cover w-6' /></span>
+                                                        <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.condition?.text}</span>
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.feelslike_c}°C</span>
+                                                </TableCell>
+                                                <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.wind_kph} km/h</span>
+                                                </TableCell>
+                                                <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold pl-2">{period?.humidity}%</span>
+                                                </TableCell>
+                                                <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.pressure_mb}</span>
+                                                </TableCell>
+                                                {/* <TableCell className="hidden sm:table-cell">
+                                                </TableCell>
+                                                <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.feelsLike}</TableCell>
+                                                <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.wind}</TableCell>
+                                                <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.humidity}</TableCell>
+                                                <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  text-center ${periodIndex === 0 ? "md:pt-8 pt-6" : ""}`}>{period?.pressure}</TableCell> */}
+                                            </TableRow>
+                                        )
+                                    })}
                                 </TableBody>
                             </Table>
                         </div>
@@ -88,170 +139,3 @@ export default function ForecastTable({ forecastData, loading }) {
     )
 }
 
-
-const weatherData = [
-    {
-        date: "11, Sep, 2025",
-        periods: [
-            {
-                time: "Morning",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Afternoon",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Evening",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Night",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            }
-        ]
-    },
-    {
-        date: "12, Sep, 2025",
-        periods: [
-            {
-                time: "Morning",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Afternoon",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Evening",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Night",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            }
-        ]
-    },
-    {
-        date: "13, Sep, 2025",
-        periods: [
-            {
-                time: "Morning",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Afternoon",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Evening",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            },
-            {
-                time: "Night",
-                temp: "+29°C",
-                condition: "Rain",
-                feelsLike: "+34°C",
-                wind: "2 — 5",
-                humidity: "80%",
-                pressure: "754"
-            }
-        ]
-    },
-    {
-        date: "14, Sep, 2025",
-        periods: [
-            {
-                time: "Morning",
-                temp: "+27°C",
-                condition: "Cloudy",
-                feelsLike: "+31°C",
-                wind: "3 — 6",
-                humidity: "75%",
-                pressure: "752"
-            },
-            {
-                time: "Afternoon",
-                temp: "+30°C",
-                condition: "Sunny",
-                feelsLike: "+35°C",
-                wind: "4 — 7",
-                humidity: "65%",
-                pressure: "753"
-            },
-            {
-                time: "Evening",
-                temp: "+28°C",
-                condition: "Partly Cloudy",
-                feelsLike: "+32°C",
-                wind: "3 — 5",
-                humidity: "70%",
-                pressure: "752"
-            },
-            {
-                time: "Night",
-                temp: "+26°C",
-                condition: "Rain",
-                feelsLike: "+30°C",
-                wind: "2 — 4",
-                humidity: "82%",
-                pressure: "751"
-            }
-        ]
-    }
-];

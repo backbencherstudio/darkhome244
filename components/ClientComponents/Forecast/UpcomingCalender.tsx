@@ -45,7 +45,7 @@ export default function UpcomingCalender({ date, setDate }: { date: DateRange | 
                         mode="range" 
                         selected={date}
                         onSelect={setDate}
-                        max={30}
+                        max={7}
                         defaultMonth={date?.from || new Date()} 
                         numberOfMonths={1} 
                         className="rounded-lg border shadow-sm"
