@@ -2,10 +2,10 @@
 
 import SelectedTabComponent from '@/components/reusable/SelectedTabComponent';
 import React, { useState } from 'react'
-import HourlyForecast from '../ForecastTab/HourlyForecast';
-import DailyForecast from '../ForecastTab/DailyForecast';
-import WeeklyForecast from '../ForecastTab/WeeklyForecast';
-import MonthlyForecast from '../ForecastTab/MonthlyForecast';
+import HourlyForecast from './ForecastTab/HourlyForecast';
+import DailyForecast from './ForecastTab/DailyForecast';
+import WeeklyForecast from './ForecastTab/WeeklyForecast';
+import MonthlyForecast from './ForecastTab/MonthlyForecast';
 import { usePathname } from 'next/navigation';
 import { useLocation } from '@/components/Provider/LocationProvider';
 import { useWeatherData } from '@/hooks/useWeatherData';

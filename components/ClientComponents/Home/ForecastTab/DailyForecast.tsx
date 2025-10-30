@@ -5,7 +5,7 @@ import { useLocation } from '@/components/Provider/LocationProvider'
 import LoadingMin from '@/components/reusable/LoadingMin'
 import { useWeatherData } from '@/hooks/useWeatherData'
 import React, { useEffect, useState } from 'react'
-import Loading from './../../../app/loading';
+import Loading from '../../../../app/loading';
 import getFormattedDate from '@/helper/formatedDate'
 
 interface WeatherData {
