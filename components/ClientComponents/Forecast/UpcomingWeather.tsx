@@ -62,7 +62,7 @@ export default function WeatherForecast() {
                         </Select>
                     </div>
                     <div >
-                        <UpcomingCalender date={date} setDate={setDate} />
+                        {/* <UpcomingCalender date={date} setDate={setDate} /> */}
                     </div>
 
                 </div>

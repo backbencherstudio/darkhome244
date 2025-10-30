@@ -19,7 +19,7 @@ export default function WeatherForecastTab() {
 
 
     const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 7)
-    const types = ["Hourly", "Daily", "Monthly"]
+    const types = ["Hourly", "Daily",]
     const [selectedType, setSelectedType] = useState(types[0]);
 
     const pathName = usePathname()
@@ -33,8 +33,8 @@ export default function WeatherForecastTab() {
                 return <DailyForecast data={data?.forecast?.forecastday} loading={loading} />;
             // case "Weekly":
             //     return <WeeklyForecast />;
-            case "Monthly":
-                return <MonthlyForecast/>;
+            // case "Monthly":
+            //     return <MonthlyForecast/>;
             default:
                 return;
         }
