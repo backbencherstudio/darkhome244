@@ -4,7 +4,7 @@ import React from 'react'
 export default function HealthActivityPage() {
   return (
     <div>
-      <div className='py-[60px] h-[588px] w-full '
+      {/* <div className='py-[60px] h-[588px] w-full '
         style={{
           background: "linear-gradient(0deg, rgba(0, 0, 0, 0.50) 0%, rgba(0, 0, 0, 0.50) 100%), url('/forecastBanner.png') lightgray 50% / cover no-repeat",
           backgroundSize: 'cover',
@@ -12,9 +12,9 @@ export default function HealthActivityPage() {
           backgroundRepeat: "no-repeat"
         }}>
         <div className='text-white'>
-          {/* <WeatherForecastTab /> */}
+          //  <WeatherForecastTab />
         </div>
-      </div>
+      </div> */}
       <div className='maxContainer'>
         <div className='text center py-12  text-center'>
           Google Adds Here
