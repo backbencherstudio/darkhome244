@@ -1,3 +1,5 @@
+import WeatherForecastTab from '@/components/ClientComponents/Home/WeatherForecasatTab'
+import MarineForecast from '@/components/ClientComponents/MarineForecast/MarineForecast'
 import React from 'react'
 
 export default function MarinePage() {
@@ -11,7 +13,7 @@ export default function MarinePage() {
           backgroundRepeat: "no-repeat"
         }}>
         <div className='text-white'>
-          {/* <WeatherForecastTab /> */}
+          <MarineForecast />
         </div>
       </div>
     </div>

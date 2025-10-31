@@ -19,10 +19,10 @@ export default function SeverWeatherpage() {
     return (
         <div>
             <MapComponent overlay='efiRain' />
-            <div>
+            <div className=''>
                 <AlertComponent />
             </div>
-            <div className='maxContainer xl:mt-[60px]  md:mt-[40px] pb-8'>
+            <div className='maxContainer md:mt-[40px] pb-8'>
                 <SevereWeatherFeed />
             </div>
         </div>
