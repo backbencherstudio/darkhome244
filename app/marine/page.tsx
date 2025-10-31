@@ -1,5 +1,7 @@
 import WeatherForecastTab from '@/components/ClientComponents/Home/WeatherForecasatTab'
+import MarineFeed from '@/components/ClientComponents/MarineForecast/MarineFeed'
 import MarineForecast from '@/components/ClientComponents/MarineForecast/MarineForecast'
+
 import React from 'react'
 
 export default function MarinePage() {
@@ -15,6 +17,10 @@ export default function MarinePage() {
         <div className='text-white'>
           <MarineForecast />
         </div>
+      </div>
+
+      <div className='maxContainer py-8'>
+        <MarineFeed />
       </div>
     </div>
   )
