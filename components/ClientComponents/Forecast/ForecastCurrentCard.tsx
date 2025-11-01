@@ -15,7 +15,6 @@ export default function ForecastCurrentCard() {
     const { location, refreshLocation} = useLocation()
     const latitude = location?.latitude 
     const longitude = location?.longitude 
-    console.log(location,'============================')
     const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,1)
 
     
@@ -23,7 +22,6 @@ export default function ForecastCurrentCard() {
 
     const getPercentageValue = (value: number, type: string): number => {
 
-        console.log(value, "type")
         switch (type) {
             case 'uv':
                 // UV Index typically ranges from 0-11+, so we'll use 15 as max for better visualization

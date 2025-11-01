@@ -11,8 +11,8 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
     ? encodeURIComponent(cityName)
     : `${latitude},${longitude}`;
 
-  console.log(location, "Fetching weather data for location");
-  console.log(latitude, longitude, "Fetching weather data for location");
+  // console.log(location, "Fetching weather data for location");
+  // console.log(latitude, longitude, "Fetching weather data for location");
 
   const fetchData = async () => {
     try {
@@ -22,7 +22,7 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
       const response = await fetch(
         `https://api.weatherapi.com/v1/${method}.json?key=${apiKey}&q=${location}&days=${days}&hourly=24&alerts=yes`
       );
-      console.log(response, "response from weather api");
+      // console.log(response, "response from weather api");
 
       const result = await response.json();
       if (!response.ok) {

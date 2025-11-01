@@ -61,7 +61,7 @@ export default function ForecastTable({ forecastData, loading }) {
         }
     };
 
-    console.log('Summarized Data:', summarizedData);
+
 
 
     return (

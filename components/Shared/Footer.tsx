@@ -36,7 +36,7 @@ export default function Footer() {
 
     const handleSubscribe = () => {
         if (email.trim()) {
-            console.log('Subscribed with email:', email);
+            // console.log('Subscribed with email:', email);
             setEmail('');
         }
     };

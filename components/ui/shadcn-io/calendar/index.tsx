@@ -274,7 +274,7 @@ export const CalendarBody = ({ features, children }: CalendarBodyProps) => {
 
   for (let day = 1; day <= daysInMonth; day++) {
     const featuresForDay = featuresByDay[day] || [];
-    console.log(featuresForDay[0], "dddd")
+
     days.push(
       <div
         className={`relative flex h-full w-full flex-col items-center justify-center  gap-1 px-4 py-2  text-sm text-[#333] ${featuresForDay[0]?.isToday ? "bg-[#0080C4] text-white" : ""} `}

@@ -48,7 +48,7 @@ function WeatherDashboard() {
   const [cityName, setCityName] = useState("")
   // const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
   const {  data, error, loading  } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
-  console.log(error, "Dataaaaa")
+
 
   const [query, setQuery] = useState("");
   // const [hanldeSearchInput, setHandleSearchInput] = useState(false)
@@ -56,7 +56,6 @@ function WeatherDashboard() {
   // const [city, setCityName] = useState(null)
   const [weather, setWeather] = useState(null)
 
-  console.log(weather)
 
 
 

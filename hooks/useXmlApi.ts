@@ -31,7 +31,7 @@ export const useRSSFeed = (rssUrl: string) => {
           throw new Error('Invalid response from RSS API');
         }
         
-        console.log('RSS Feed fetched successfully via API route');
+        // console.log('RSS Feed fetched successfully via API route');
         setData(result.content);
         
       } catch (err) {

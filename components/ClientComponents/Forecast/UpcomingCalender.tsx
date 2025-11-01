@@ -21,7 +21,7 @@ export default function UpcomingCalender({ date, setDate }: { date: DateRange | 
     const [open, setOpen] = React.useState(false)
     
     
-    console.log(date,"Dataaaaaaaaaa")
+
 
     return (
         <div>

@@ -8,11 +8,11 @@ import React from 'react'
 export default function NewsDetailsPage() {
 
     const { id } = useParams()
-    console.log(id, "path")
+    // console.log(id, "path")
 
 
     const categoryData = useRSSStore(state => state.categoryData)
-    console.log(categoryData,"categorrrrrrrrrrry")
+    // console.log(categoryData,"categorrrrrrrrrrry")
 
     // const newsItem = parsedNews?.find((news) => news.id === id);
 

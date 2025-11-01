@@ -32,7 +32,7 @@ const MonthlyCalender = () => {
 
     const method = "future";
 
-    console.log(data,"dataaaaaaa")
+
 
     const fetchData = async () => {
         try {
@@ -42,7 +42,6 @@ const MonthlyCalender = () => {
             const response = await fetch(
                 `https://api.weatherapi.com/v1/${method}.json?key=${apiKey}&q=${location?.latitude,location?.longitude}&dt=2025-10-25`
             );
-            console.log(response, "response from weather api");
 
             const result = await response.json();
             if (!response.ok) {

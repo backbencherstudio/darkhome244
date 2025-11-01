@@ -16,7 +16,6 @@ export default function AlertComponent() {
     }, [data, loading])
 
     if (loading) return <LoadingMin />
-    console.log(loading, "loadig", data, "dataaaaaaa")
     if (!alertData || alertData.length === 0) {
         return (
             <div className="bg-gray-100 rounded-lg p-3 text-center">

@@ -27,7 +27,7 @@ export default function WeatherForecast() {
     const { location, refreshLocation } = useLocation()
     const latitude = location?.latitude
     const longitude = location?.longitude
-    console.log(location, '============================')
+
 
     const [forecastData, setForecastData] = useState({});
 
@@ -42,7 +42,7 @@ export default function WeatherForecast() {
         }
     }, [data, location, value])
 
-    console.log(forecastData, 'dddddddddd')
+
 
     return (
         <div className='maxContainer'>

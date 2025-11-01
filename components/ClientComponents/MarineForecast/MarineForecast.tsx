@@ -15,9 +15,9 @@ export default function MarineForecast() {
     const { location, refreshLocation } = useLocation()
     const latitude = location?.latitude
     const longitude = location?.longitude
-    console.log(location, '============================')
+
     const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
-    console.log(data,"dataaaaaaaa marine")
+
     const [forecastData, setForecastData] = useState<WeatherAPIResponse | null>(null);
     const timeRef = useRef<HTMLSpanElement>(null);
 

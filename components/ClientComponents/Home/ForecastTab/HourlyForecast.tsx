@@ -79,14 +79,14 @@ const HourlyForecast = () => {
   const { location, refreshLocation } = useLocation()
   const latitude = location?.latitude
   const longitude = location?.longitude
-  console.log(location, '============================')
+ 
   const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
 
   const [forecastData, setForecastData] = useState<WeatherAPIResponse | null>(null);
  
 
 
-  console.log(data, "curent hour data")
+
 
 
 

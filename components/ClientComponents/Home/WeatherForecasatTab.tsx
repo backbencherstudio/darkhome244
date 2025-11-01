@@ -39,7 +39,7 @@ export default function WeatherForecastTab() {
                 return;
         }
     }
-    console.log(data?.forecast, 'user daily forecast data============================')
+
     return (
         <div className='maxContainer md:py-[60px] py-12'>
             <div className='flex md:flex-row flex-col gap-4 md:gap-0 md:justify-between md:items-center mb-6 md:mb-8'>

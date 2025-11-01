@@ -18,7 +18,7 @@ const { location, refreshLocation } = useLocation()
   const {  data, error, loading  } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
   const [lat,setLat] = useState<number | null>(null);
   const [lon,setLon] = useState<number | null>(null);
-  console.log(data,"data from maps")
+
 
 
 
