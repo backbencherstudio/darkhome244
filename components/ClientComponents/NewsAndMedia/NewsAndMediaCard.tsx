@@ -89,7 +89,7 @@ export default function NewsAndMediaCard({ RSS_FEEDS, headerTitle }) {
                         </div>
                     </div>
                     <div className='lg:w-[32.12%] w-full  border'>
-                        Google adds will show here
+                        Google adds
                     </div>
                 </div>
             </div>
