@@ -138,7 +138,7 @@ const HourlyForecast = () => {
 
 
   return (
-    <div className="flex gap-6">
+    <div className="flex gap-4">
       {/* 🌤️ Current Weather Section */}
       <div className="w-[58%] p-6 bg-white shadow rounded-[4px]">
         <div className="flex justify-between items-start">
@@ -169,7 +169,7 @@ const HourlyForecast = () => {
       </div>
 
       {/* 🕐 Forecast Cards */}
-      <div className="flex-1 border border-transparent">
+      <div className="flex-1 ">
         <NearestCityCard />
         {/* {cities.map((city, index) => {
           const today = forecastData?.forecast?.forecastday?.[0];
