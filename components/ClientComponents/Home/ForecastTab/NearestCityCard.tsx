@@ -79,7 +79,7 @@
 //                                 <div className='text-[#4A4C56] text-sm flex flex-col'>
 //                                     <p className='text-sm font-semibold text-[#4A4C56] '>Sunrise:<span  className='text-xs font-medium'>{city?.forecast?.forecastday[0]?.astro?.sunrise}</span></p>
 //                                     <p  className='text-sm font-semibold text-[#4A4C56] '>Sunset: <span className='text-xs font-medium'>{city?.forecast?.forecastday[0]?.astro?.sunset}</span></p>
-                                    
+
 //                                 </div>
 //                             </div>
 //                         </div>
@@ -111,43 +111,55 @@ export default function NearestCityCard() {
         const fetchNearestCitiesWithWeather = async () => {
             try {
                 setLoading(true)
-                
-                // Fetch nearby cities - get more than needed
-                 //  Changed from http:// to https://
+
                 const geoResponse = await fetch(
-                    `https://secure.geonames.org/findNearbyJSON?lat=${latitude}&lng=${longitude}&maxRows=15&radius=300&featureCode=ADM2&username=${userName}`
+                    `https://secure.geonames.org/findNearbyJSON?lat=${latitude}&lng=${longitude}&&maxRows=15&radius=300&featureCode=ADM2&username=${userName}`
                 )
                 const geoData = await geoResponse.json()
-                const cities = geoData?.geonames?.slice(1) || [] // Skip first, get all others
-                console.log(cities,"citysssssss")
+                const cities = geoData?.geonames?.slice(1) || []
+                console.log(cities, "cityssssssss")
+     
+
                 const validWeatherData = []
                 const TARGET_CITIES = 4
-
+                const seenLocations = new Set()
+                // Fetch weather for cities using coordinates
                 for (const city of cities) {
                     if (validWeatherData.length >= TARGET_CITIES) break
 
+
+                    
+                    const location = city?.name
+                        ? encodeURIComponent(`${city?.name},${city?.countryName}`)
+                        : `${city?.lat},${city?.lng}`;
+
+                    console.log(city?.lat, city?.lng,"lat lonc")
+
                     try {
                         const response = await fetch(
-                            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city.name}&days=1&hourly=24&alerts=yes`
+                            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=1&hourly=24&alerts=yes`
                         )
-                        
+
                         if (!response.ok) {
-                            console.warn(`Failed to fetch weather for ${city.name}: ${response.status}`)
-                            continue 
+                            continue
                         }
-                        
+
                         const data = await response.json()
-                        
                         if (data.error) {
-                            console.warn(`Weather API error for ${city.name}:`, data?.error?.message)
-                            continue 
+                            continue
                         }
-                        
-                        validWeatherData.push(data) 
-                        
+                        const locationKey = `${data?.location?.name?.toLowerCase()}-${data?.location?.region?.toLowerCase()}`
+
+                        if (seenLocations.has(locationKey)) {
+                            console.log(`Skipping duplicate: ${data?.location?.name}`)
+                            continue // Skip if we already have this location
+                        }
+
+                        seenLocations.add(locationKey)
+                        validWeatherData.push(data)
+
                     } catch (error) {
-                        console.warn(`Error fetching weather for ${city.name}:`, error)
-                        continue // Skip to next city
+                        continue
                     }
                 }
 
@@ -163,8 +175,6 @@ export default function NearestCityCard() {
 
         fetchNearestCitiesWithWeather()
     }, [latitude, longitude, apiKey, userName])
-
-    console.log(nearCityData, "nearCityData")
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full h-full">
