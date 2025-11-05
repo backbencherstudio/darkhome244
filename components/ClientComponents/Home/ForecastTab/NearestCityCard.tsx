@@ -113,8 +113,9 @@ export default function NearestCityCard() {
                 setLoading(true)
                 
                 // Fetch nearby cities - get more than needed
+                 //  Changed from http:// to https://
                 const geoResponse = await fetch(
-                    `http://api.geonames.org/findNearbyJSON?lat=${latitude}&lng=${longitude}&maxRows=15&radius=300&featureCode=ADM2&username=${userName}`
+                    `https://secure.geonames.org/findNearbyJSON?lat=${latitude}&lng=${longitude}&maxRows=15&radius=300&featureCode=ADM2&username=${userName}`
                 )
                 const geoData = await geoResponse.json()
                 const cities = geoData?.geonames?.slice(1) || [] // Skip first, get all others
