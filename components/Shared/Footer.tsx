@@ -43,7 +43,7 @@ export default function Footer() {
 
     return (
         <div className='lg:py-10 py-8 bg-black '>
-            <div className='maxContainer relative'>
+            <div className='maxContainer '>
                 {/* Newsletter Section */}
                 <div className=''>
                     <div className='flex flex-col lg:flex-row lg:items-center lg:justify-between py-8  gap-4 lg:gap-0 shadow-[0 20px 60px -6px rgba(77, 101, 137, 0.20)] rounded-[4px] border-b-[.5px] border-b-[#FFFFFF33]'>
@@ -132,7 +132,7 @@ export default function Footer() {
                 <div className='mt-6 '>
                     <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
                         <p className='text-[#F2F2F2] md:text-base text-sm leading-[100%] '>
-                            Copyright © 2021 ar-shakir.com
+                            Copyright © 2021 WeatherTides.com
                         </p>
 
                         <div className='flex flex-wrap gap-4 '>
@@ -148,12 +148,12 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
-            <div className='absolute top-0 left-0 '>
+            {/* <div className='absolute top-0 left-0 '>
                 <img src="/footer-bg-shadow-left.png" alt="Decoration" className='w-full h-full' />
             </div>
             <div className='absolute top-0 right-0  '>
                 <img src="/footer-bg-shadow-right.png" alt="Decoration" className='w-full h-full' />
-            </div>
+            </div> */}
             </div>
         </div>
     );

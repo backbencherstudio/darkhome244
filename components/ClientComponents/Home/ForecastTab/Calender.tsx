@@ -28,7 +28,7 @@ const MonthlyCalender = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY2;
+    const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
     const method = "future";
 

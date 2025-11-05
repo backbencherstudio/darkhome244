@@ -7,6 +7,7 @@ import LoadingMin from "@/components/reusable/LoadingMin";
 import TempretureChart from "./TempretureChart";
 import { useLocation } from "@/components/Provider/LocationProvider";
 import { useWeatherData } from "@/hooks/useWeatherData";
+import NearestCityCard from "./NearestCityCard";
 
 
 
@@ -79,11 +80,11 @@ const HourlyForecast = () => {
   const { location, refreshLocation } = useLocation()
   const latitude = location?.latitude
   const longitude = location?.longitude
- 
+
   const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
 
   const [forecastData, setForecastData] = useState<WeatherAPIResponse | null>(null);
- 
+
 
 
 
@@ -159,7 +160,7 @@ const HourlyForecast = () => {
               {forecastData?.location?.name}
             </h2>
             <div className="text-[#777980]">
-            <span ref={timeRef}></span>
+              <span ref={timeRef}></span>
             </div>
           </div>
         </div>
@@ -168,8 +169,9 @@ const HourlyForecast = () => {
       </div>
 
       {/* 🕐 Forecast Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {cities.map((city, index) => {
+      <div>
+        <NearestCityCard />
+        {/* {cities.map((city, index) => {
           const today = forecastData?.forecast?.forecastday?.[0];
           if (!today) return null;
 
@@ -193,8 +195,8 @@ const HourlyForecast = () => {
               <div className="flex justify-between items-start">
                 <div className="text-gray-700 space-y-1 text-sm">
                   <p>Precipitation: {today.day.totalprecip_mm} mm</p>
-                  {/* <p>Humidity: {humidity}%</p> */}
-                  {/* <p>Wind: {wind.toFixed(1)} Km/h</p> */}
+                  <p>Humidity: {humidity}%</p>
+                  <p>Wind: {wind.toFixed(1)} Km/h</p>
                 </div>
                 <div className="text-right">
                   <p className="text-lg font-semibold text-gray-800">{city}</p>
@@ -205,7 +207,7 @@ const HourlyForecast = () => {
               </div>
             </div>
           );
-        })}
+        })} */}
       </div>
     </div>
   );

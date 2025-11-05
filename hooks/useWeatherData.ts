@@ -5,7 +5,7 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY2;
+  const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY;
 
   const location = cityName
     ? encodeURIComponent(cityName)
@@ -14,6 +14,8 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
   // console.log(location, "Fetching weather data for location");
   // console.log(latitude, longitude, "Fetching weather data for location");
 
+
+   
   const fetchData = async () => {
     try {
       setLoading(true);
@@ -23,6 +25,8 @@ export const useWeatherData = (method: string, cityName?: string, latitude?: num
         `https://api.weatherapi.com/v1/${method}.json?key=${apiKey}&q=${location}&days=${days}&hourly=24&alerts=yes`
       );
       // console.log(response, "response from weather api");
+    
+      
 
       const result = await response.json();
       if (!response.ok) {

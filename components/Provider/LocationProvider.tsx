@@ -39,7 +39,7 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
         setLoading(false);
       },
       {
-        enableHighAccuracy: true,
+        enableHighAccuracy: false,
         timeout: 10000,
         maximumAge: 5 * 60 * 1000, // 5 minutes
       }
