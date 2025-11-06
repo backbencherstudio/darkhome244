@@ -69,9 +69,9 @@ export interface CurrentData {
 
 // The full weather API response
 export interface WeatherAPIResponse {
-  location: LocationData;
-  current: CurrentData;
-  forecast: {
+  location?: LocationData;
+  current?: CurrentData;
+  forecast?: {
     forecastday: ForecastDay[];
   };
 }
@@ -143,32 +143,34 @@ const HourlyForecast = () => {
       {/* 🌤️ Current Weather Section */}
       <div className="w-[58%] p-6 bg-white shadow rounded-[4px]">
         {loading ? <Loading height="h-[15vh]" /> : (
-          <div className="flex justify-between items-start">
-            <div className="flex gap-20">
-              <div className="flex gap-6 items-center">
-                <div className="flex flex-col md:flex-row  items-center">
-                  <span> <img src={forecastData?.current?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
-                  <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
+          <div>
+            <div className="flex justify-between items-start">
+              <div className="flex gap-20">
+                <div className="flex gap-6 items-center">
+                  <div className="flex flex-col md:flex-row  items-center">
+                    <span> <img src={forecastData?.current?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
+                    <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
+                  </div>
+                  <div className="text-[#777980] text-sm flex flex-col gap-0 ">
+                    <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>
+                    <p>Humidity: {forecastData?.current?.humidity}%</p>
+                    <p>Wind: {forecastData?.current?.wind_kph} Km/h</p>
+                  </div>
                 </div>
-                <div className="text-[#777980] text-sm flex flex-col gap-0 ">
-                  <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>
-                  <p>Humidity: {forecastData?.current?.humidity}%</p>
-                  <p>Wind: {forecastData?.current?.wind_kph} Km/h</p>
+              </div>
+              <div className="text-right">
+                <h2 className="text-2xl font-semibold text-gray-800">
+                  {forecastData?.location?.name}
+                </h2>
+                <div className="text-[#777980]">
+                  <span ref={timeRef}></span>
                 </div>
               </div>
             </div>
-            <div className="text-right">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                {forecastData?.location?.name}
-              </h2>
-              <div className="text-[#777980]">
-                <span ref={timeRef}></span>
-              </div>
-            </div>
+            <TempretureChart forecastData={forecastData} />
           </div>
         )}
-        
-        <TempretureChart forecastData={forecastData} />
+
       </div>
 
       {/* 🕐 Forecast Cards */}
