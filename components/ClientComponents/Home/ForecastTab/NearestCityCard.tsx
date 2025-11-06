@@ -133,11 +133,13 @@ export default function NearestCityCard() {
                         ? encodeURIComponent(`${city?.name},${city?.countryName}`)
                         : `${city?.lat},${city?.lng}`;
 
-                    console.log(city?.lat, city?.lng,"lat lonc")
+                    // const location2 =  `${23.75},${90.58333}`
+                    const location2 =  `${city?.lat},${city?.lng}`
+                    console.log(location,"lat lonc",city?.lat, city?.lng)
 
                     try {
                         const response = await fetch(
-                            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=1&hourly=24&alerts=yes`
+                            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location2}&days=1&hourly=24&alerts=yes`
                         )
 
                         if (!response.ok) {
