@@ -6,11 +6,11 @@ export const AppConfig = () => ({
   app: {
     // server endpoint
     url: URL,
-    name: "app",
-    slogan: "app",
+    name: "weatherTides",
+    slogan: "weatherTides",
     meta: {
-      description: "app",
-      keywords: "app",
+      description: "weatherTides",
+      keywords: "weatherTides",
     },
 
     // api endpoint
