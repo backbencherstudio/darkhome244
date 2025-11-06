@@ -25,8 +25,7 @@ export default function MarineForecast() {
     const timeRef = useRef<HTMLSpanElement>(null);
 
     useEffect(() => {
-        if (data && !loading && marinsDatas) {
-            setMarineData(marinsDatas)
+        if (data && !loading) {
             setForecastData(data);
         }
     }, [data, loading, refreshLocation]);
@@ -41,7 +40,7 @@ export default function MarineForecast() {
                     <div>
                         <div className="flex justify-between items-start">
                             <div className="flex gap-20">
-                                <div className="flex gap-6 items-center">
+                                <div className="flex flex-col md:flex-row md:gap-6 gap-3 items-center">
                                     <div className="flex flex-col items-center">
                                         <div className='flex items-center '>
                                             <span> <img src={marinsDatas?.forecast?.forecastday[0]?.day?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
