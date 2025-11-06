@@ -139,9 +139,9 @@ const HourlyForecast = () => {
 
 
   return (
-    <div className="flex gap-4">
+    <div className="flex lg:flex-row flex-col gap-4">
       {/* 🌤️ Current Weather Section */}
-      <div className="w-[58%] p-6 bg-white shadow rounded-[4px]">
+      <div className="lg:w-[58%] lg:p-6 p-4 bg-white shadow rounded-[4px]">
         {loading ? <Loading height="h-[15vh]" /> : (
           <div>
             <div className="flex justify-between items-start">

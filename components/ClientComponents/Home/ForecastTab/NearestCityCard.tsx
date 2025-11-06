@@ -188,7 +188,7 @@ export default function NearestCityCard() {
                 </div>
             ) : (
                 nearCityData?.map((city: any, index: number) => (
-                    <div key={index} className='bg-white shadow rounded-[4px] p-4 transition hover:shadow-lg flex flex-col justify-between'>
+                    <div key={index} className='bg-white shadow rounded-[4px] p-4 transition hover:shadow-lg flex flex-col gap-4 justify-between'>
                         <div className='flex flex-col items-center gap-'>
                             <div className='flex items-center justify-center '>
                                 <img className='h-14' src={city?.current?.condition?.icon} alt="" />
@@ -201,13 +201,13 @@ export default function NearestCityCard() {
                                 {city?.location?.name}
                             </p>
                         </div>
-                        <div className='flex justify-between'>
+                        <div className='flex lg:flex-col xl:flex-row xl:justify-between lg:justify-start justify-between'>
                             <div>
                                 <p className='text-sm font-semibold text-[#4A4C56] '>Precip: <span className='text-xs font-medium'>{city?.current?.precip_mm} mm</span></p>
                                 <p className='text-sm font-semibold text-[#4A4C56] '>Hum: <span className='text-xs font-medium'>{city?.current?.humidity}%</span></p>
                                 <p className='text-sm font-semibold text-[#4A4C56] '>Wind: <span className='text-xs font-medium'>{city?.current?.wind_kph}km/h</span></p>
                             </div>
-                            <div className='flex flex-col items-center'>
+                            <div className='flex flex-col xl:items-center lg:items-start items-center'>
                                 <div className='text-[#4A4C56] text-sm flex flex-col'>
                                     <p className='text-sm font-semibold text-[#4A4C56] '>Sunrise:<span className='text-xs font-medium'>{city?.forecast?.forecastday[0]?.astro?.sunrise}</span></p>
                                     <p className='text-sm font-semibold text-[#4A4C56] '>Sunset: <span className='text-xs font-medium'>{city?.forecast?.forecastday[0]?.astro?.sunset}</span></p>

@@ -101,12 +101,13 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
 
     return (
         <div>
-            <div className="relative bg-white rounded-lg overflow-hidden border-none py-[38px] ">
+            <div className="relative bg-white rounded-lg overflow-hidden border-none   xl:h-[320px] lg:h-[350px] h-[250px]">
                 <Chart
                     options={chartOptions}
                     series={chartSeries}
                     type="area"
-                    height={200}
+                    // height={200}
+                height="100%"
                 />
             </div>
         </div>
