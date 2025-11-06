@@ -17,7 +17,7 @@ export default function HealthActivityPage() {
       </div> */}
       <div className='maxContainer'>
         <div className='text center py-12  text-center'>
-          Google Adds
+          {/* Google Adds */}
         </div>
 
         <div>

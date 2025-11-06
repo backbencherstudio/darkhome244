@@ -89,8 +89,8 @@ const HealthAndActivityCard = ({ RSS_FEEDS, headerTitle }) => {
                     </div>
 
                 </div>
-                <div className='lg:w-[32.12%] w-full  border'>
-                    Google adds
+                <div className='lg:w-[32.12%] w-full  '>
+                    {/* Google adds */}
                 </div>
             </div>
         </div>
