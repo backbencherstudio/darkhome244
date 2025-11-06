@@ -32,7 +32,7 @@ export default function RootLayout({
             <Header />
             {children}
             <Footer />
-            <Toaster richColors position="top-right"/>
+            <Toaster duration={10000} richColors position="top-right" />
           </LocationProvider>
         </Suspense>
       </body>

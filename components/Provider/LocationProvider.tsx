@@ -1,6 +1,7 @@
 "use client";
-import { useWeatherData } from "@/hooks/useWeatherData";
+// import { useWeatherData } from "@/hooks/useWeatherData";
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { toast } from "sonner";
 
 type GeoLocation = { latitude: number; longitude: number } | null;
 
@@ -12,8 +13,8 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
   const [error, setError] = useState(null);
 
 
-    // const { data } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
-    // const { data:data2 } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
+  // const { data } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
+  // const { data:data2 } = useWeatherData("forecast",location?.latitude, location?.longitude,1)
 
   const getLocation = useCallback(() => {
     if (!navigator?.geolocation) {
@@ -35,6 +36,17 @@ export const LocationProvider = ({ children, fallback = { latitude: 52.52, longi
       },
       (err) => {
         // user denied or other error — fallback is preserved
+        console.log(err, "erooooor")
+        if (err.code === 1) {
+          toast.error("You have denied location access. Please allow location manually in your browser settings and Refresh the page again")
+        } else if (err.code === 2) {
+          // POSITION_UNAVAILABLE
+          toast.warning("Location information is unavailable.");
+        } else if (err.code === 3) {
+          // TIMEOUT
+          toast.warning("Location request timed out. Please try again.");
+        }
+
         setError(err);
         setLoading(false);
       },
