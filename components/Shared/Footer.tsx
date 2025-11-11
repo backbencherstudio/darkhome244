@@ -10,15 +10,15 @@ export default function Footer() {
     const [email, setEmail] = useState('');
 
     const navigationItems = [
-        { title: 'Home', href: '#' },
-        { title: 'Forecast', href: '#' },
-        { title: 'Radar & Maps', href: '#' }
+        { title: 'Home', href: '/' },
+        { title: 'Forecast', href: '/forecast' },
+        { title: 'Radar & Maps', href: '/radar-and-maps' }
     ];
 
     const weatherItems = [
-        { title: 'Severe Weather', href: '#' },
-        { title: 'Health & Activities', href: '#' },
-        { title: 'News & Media', href: '#' }
+        { title: 'Severe Weather', href: '/severe-weather' },
+        { title: 'Health & Activities', href: '/health-and-activities' },
+        { title: 'News & Media', href: '/news-and-media' }
     ];
 
     const legalItems = [
