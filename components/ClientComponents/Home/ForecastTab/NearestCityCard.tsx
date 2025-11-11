@@ -101,7 +101,6 @@ export default function NearestCityCard() {
 
     const [nearCityData, setNearCityData] = useState([])
     const [loading, setLoading] = useState(true)
-
     const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
     const userName = process.env.NEXT_PUBLIC_GEONAMES_USERNAME
 
@@ -118,7 +117,6 @@ export default function NearestCityCard() {
                 const geoData = await geoResponse.json()
                 const cities = geoData?.geonames?.slice(1) || []
                 console.log(cities, "cityssssssss")
-     
 
                 const validWeatherData = []
                 const TARGET_CITIES = 4
