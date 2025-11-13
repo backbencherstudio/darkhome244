@@ -5,9 +5,11 @@ import FacebookIcon from '../Icons/FacebookIcon';
 import InstaIcon from '../Icons/InstaIcon';
 import TwitterIcon from '../Icons/TwiterIcon';
 import LinkedinIcon from '../Icons/LinkedinIcon';
+import { toast } from 'sonner';
 
 export default function Footer() {
     const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
 
     const navigationItems = [
         { title: 'Home', href: '/' },
@@ -34,10 +36,38 @@ export default function Footer() {
         { icon: <LinkedinIcon />, href: '#', name: 'LinkedIn' }
     ];
 
-    const handleSubscribe = () => {
-        if (email.trim()) {
-            // console.log('Subscribed with email:', email);
-            setEmail('');
+    const validateEmail = (email) => {
+        const regex = /\S+@\S+\.\S+/;
+        return regex.test(email);
+    };
+
+    const handleSubscribe = async (e) => {
+        e.preventDefault();
+
+        if (!email || !validateEmail(email)) {
+            toast.warning("Please enter a valid email")
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/subscribe', {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            })
+
+            const data = await response.json()
+            if (response.ok) {
+                toast.message("Thank you for subscribing!")
+                setEmail('')
+            } else {
+                toast.error(data?.message || "Something went wrong. Please try again")
+            }
+        } catch (error) {
+            console.error('Error:', error);
+           toast.error('An error occurred. Please try again later.');
         }
     };
 
@@ -60,14 +90,13 @@ export default function Footer() {
                             />
                             <button
                                 onClick={handleSubscribe}
-                                className='absolute text-white right-3  top-1/2 -translate-y-1/2  md:px-6 px-4 py-2 md:py-3 rounded-[2px] leading-[100%] font-semibold md:text-base text-sm bg-[#0080C4] '
+                                type='submit'
+                                className='absolute text-white right-3  top-1/2 -translate-y-1/2  md:px-6 px-4 py-2 md:py-3 rounded-[2px] leading-[100%] font-semibold md:text-base text-sm bg-[#0080C4] cursor-pointer'
                             >
                                 Subscribe
                             </button>
                         </div>
                     </div>
-
-
                 </div>
 
                 {/* Main Footer Content */}
@@ -100,13 +129,13 @@ export default function Footer() {
                     <div className='flex md:justify-center'>
                         <ul className='flex flex-col gap-4  justify-center h-full'>
                             {navigationItems.map((item, index) => (
-                                    <a
-                                        key={index}
-                                        href={item.href}
-                                        className='text-[#f2f2f2] md:text-xl text-base hover:text-white transition-colors duration-200 leading-[100%]'
-                                    >
-                                        {item.title}
-                                    </a>
+                                <a
+                                    key={index}
+                                    href={item.href}
+                                    className='text-[#f2f2f2] md:text-xl text-base hover:text-white transition-colors duration-200 leading-[100%]'
+                                >
+                                    {item.title}
+                                </a>
                             ))}
                         </ul>
                     </div>
@@ -115,12 +144,12 @@ export default function Footer() {
                     <div className='flex md:justify-center mt-6 md:mt-0'>
                         <ul className='flex flex-col gap-4  justify-center h-full'>
                             {weatherItems.map((item, index) => (
-                                    <a key={index}
-                                        href={item.href}
-                                        className='text-[#f2f2f2] md:text-xl text-base hover:text-white transition-colors duration-200 leading-[100%]'
-                                    >
-                                        {item.title}
-                                    </a>
+                                <a key={index}
+                                    href={item.href}
+                                    className='text-[#f2f2f2] md:text-xl text-base hover:text-white transition-colors duration-200 leading-[100%]'
+                                >
+                                    {item.title}
+                                </a>
                             ))}
                         </ul>
                     </div>
@@ -148,7 +177,7 @@ export default function Footer() {
                         </div>
                     </div>
                 </div>
-            {/* <div className='absolute top-0 left-0 '>
+                {/* <div className='absolute top-0 left-0 '>
                 <img src="/footer-bg-shadow-left.png" alt="Decoration" className='w-full h-full' />
             </div>
             <div className='absolute top-0 right-0  '>
