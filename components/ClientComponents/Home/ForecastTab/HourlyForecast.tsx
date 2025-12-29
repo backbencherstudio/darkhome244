@@ -127,7 +127,10 @@ const HourlyForecast = () => {
   }, [data, loading, refreshLocation]);
 
 
+  const isUSA = forecastData?.location?.country === "United States of America";
 
+  const temp = isUSA ? forecastData?.current?.temp_f : forecastData?.current?.temp_c;
+  const unit = isUSA ? "°F" : "°C";
 
   // if (loading) {
   //   return (
@@ -149,7 +152,17 @@ const HourlyForecast = () => {
                 <div className="flex gap-6 items-center">
                   <div className="flex flex-col md:flex-row  items-center">
                     <span> <img src={forecastData?.current?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
-                    <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
+                    {/* <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(forecastData?.current?.temp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div> */}
+                    <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex leading-[100%] items-start">
+                      {temp != null ? (
+                        <>
+                          {Math.round(Number(temp))}
+                          <span className="md:text-base text-sm font-medium">{unit}</span>
+                        </>
+                      ) : (
+                        "--"
+                      )}
+                    </div>
                   </div>
                   <div className="text-[#777980] text-sm flex flex-col gap-0 ">
                     <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>

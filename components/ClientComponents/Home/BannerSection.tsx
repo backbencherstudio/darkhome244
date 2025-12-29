@@ -47,7 +47,7 @@ function WeatherDashboard() {
   const { location, refreshLocation } = useLocation()
   const [cityName, setCityName] = useState("")
   // const { data, error, loading } = useWeatherData("current", cityName, location?.latitude, location?.longitude, 1)
-  const {  data, error, loading  } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
+  const { data, error, loading } = useWeatherData("forecast", cityName, location?.latitude, location?.longitude, 1)
 
 
   const [query, setQuery] = useState("");
@@ -238,7 +238,7 @@ function WeatherDashboard() {
             role="alert"
             aria-live="assertive"
           >
-            <p className="font-semibold text-center">{error ? error: "No matching City found."}</p>
+            <p className="font-semibold text-center">{error ? error : "No matching City found."}</p>
 
             {/* Optional retry button if you have a refetch or can re-trigger search */}
             {/* <button
@@ -272,7 +272,13 @@ function WeatherDashboard() {
 
                     </div>
                     <div className='flex flex-col'>
-                      <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{Math.round(weather?.current?.temp_c)}°</div>
+                      {/* <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{weather?.location?.country === "United States of America" ? Math.round(weather?.current?.temp_f) : Math.round(weather?.current?.temp_c) } {Math.round(weather?.current?.temp_f)}°
+                      f</div> */}
+                      <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize font-bold font-geist">
+                        {weather?.location?.country === "United States of America"
+                          ? `${Math.round(weather?.current?.temp_f)}°F`
+                          : `${Math.round(weather?.current?.temp_c)}°C`}
+                      </div>
                       <div className="text-gray-300 text-sm md:text-base">{weather?.current?.condition?.text}</div>
                     </div>
                   </div>

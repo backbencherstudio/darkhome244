@@ -126,14 +126,14 @@ export default function NearestCityCard() {
                     if (validWeatherData.length >= TARGET_CITIES) break
 
 
-                    
+
                     const location = city?.name
                         ? encodeURIComponent(`${city?.name},${city?.countryName}`)
                         : `${city?.lat},${city?.lng}`;
 
                     // const location2 =  `${23.75},${90.58333}`
-                    const location2 =  `${city?.lat},${city?.lng}`
-                    console.log(location,"lat lonc",city?.lat, city?.lng)
+                    const location2 = `${city?.lat},${city?.lng}`
+                    console.log(location, "lat lonc", city?.lat, city?.lng)
 
                     try {
                         const response = await fetch(
@@ -190,9 +190,24 @@ export default function NearestCityCard() {
                         <div className='flex flex-col items-center gap-'>
                             <div className='flex items-center justify-center '>
                                 <img className='h-14' src={city?.current?.condition?.icon} alt="" />
-                                <div className='flex items-start text-[#3E3232]'>
+                                {/* <div className='flex items-start text-[#3E3232]'>
                                     <span className=' lg:text-[32px] md:text-[28px] text-2xl font-medium'>{city?.current?.temp_c}</span>
                                     °C
+                                </div> */}
+                                <div className="flex items-start text-[#3E3232]">
+                                    <span className="lg:text-[32px] md:text-[28px] text-2xl font-medium">
+                                        {city?.location?.country === "United States of America"
+                                            ? city?.current?.temp_f != null
+                                                ? Math.round(city.current.temp_f)
+                                                : "--"
+                                            : city?.current?.temp_c != null
+                                                ? Math.round(city.current.temp_c)
+                                                : "--"}
+                                    </span>
+
+                                    <span className="md:text-base text-sm font-medium leading-[1.2] ml-1">
+                                        {city?.location?.country === "United States of America" ? "°F" : "°C"}
+                                    </span>
                                 </div>
                             </div>
                             <p className='text-[#4A4C56] md:text-2xl text-lg font-semibold '>

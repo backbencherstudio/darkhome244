@@ -24,13 +24,12 @@ export default function WeatherForecastTab() {
 
     const pathName = usePathname()
 
-
     const renderSelectedComponent = () => {
         switch (selectedType) {
             case "Hourly":
                 return <HourlyForecast />;
             case "Daily":
-                return <DailyForecast data={data?.forecast?.forecastday} loading={loading} />;
+                return <DailyForecast data={data?.forecast?.forecastday} location = {data?.location?.country} loading={loading} />;
             // case "Weekly":
             //     return <WeeklyForecast />;
             // case "Monthly":

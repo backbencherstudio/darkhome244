@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import Loading from '../../../../app/loading';
 import getFormattedDate from '@/helper/formatedDate'
 
+
 interface WeatherData {
   date: string
   temp: string
@@ -28,7 +29,7 @@ interface WeatherData {
 //   { date: '07, Sep, 2025', temp: '+29℃', feelsLike: '+34℃', condition: 'Rain', wind: '2 ~ 5', humidity: '80%', pressure: '754' },
 // ]
 
-export default function DailyForecast({ data, loading }) {
+export default function DailyForecast({ data, location, loading }) {
 
   // const { location, refreshLocation } = useLocation()
   // const latitude = location?.latitude
@@ -70,7 +71,7 @@ export default function DailyForecast({ data, loading }) {
                 Feels Like
               </th> */}
               <th className="text-left text-[15px] sm:text-[16px] ">
-               Max Wind(kph)
+                Max Wind(kph)
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
                 Humidity
@@ -107,7 +108,17 @@ export default function DailyForecast({ data, loading }) {
                   </td>
 
                   <td className=" space-x-3.5 whitespace-nowrap py-4">
-                    <span>{day?.day?.avgtemp_c}°C</span>
+                    {/* <span>{day?.day?.avgtemp_c}°C</span> */}
+                    <span>
+                      {location === "United States of America"
+                        ? day?.day?.avgtemp_f != null
+                          ? `${Math.round(day.day.avgtemp_f)}°F`
+                          : "--"
+                        : day?.day?.avgtemp_c != null
+                          ? `${Math.round(day.day.avgtemp_c)}°C`
+                          : "--"}
+                    </span>
+
                     {/* <PrecipitationIcon className='text-[#0080C4] h-5 w-5' /> */}
                   </td>
                   <td className=" flex  space-x-3.5 whitespace-nowrap py-4">
@@ -116,7 +127,7 @@ export default function DailyForecast({ data, loading }) {
                     </span>
                     <span>{day?.day?.condition?.text}</span>
                   </td>
-{/* 
+                  {/* 
                   <td className="   whitespace-nowrap py-4">
                     {day?.hour?.[0].feelslike_c}
                     {day?.hour?. map((data)=>{
