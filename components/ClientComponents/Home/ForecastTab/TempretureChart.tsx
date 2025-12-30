@@ -30,7 +30,7 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
     // const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
     // const [currentHourData, setCurrentHourData] = useState<WeatherHour | null>(null);
 
-    // console.log(currentHourData, "dataaaaaaaxx")
+    console.log(forecastData, "dataaaaaaaxx")
 
     // useEffect(() => {
     //     if (forecastData) {
@@ -47,12 +47,19 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
     //     }
     // }, [forecastData]);
 
+  const isUSA = forecastData?.location?.country === "United States of America";
+
+  const temp = isUSA ? forecastData?.current?.temp_f : forecastData?.current?.temp_c;
+  const unit = isUSA ? "°F" : "°C";
+
+
     const filteredHours =
         forecastData?.forecast?.forecastday[0]?.hour?.filter((h: any) => {
             const currentHour = new Date(forecastData?.location?.localtime).getHours();
             const hourTime = new Date(h.time).getHours();
             return hourTime > currentHour; // only future hours today
         }) || [];
+
 
     const chartOptions: any = {
         chart: { type: "area", height: 232, toolbar: { show: false } },
@@ -87,15 +94,15 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
             },
             offsetX: 12,
         },
-        yaxis: { show: false },
+        yaxis: { show: false, },
         grid: { show: false },
-        tooltip: { theme: "dark", y: { formatter: (val: number) => `${val}°C` } },
+        tooltip: { theme: "dark", y: { formatter: (val: number) => `${Math.round(val)}${unit}` } },
     };
 
     const chartSeries = [
         {
             name: "Temperature",
-            data: filteredHours?.map((h) => h.temp_c),
+            data: filteredHours?.map((h) =>    isUSA ? h.temp_f : h.temp_c),
         },
     ];
 
@@ -107,7 +114,7 @@ export default function TempretureChart({ forecastData }: { forecastData: any })
                     series={chartSeries}
                     type="area"
                     // height={200}
-                height="100%"
+                    height="100%"
                 />
             </div>
         </div>

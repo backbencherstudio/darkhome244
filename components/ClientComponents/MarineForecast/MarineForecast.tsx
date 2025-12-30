@@ -30,7 +30,16 @@ export default function MarineForecast() {
         }
     }, [data, loading, refreshLocation]);
 
+    const isUSA = marinsDatas?.location?.country === "United States of America";
 
+    const rawTemp = isUSA
+        ? marinsDatas?.forecast?.forecastday?.[0]?.day?.avgtemp_f
+        : marinsDatas?.forecast?.forecastday?.[0]?.day?.avgtemp_c;
+
+    const temp =
+        typeof rawTemp === "number" ? Math.round(rawTemp) : "--";
+
+    const unit = isUSA ? "°F" : "°C";
 
     return (
         <div className='maxContainer py-0'>
@@ -44,16 +53,22 @@ export default function MarineForecast() {
                                     <div className="flex flex-col items-center">
                                         <div className='flex items-center '>
                                             <span> <img src={marinsDatas?.forecast?.forecastday[0]?.day?.condition?.icon} alt="" className=' object-cover w-15 h-full ' /></span>
-                                            <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start ">{Math.round(Number(marinsDatas?.forecast?.forecastday[0]?.day?.avgtemp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div>
+                                            {/* <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start "> {marineData?.location?.country === "United States of America"} {Math.round(Number(marinsDatas?.forecast?.forecastday[0]?.day?.avgtemp_c))}<span className='md:text-base text-sm font-medium'>°C</span> </div> */}
+                                            <div className="lg:text-[48px] md:text-[36px] text-[28px] text-[#3E3232] flex  leading-[100%] items-start">
+                                                {temp}
+                                                <span className="ml-1 md:text-base text-sm font-medium">
+                                                    {unit}
+                                                </span>
+                                            </div>
                                         </div>
                                         <span className='text-sm font-semibold text-[#4A4C56] '>
                                             {marinsDatas?.forecast?.forecastday[0]?.day?.condition?.text}
                                         </span>
                                     </div>
                                     <div className="text-[#777980] text-sm flex flex-col gap-0 ">
-                                            <p className='text-sm font-semibold text-[#4A4C56] '>Totalprecip: {marinsDatas?.forecast?.forecastday[0]?.day?.totalprecip_mm} mm</p>
+                                        <p className='text-sm font-semibold text-[#4A4C56] '>Totalprecip: {marinsDatas?.forecast?.forecastday[0]?.day?.totalprecip_mm} mm</p>
                                         <p className='text-sm font-semibold text-[#4A4C56] '>Avg.humidity: {marinsDatas?.forecast?.forecastday[0]?.day?.avghumidity}%</p>
-                                            <p className='text-sm font-semibold text-[#4A4C56] '>Totalsnow: {marinsDatas?.forecast?.forecastday[0]?.day?.totalsnow_cm} cm</p>
+                                        <p className='text-sm font-semibold text-[#4A4C56] '>Totalsnow: {marinsDatas?.forecast?.forecastday[0]?.day?.totalsnow_cm} cm</p>
 
                                     </div>
                                 </div>
