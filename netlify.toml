@@ -1,8 +1,10 @@
 # example netlify.toml
 [build]
-  command = "npm run build"
-  functions = "netlify/functions"
-  publish = ".next"
+command = "npm run build"
+
+[[plugins]]
+package = "@netlify/plugin-nextjs"
+
 
   ## Uncomment to use this redirect for Single Page Applications like create-react-app.
   ## Not needed for static site generators.
