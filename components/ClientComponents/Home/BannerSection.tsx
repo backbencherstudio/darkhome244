@@ -135,12 +135,22 @@ function WeatherDashboard() {
   };
 
 
+const isUSA = weather?.location?.country === "United States of America";
+
+
+const temperatureText = isUSA
+  ? `${Math.round(weather?.current?.temp_f)}°F`
+  : `${Math.round(weather?.current?.temp_c)}°C`;
+
+const windSpeedText = isUSA
+  ? `${weather?.current?.wind_mph} Mp/h`
+  : `${weather?.current?.wind_kph} Km/h`;
 
   const weatherStats = [
     {
       icon: <WindSpeedIcon />,
       title: "Wind Speed",
-      value: `${weather?.current?.wind_kph} Km/h`,
+      value: windSpeedText,
     },
     {
       icon: <PrecipitationIcon />,
@@ -275,9 +285,10 @@ function WeatherDashboard() {
                       {/* <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize  font-bold font-geist">{weather?.location?.country === "United States of America" ? Math.round(weather?.current?.temp_f) : Math.round(weather?.current?.temp_c) } {Math.round(weather?.current?.temp_f)}°
                       f</div> */}
                       <div className="lg:text-[32px] md:text-[28px] text-2xl capitalize font-bold font-geist">
-                        {weather?.location?.country === "United States of America"
+                        {/* {weather?.location?.country === "United States of America"
                           ? `${Math.round(weather?.current?.temp_f)}°F`
-                          : `${Math.round(weather?.current?.temp_c)}°C`}
+                          : `${Math.round(weather?.current?.temp_c)}°C`} */}
+                          {temperatureText}
                       </div>
                       <div className="text-gray-300 text-sm md:text-base">{weather?.current?.condition?.text}</div>
                     </div>
