@@ -43,7 +43,6 @@ export default function WeatherForecast() {
     }, [data, location, value])
 
 
-
     return (
         <div className='maxContainer'>
             <div className='flex md:flex-row flex-col md:items-center md:justify-between gap-4'>
@@ -69,7 +68,7 @@ export default function WeatherForecast() {
             </div>
             <div className='flex md:flex-row flex-col gap-6 '>
                 <div className="md:w-[66%] w-full  my-6">
-                    <ForecastTable forecastData={forecastData} loading={loading} />
+                    <ForecastTable forecastData={forecastData} location = {data?.location?.country} loading={loading} />
                 </div>
                 <div className='md:w-[32.12%] w-full mt-4'>
                     {/* Google adds */}

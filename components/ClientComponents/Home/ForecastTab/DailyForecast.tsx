@@ -55,7 +55,7 @@ export default function DailyForecast({ data, location, loading }) {
   const isUSA = location === "United States of America";
   const wind = isUSA ? "Mph" : "Kph"
 
-  console.log(location,"d")
+
 
 
   // console.log(weatherData?.forecast?.forecastday, 'user daily forecast data============================')

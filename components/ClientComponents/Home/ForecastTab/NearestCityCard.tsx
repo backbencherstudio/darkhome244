@@ -133,7 +133,7 @@ export default function NearestCityCard() {
 
                     // const location2 =  `${23.75},${90.58333}`
                     const location2 = `${city?.lat},${city?.lng}`
-                    console.log(location, "lat lonc", city?.lat, city?.lng)
+
 
                     try {
                         const response = await fetch(

@@ -13,7 +13,7 @@ import LoadingMin from '@/components/reusable/LoadingMin';
 import getFormattedDate from '@/helper/formatedDate';
 
 
-export default function ForecastTable({ forecastData, loading }) {
+export default function ForecastTable({ forecastData, location, loading }) {
 
 
     if (!forecastData?.length)
@@ -62,8 +62,9 @@ export default function ForecastTable({ forecastData, loading }) {
     };
 
 
+    const isUSA = location === "United States of America";
 
-
+    console.log(forecastData, "]]]]]]")
     return (
         <div className='space-y-6 max-h-screen overflow-y-auto custom-scroll'>
             {loading ? <LoadingMin /> : (
@@ -98,7 +99,10 @@ export default function ForecastTable({ forecastData, loading }) {
                                             <TableRow key={periodIndex} className="hover:bg-gray-50 border-b-0 ">
                                                 <TableCell className={`text-[#1D1F2C] md:text-base text-sm font-semibold  ${periodIndex === 0 ? "md:mt-8 pt-6" : ""}`}>{periodKey?.charAt(0).toUpperCase() + periodKey.slice(1)}</TableCell>
                                                 <TableCell className={`flex gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
-                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.temp_c}°C</span>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">
+                                                        {/* {period?.temp_c}°C */}
+                                                        {isUSA ? `${period?.temp_f}°F` : `${period?.temp_c}°C`}
+                                                    </span>
 
                                                 </TableCell>
                                                 <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
@@ -108,10 +112,19 @@ export default function ForecastTable({ forecastData, loading }) {
                                                     </div>
                                                 </TableCell>
                                                 <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
-                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.feelslike_c}°C</span>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">
+                                                        {/* {period?.feelslike_c}°C */}
+                                                        {isUSA ? `${period?.feelslike_f}°F` : `${period?.feelslike_c}°C`}
+                                                    </span>
                                                 </TableCell>
                                                 <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
-                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">{period?.wind_kph} km/h</span>
+                                                    <span className="text-[#1D1F2C] md:text-base text-sm font-semibold ">
+
+                                                        {/* {period?.wind_kph} km/h */}
+                                                        {isUSA ? `${period?.wind_mph} Mp/h` : `${period?.wind_kph} km/h`}
+
+                                                    </span>
+
                                                 </TableCell>
                                                 <TableCell className={`gap-4 ${periodIndex === 0 ? " pt-6" : ""}`}>
                                                     <span className="text-[#1D1F2C] md:text-base text-sm font-semibold pl-2">{period?.humidity}%</span>

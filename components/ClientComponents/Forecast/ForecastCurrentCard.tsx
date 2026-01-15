@@ -12,12 +12,12 @@ import LoadingMin from '@/components/reusable/LoadingMin'
 
 export default function ForecastCurrentCard() {
 
-    const { location, refreshLocation} = useLocation()
-    const latitude = location?.latitude 
-    const longitude = location?.longitude 
-    const { data, error, loading } = useWeatherData("forecast","",latitude, longitude,1)
+    const { location, refreshLocation } = useLocation()
+    const latitude = location?.latitude
+    const longitude = location?.longitude
+    const { data, error, loading } = useWeatherData("forecast", "", latitude, longitude, 1)
 
-    
+
 
 
     const getPercentageValue = (value: number, type: string): number => {
@@ -30,45 +30,73 @@ export default function ForecastCurrentCard() {
                 // Rain percentage is already 0-100
                 return value;
             case 'wind':
-                // Wind speed - assuming max of 50 km/h for visualization
-                return Math.min((value / 50) * 100, 100);
+                const maxWind = isUSA ? 30 : 50; // mph : km/h
+                return Math.min(Math.max((value / maxWind) * 100, 0), 100);
+
             case 'temperature':
                 // Temperature - assuming range of -10 to 50°C, normalized to 0-100%
-                return Math.floor(Math.min(Math.max(((value + 10) / 60) * 100, 0), 100));
+                if (isUSA) {
+                    return Math.floor(
+                        Math.min(Math.max(((value - 14) / (122 - 14)) * 100, 0), 100)
+                    );
+                } else {
+                    return Math.floor(Math.min(Math.max(((value + 10) / 60) * 100, 0), 100));
+                }
             default:
                 return value;
         }
     };
 
+    const isUSA = data?.location?.country === "United States of America";
+
+
+    const temperatureText = isUSA
+        ? `${Math.round(data?.current?.temp_f)}°F`
+        : `${Math.round(data?.current?.temp_c)}°C`;
+    const temperature = isUSA
+        ? Math.round(data?.current?.temp_f)
+        : Math.round(data?.current?.temp_c);
+
+    const windSpeedText = isUSA
+        ? `${Math.round(data?.current?.wind_mph)} Mp/h`
+        : `${Math.round(data?.current?.wind_kph)} Km/h`;
+    const windSpeed = isUSA
+        ? Math.round(data?.current?.wind_mph)
+        : Math.round(data?.current?.wind_kph)
+
+    console.log(isUSA, temperatureText, windSpeedText)
 
     // ]
-     const cardData = [
+    const cardData = [
         {
-            title: "UV Index", 
-            type: "uv", 
+            title: "UV Index",
+            type: "uv",
             value: Number(data?.current?.uv) || 0,  // Ensure it's a number
             rawValue: data?.current?.uv,
             icon: <UvIndexIcon className='text-[#0080C4]' />
         },
         {
-            title: "Rain", 
-            type: "rain", 
+            title: "Rain",
+            type: "rain",
             value: `${data?.forecast?.forecastday[0]?.day?.daily_chance_of_rain}%`,
             rawValue: data?.forecast?.forecastday[0]?.day?.daily_chance_of_rain ?? 0,
             icon: <RainUmbrellaIcon className='text-[#0080C4]' />
         },
         {
-            title: "Wind Speed", 
-            type: "wind", 
-            value: `${(data?.current?.wind_kph)?.toFixed(1)} km/h`, 
-            rawValue: data?.current?.wind_kph, 
+            title: "Wind Speed",
+            type: "wind",
+            value: windSpeedText,
+            // rawValue: data?.current?.wind_kph,
+            rawValue: windSpeed,
             icon: <WindSpeedIcon className='text-[#0080C4]' />
         },
         {
-            title: "Temperature", 
-            type: "temperature", 
-            value: `${data?.current?.temp_c}°c`,  // Ensure it's a number
-            rawValue: data?.current?.temp_c,
+            title: "Temperature",
+            type: "temperature",
+            // value: `${data?.current?.temp_c}°c`,  // Ensure it's a number
+            value: temperatureText,  // Ensure it's a number
+            // rawValue: data?.current?.temp_c,
+            rawValue: temperature,
             icon: <TempretureIcon className='fill-[#0080C4]' />
         },
     ];
@@ -81,8 +109,8 @@ export default function ForecastCurrentCard() {
                     <div key={item?.title} className='bg-white pb-4 flex items-center flex-col justify-center'>
                         {loading ?
                             <LoadingMin /> : (
-                            <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
-                        )}
+                                <RadialChart series={getPercentageValue(item?.rawValue, item.type)} value={item?.value} startAngle={-135} endAngle={135} chartId="chart1" />
+                            )}
                         {/* <span>{item?.value}</span> */}
                         <div className='flex items-center gap-2 mt-2'>
                             <span>{item?.icon}</span>
