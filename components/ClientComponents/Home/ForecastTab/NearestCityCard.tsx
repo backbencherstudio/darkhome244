@@ -218,7 +218,15 @@ export default function NearestCityCard() {
                             <div>
                                 <p className='text-sm font-semibold text-[#4A4C56] '>Precip: <span className='text-xs font-medium'>{city?.current?.precip_mm} mm</span></p>
                                 <p className='text-sm font-semibold text-[#4A4C56] '>Hum: <span className='text-xs font-medium'>{city?.current?.humidity}%</span></p>
-                                <p className='text-sm font-semibold text-[#4A4C56] '>Wind: <span className='text-xs font-medium'>{city?.current?.wind_kph}km/h</span></p>
+                                <p className='text-sm font-semibold text-[#4A4C56] '>Wind: <span className='text-xs font-medium'>
+                                     {city?.location?.country === "United States of America"
+                                            ? city?.current?.wind_mph != null
+                                                ? `${city?.current?.wind_mph} Mp/h`
+                                                : "--"
+                                            : city?.current?.wind_kph != null
+                                                ? `${city?.current?.wind_kph}km/h`
+                                                : "--"}
+                                     </span></p>
                             </div>
                             <div className='flex flex-col xl:items-center lg:items-start items-center'>
                                 <div className='text-[#4A4C56] text-sm flex flex-col'>

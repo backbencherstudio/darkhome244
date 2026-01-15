@@ -63,6 +63,7 @@ export interface CurrentData {
   temp_f?: number;
   humidity: number;
   wind_kph: number;
+  wind_mph: number;
   precip_mm: number;
   condition: WeatherCondition;
 }
@@ -130,6 +131,7 @@ const HourlyForecast = () => {
   const isUSA = forecastData?.location?.country === "United States of America";
 
   const temp = isUSA ? forecastData?.current?.temp_f : forecastData?.current?.temp_c;
+  const wind = isUSA ? `${forecastData?.current?.wind_mph} Mp/h` : `${forecastData?.current?.wind_kph} Km/h`;
   const unit = isUSA ? "°F" : "°C";
 
   // if (loading) {
@@ -167,7 +169,8 @@ const HourlyForecast = () => {
                   <div className="text-[#777980] text-sm flex flex-col gap-0 ">
                     <p>Precipitation: {forecastData?.current?.precip_mm} mm</p>
                     <p>Humidity: {forecastData?.current?.humidity}%</p>
-                    <p>Wind: {forecastData?.current?.wind_kph} Km/h</p>
+                    {/* <p>Wind: {forecastData?.current?.wind_kph} Km/h</p> */}
+                    <p>Wind: {wind}</p>
                   </div>
                 </div>
               </div>

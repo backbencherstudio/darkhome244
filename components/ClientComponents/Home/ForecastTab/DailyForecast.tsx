@@ -52,6 +52,12 @@ export default function DailyForecast({ data, location, loading }) {
     )
   }
 
+  const isUSA = location === "United States of America";
+  const wind = isUSA ? "Mph" : "Kph"
+
+  console.log(location,"d")
+
+
   // console.log(weatherData?.forecast?.forecastday, 'user daily forecast data============================')
 
   return (
@@ -71,7 +77,7 @@ export default function DailyForecast({ data, location, loading }) {
                 Feels Like
               </th> */}
               <th className="text-left text-[15px] sm:text-[16px] ">
-                Max Wind(kph)
+                Max Wind({wind})
               </th>
               <th className="text-left  text-[15px] sm:text-[16px] ">
                 Humidity
@@ -138,7 +144,8 @@ export default function DailyForecast({ data, location, loading }) {
                   </td> */}
 
                   <td className="  whitespace-nowrap py-4 ">
-                    {day?.day?.maxwind_kph}
+                    {/* {day?.day?.maxwind_kph} */}
+                    {isUSA ? day?.day?.maxwind_mph : day?.day?.maxwind_kph}
                   </td>
 
                   <td className="  whitespace-nowrap py-4 ">
